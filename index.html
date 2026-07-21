@@ -7,269 +7,755 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
 <style>
   :root{
-    --bg:#0e1116; --panel:#151b23; --panel2:#1b2430; --line:#222c39; --line2:#2e3947;
-    --text:#e9eef5; --dim:#95a2b3; --faint:#5f6d7e;
-    --violet:#a78bfa; --green:#34d399; --blue:#60a5fa; --teal:#2dd4bf; --gold:#fbbf24; --slate:#8fa0b5; --red:#f87171;
-    --miss:#b388ff;
+    --ink:#1a2330; --ink2:#33415a; --dim:#5c6b7f; --faint:#8a97a8;
+    --bg:#f6f8fa; --card:#ffffff; --card2:#fbfcfe; --line:#dde4ec; --line2:#e7edf3;
+    --blue:#0969da; --blue-bg:#eef5ff;
+    --ok:#1a7f37; --ok-bg:#e6f4ea;
+    --part:#9a6700; --part-bg:#fff4d6;
+    --miss:#6f42c1; --miss-bg:#f6f0ff;
+    --wrong:#cf222e; --wrong-bg:#fff5f5;
+    --c-milestone:#9a6700; --c-money:#1a7f37; --c-gacha:#6f42c1;
+    --c-combat:#0969da; --c-upgrade:#0d9488; --c-system:#64748b;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,"Segoe UI",Inter,Roboto,Arial,sans-serif}
-  ::selection{background:#2b3a55}
+  body{background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,"Segoe UI",Inter,Roboto,Arial,sans-serif}
+  ::selection{background:#d5e6ff}
 
-  .top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,17,22,.97),rgba(14,17,22,.92));backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-  .top .in{max-width:1720px;margin:0 auto;padding:13px 26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .brand{font-size:16.5px;font-weight:750;letter-spacing:-.2px;background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
-  .top .who{color:var(--dim);font-size:12.5px}
-  .top .who b{color:var(--text)}
-  .kpis{margin-left:auto;display:flex;gap:24px}
-  .kpi{text-align:right}
-  .kpi b{display:block;font-size:16px;font-weight:700}
-  .kpi span{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint)}
-  .kpi.pur b{color:var(--miss)} .kpi.red b{color:var(--red)} .kpi.grn b{color:var(--green)}
+  /* ============ TOP BAR ============ */
+  .top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .top .in{max-width:1680px;margin:0 auto;padding:12px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .brand{font-size:17px;font-weight:750;letter-spacing:-.2px;color:var(--ink);display:flex;align-items:center;gap:9px}
+  .brand .mark{font-size:17px;line-height:1}
+  .vidchip{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:8px;overflow:hidden;font:600 12px Consolas,monospace;line-height:1}
+  .vidchip .lbl{background:var(--blue);color:#fff;padding:5px 9px;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center}
+  .vidchip .val{background:var(--card2);color:var(--ink2);padding:5px 11px;display:flex;align-items:center}
 
-  .main{max-width:1720px;margin:0 auto;padding:20px 26px;display:grid;grid-template-columns:40% 1fr;gap:24px;align-items:start}
-  @media(max-width:1100px){.main{grid-template-columns:1fr}.leftcol{position:static!important}}
+  .main{max-width:1680px;margin:0 auto;padding:18px 26px 20px;display:grid;grid-template-columns:50% minmax(0,1fr);gap:24px;align-items:start}
+  @media(max-width:1080px){.main{grid-template-columns:1fr}.leftcol{position:static!important;max-height:none!important}}
 
-  /* ============ LEFT ============ */
-  .leftcol{position:sticky;top:72px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 94px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
-  .videocard{background:#000;border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.45);flex:none}
-  video{width:100%;display:block;background:#000}
-  .vmeta{display:flex;flex-wrap:wrap;gap:4px 18px;padding:10px 16px;background:var(--panel);border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
-  .vmeta b{color:var(--text);font-weight:600}
+  /* ============ LEFT COLUMN ============ */
+  .leftcol{position:sticky;top:70px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 88px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;flex:none}
+  .videocard video{width:100%;display:block;background:#0e1116}
+  .vmeta{display:flex;flex-wrap:wrap;gap:4px 16px;padding:10px 15px;border-top:1px solid var(--line);font-size:12px;color:var(--dim);background:var(--card2)}
+  .vmeta b{color:var(--ink);font-weight:600}
+  .vmeta .num{font-family:Consolas,monospace;color:var(--ok);font-weight:600}
 
-  details.attrs{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:none}
-  details.attrs summary{list-style:none;cursor:pointer;padding:13px 18px;display:flex;align-items:center;gap:10px;font-weight:650;font-size:13.5px;background:linear-gradient(180deg,#171e28,#151b23)}
-  details.attrs summary::-webkit-details-marker{display:none}
-  details.attrs summary .chev{margin-left:auto;color:var(--faint);transition:transform .2s;font-size:11px}
-  details.attrs[open] summary .chev{transform:rotate(90deg)}
-  details.attrs summary .hintt{color:var(--faint);font-weight:400;font-size:11.5px}
+  /* capture-rate banner */
+  .rate{padding:13px 15px}
+  .statrow{display:flex;gap:8px;margin-bottom:12px}
+  .stat{flex:1;text-align:center;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:8px 6px}
+  .stat b{display:block;font-size:20px;font-weight:750;line-height:1.05}
+  .stat span{font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .stat.grn b{color:var(--ok)} .stat.red b{color:var(--wrong)} .stat.pur b{color:var(--miss)}
+  .bar{height:12px;border-radius:7px;overflow:hidden;display:flex;border:1px solid var(--line)}
+  .bar .seg{height:100%}
+  .bar .cap{background:var(--ok)} .bar .wr{background:var(--wrong)} .bar .ms{background:#b98cf0}
+  .rate .rows{display:flex;flex-wrap:wrap;gap:5px 16px;margin-top:9px;font-size:11.5px;color:var(--dim)}
+  .rate .rows i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
-  .agroup{border-top:1px solid var(--line)}
-  .agroup h4{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);padding:12px 18px 6px}
-  .agroup h4::after{content:"";flex:1;height:1px;background:var(--line)}
-  .arow{display:grid;grid-template-columns:106px 1fr 46px;gap:12px;padding:9px 18px;align-items:start;transition:background .12s}
-  .arow:hover{background:#181f2b}
-  .arow + .arow{border-top:1px solid #1a2230}
-  .arow .k{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);font-weight:700;padding-top:3px}
+  .chead{display:flex;align-items:baseline;gap:8px;padding:11px 15px;border-bottom:1px solid var(--line);background:var(--card2);font-weight:650;font-size:13px}
+  .chead .hint{margin-left:auto;color:var(--faint);font-weight:400;font-size:11px}
+
+  .agroup + .agroup{border-top:1px solid var(--line)}
+  .agroup h4{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);padding:11px 15px 5px;font-weight:700}
+  .agroup h4::after{content:"";flex:1;height:1px;background:var(--line2)}
+  .arow{display:grid;grid-template-columns:92px 1fr 44px;gap:11px;padding:8px 15px;align-items:start}
+  .arow:hover{background:var(--card2)}
+  .arow + .arow{border-top:1px solid var(--line2)}
+  .arow .k{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--faint);font-weight:700;padding-top:3px}
   .arow .vwrap{min-width:0}
-  .arow .v{font-size:13px;color:var(--text);line-height:1.5}
-  .arow .v .n{font-family:Consolas,monospace;color:var(--green);font-size:12.5px}
-  .arow .v b{font-weight:650}
+  .arow .v{font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .arow .v .n{font-family:Consolas,monospace;color:var(--ok);font-size:12px;font-weight:600}
+  .arow .v b{font-weight:650;color:var(--ink)}
   .arow .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-  .pv{font-size:10.5px;border-radius:9px;padding:2px 8px;font-weight:700;white-space:nowrap;letter-spacing:.2px}
-  .pv.ok{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.22)}
-  .pv.no{background:rgba(179,136,255,.1);color:var(--miss);border:1px dashed rgba(179,136,255,.4)}
-  .pv.bad{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25)}
-  .arow .t{font:600 11px Consolas,monospace;color:var(--blue);cursor:pointer;background:#1a2432;border:1px solid #263349;border-radius:8px;padding:3px 0;text-align:center;transition:.15s;margin-top:2px}
-  .arow .t:hover{border-color:var(--blue);color:#9ccaff}
+  .pv{font-size:10.5px;border-radius:7px;padding:2px 7px;font-weight:650;white-space:nowrap;line-height:1.5}
+  .pv.ok{background:var(--ok-bg);color:var(--ok);border:1px solid #b7e0c2}
+  .pv.no{background:var(--miss-bg);color:var(--miss);border:1px dashed #c9b3f0}
+  .pv.bad{background:var(--wrong-bg);color:var(--wrong);border:1px solid #f3c2c5}
+  .arow .t{font:600 11px Consolas,monospace;color:var(--blue);cursor:pointer;background:var(--blue-bg);border:1px solid #cfe1fb;border-radius:7px;padding:3px 0;text-align:center;transition:.14s;margin-top:2px}
+  .arow .t:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-  .legend{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 16px;display:flex;flex-wrap:wrap;gap:7px 14px;font-size:11.5px;color:var(--dim);flex:none}
+  .legend{padding:10px 15px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--dim)}
   .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+  .legend .edge{font-weight:600}
+  .legend .edge.pur{color:var(--miss)} .legend .edge.red{color:var(--wrong)}
 
-  /* ============ RIGHT: timeline ============ */
+  /* attributes table */
+  .atbl{width:100%;border-collapse:collapse;table-layout:fixed}
+  .atbl th{font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);text-align:left;font-weight:700;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--card2)}
+  .atbl td{padding:8px 14px;border-bottom:1px solid var(--line2);vertical-align:top;font-size:12px;line-height:1.5;word-break:break-word}
+  .atbl tr:last-child td{border-bottom:none}
+  .atbl tbody tr:hover td,.atbl tr:hover td{background:var(--card2)}
+  .atbl .an{font:600 11px Consolas,monospace;color:var(--ink2)}
+  .atbl .ap{color:var(--dim);font-size:11.5px}
+  .atbl .av{color:var(--ink)}
+  .atbl .av b{font-weight:650}
+  .atbl .av .n{font-family:Consolas,monospace;color:var(--ok);font-weight:600;font-size:11.5px}
+  .atbl .em{color:#c3ccd8;font-style:normal}
+  .atbl tr.w .ap{color:var(--wrong);font-weight:650}
+  .atbl tr.x .an{color:var(--miss)}
+  .atbl tr.x{background:#fcfaff}
+
+  /* ============ RIGHT: TIMELINE ============ */
   .tlwrap{min-width:0}
-  .filters{position:sticky;top:64px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:10px 2px 10px;background:linear-gradient(180deg,var(--bg) 80%,transparent)}
-  .fbtn{border:1px solid var(--line2);background:var(--panel);color:var(--dim);font:600 12px inherit;padding:6px 13px;border-radius:20px;cursor:pointer;transition:.15s}
-  .fbtn:hover{color:var(--text);border-color:#3b4a5e}
-  .fbtn.on{background:#233046;color:#cfe3ff;border-color:#3d5a80}
-  .fbtn .c{font-weight:700;opacity:.7;margin-left:4px}
+  .filters{position:sticky;top:62px;z-index:40;display:flex;gap:7px;flex-wrap:wrap;padding:8px 0 12px;background:linear-gradient(180deg,var(--bg) 78%,transparent)}
+  .fbtn{border:1px solid var(--line);background:var(--card);color:var(--dim);font:600 12px inherit;padding:6px 13px;border-radius:18px;cursor:pointer;transition:.14s}
+  .fbtn:hover{color:var(--ink);border-color:#bcc8d6}
+  .fbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .fbtn .c{font-weight:700;opacity:.65;margin-left:5px}
+  .fbtn.on .c{opacity:.85}
 
-  .tlhead{display:grid;grid-template-columns:64px 1fr 290px;gap:14px;padding:6px 15px 8px 31px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);font-weight:700}
-  @media(max-width:1400px){.tlhead{grid-template-columns:60px 1fr 230px}}
-  .tl{position:relative;padding-left:26px}
-  .tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,#233046,#1b2430)}
+  .tlhead{display:grid;grid-template-columns:60px 1fr 300px;gap:14px;padding:2px 16px 8px 30px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);font-weight:700}
+  @media(max-width:1380px){.tlhead{grid-template-columns:56px 1fr 232px}}
+  .tl{position:relative;padding-left:24px}
+  .tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
 
-  .entry{position:relative;display:grid;grid-template-columns:64px 1fr 290px;gap:14px;align-items:start;margin:0 0 9px;background:linear-gradient(180deg,#161d27,#141a23);border:1px solid var(--line);border-radius:12px;padding:11px 15px;cursor:pointer;transition:border-color .15s, transform .12s, box-shadow .15s}
-  @media(max-width:1400px){.entry{grid-template-columns:60px 1fr 230px}}
-  .entry:hover{border-color:#3b4d63;transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.32)}
-  .entry.playing{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue), 0 10px 28px rgba(0,0,0,.4)}
-  .entry::before{content:"";position:absolute;left:-22px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--dotc,#94a3b8);box-shadow:0 0 0 3px var(--bg)}
+  .minute{position:relative;display:flex;align-items:center;gap:10px;margin:16px 0 8px;color:var(--faint);font:700 10.5px Consolas,monospace;letter-spacing:.5px}
+  .minute::after{content:"";flex:1;height:1px;background:var(--line2)}
+
+  .entry{position:relative;margin:0 0 10px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .14s, box-shadow .14s, transform .1s}
+  .entry:hover{border-color:#c2d2e4;box-shadow:0 4px 14px rgba(23,43,77,.07);transform:translateY(-1px)}
+  .entry.playing{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue),0 6px 18px rgba(9,105,218,.18)}
+  .entry::before{content:"";position:absolute;left:-21px;top:19px;width:11px;height:11px;border-radius:50%;background:var(--dotc,#94a3b8);box-shadow:0 0 0 3px var(--bg);z-index:1}
   .entry.missed{border-left:3px solid var(--miss)}
-  .entry.mismatch{border-left:3px solid var(--red)}
+  .entry.mismatch{border-left:3px solid var(--wrong)}
 
-  .entry .tt{font:700 11.5px Consolas,monospace;color:#9ccaff;background:#1a2432;border:1px solid #263349;border-radius:8px;padding:3px 0;text-align:center;margin-top:1px}
-  .entry .mid{min-width:0}
-  .entry .mid .ti{font-weight:650;font-size:13.5px;letter-spacing:.1px}
-  .entry .mid .detail{color:var(--dim);font-size:12.5px;margin-top:3px;line-height:1.5}
-  .entry .mid .detail b{color:var(--text);font-weight:600}
-  .entry .mid .detail .n{font-family:Consolas,monospace;color:var(--green);font-size:12px}
-  .note{margin-top:7px;font-size:12px;line-height:1.45;padding:6px 10px;border-radius:8px;display:flex;gap:7px;align-items:flex-start}
-  .note::before{content:"⚑";font-size:11px;opacity:.85;padding-top:1px}
-  .note.pur{background:rgba(179,136,255,.08);color:#cdb6ff;border:1px solid rgba(179,136,255,.16)}
-  .note.red{background:rgba(248,113,113,.08);color:#fda4a4;border:1px solid rgba(248,113,113,.16)}
-  .note.amb{background:rgba(251,191,36,.07);color:#fcd34d;border:1px solid rgba(251,191,36,.15)}
+  /* card header: timestamp · title · capture verdict */
+  .ehead{display:flex;align-items:center;gap:11px;padding:9px 14px;border-bottom:1px solid var(--line2);background:var(--card2)}
+  .ehead .tt{font:700 11.5px Consolas,monospace;color:var(--blue);background:#fff;border:1px solid #cfe1fb;border-radius:7px;padding:3px 9px;flex:none}
+  .ehead .ti{flex:1;min-width:0;font-weight:650;font-size:13.5px;letter-spacing:.1px;color:var(--ink)}
 
-  .entry .pcol{border-left:1px solid var(--line);padding-left:14px;align-self:stretch}
-  .pchip{display:inline-block;font:600 11px Consolas,monospace;border-radius:8px;padding:2px 8px;white-space:nowrap;margin-bottom:5px}
-  .pchip.got{background:rgba(52,211,153,.1);color:#7ee2b8;border:1px solid rgba(52,211,153,.25)}
-  .pchip.warn{background:rgba(251,191,36,.1);color:#fcd34d;border:1px solid rgba(251,191,36,.25)}
-  .pchip.bad{background:rgba(248,113,113,.12);color:#fca5a5;border:1px solid rgba(248,113,113,.3)}
-  .pchip.none{background:transparent;color:var(--miss);border:1px dashed rgba(179,136,255,.45)}
-  .pdesc{display:block;font-size:11px;color:var(--faint);font-style:italic;line-height:1.45}
-  .minute{position:relative;display:flex;align-items:center;gap:10px;margin:18px 0 9px;color:var(--faint);font:700 10.5px Consolas,monospace;letter-spacing:1px}
-  .minute::after{content:"";flex:1;height:1px;background:var(--line)}
+  /* two labeled sections: on-screen | prod */
+  .ebody{display:grid;grid-template-columns:1fr 248px}
+  @media(max-width:1380px){.ebody{grid-template-columns:1fr 200px}}
+  .sec{padding:11px 14px;min-width:0}
+  .sec.prod{border-left:1px solid var(--line2);background:#fcfdfe}
+  .seclbl{font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:7px}
+  .detail{color:var(--ink2);font-size:12.5px;line-height:1.55}
+  .detail b{color:var(--ink);font-weight:650}
+  .detail .n{font-family:Consolas,monospace;color:var(--ok);font-size:12px;font-weight:600}
+  .note{margin-top:8px;font-size:11.5px;line-height:1.45;padding:6px 10px;border-radius:8px;display:flex;gap:6px;align-items:flex-start}
+  .note::before{content:"▸";font-size:11px;opacity:.8;padding-top:1px}
+  .note.pur{background:var(--miss-bg);color:#59409b;border:1px solid #e4d7fa}
+  .note.red{background:var(--wrong-bg);color:#a8232e;border:1px solid #f3c2c5}
+  .note.amb{background:var(--part-bg);color:#7a5200;border:1px solid #f0dfa8}
+
+  /* capture verdict badge (in header, right-aligned) */
+  .status{font:700 9px/1 inherit;letter-spacing:.4px;text-transform:uppercase;padding:5px 9px;border-radius:6px;white-space:nowrap;flex:none}
+  .status.cap{background:var(--ok-bg);color:var(--ok);border:1px solid #b7e0c2}
+  .status.part{background:var(--part-bg);color:var(--part);border:1px solid #f0dfa8}
+  .status.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid #f3c2c5}
+  .status.miss{background:var(--miss-bg);color:var(--miss);border:1px dashed #c9b3f0}
+  .pchip{display:block;font:600 11px Consolas,monospace;color:var(--ink2);margin-bottom:4px;white-space:normal;line-height:1.6}
+  .pchip code{background:#f0f3f7;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .pdesc{display:block;font-size:11px;color:var(--dim);font-style:italic;line-height:1.45}
+  .pnone{font-size:11.5px;color:var(--faint);font-style:italic}
+
+  /* expandable raw transcript sub-steps — full-width show/hide bar + nested list */
+  .expander{margin-top:10px;width:100%;font:650 11px inherit;color:var(--blue);cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:8px;transition:.14s}
+  .expander:hover{border-color:#bcd3f0;background:var(--blue-bg)}
+  .expander .cv{transition:transform .15s;font-size:9px;color:var(--faint)}
+  .entry.open .expander .cv{transform:rotate(90deg)}
+  .substeps{display:block;margin-top:9px;margin-left:3px;padding-left:13px;border-left:2px solid var(--line)}
+  .tl.hidesub .substeps{display:none}
+  .fbtn.xall{margin-left:auto;border-style:dashed}
+  .substep{display:grid;grid-template-columns:46px 1fr;gap:10px;padding:5px 7px;font-size:12px;color:var(--ink2);cursor:pointer;border-radius:6px;line-height:1.5}
+  .substep:hover{background:var(--blue-bg)}
+  .substep + .substep{border-top:1px solid var(--line2)}
+  .substep .sst{font:600 10.5px Consolas,monospace;color:var(--faint);padding-top:1px}
+  .substep b{color:var(--ink);font-weight:650}
+  .substep .n{font-family:Consolas,monospace;color:var(--ok);font-weight:600;font-size:11.5px}
+  .substep em{color:var(--dim);font-style:normal;font-size:11px}
+
+  .footnote{max-width:1680px;margin:0 auto;padding:6px 26px 34px;color:var(--faint);font-size:12px}
+  .footnote a{color:var(--blue);text-decoration:none}
+  .footnote a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 
 <div class="top"><div class="in">
-  <div class="brand">Session Timeline — what the video holds vs what prod kept</div>
-  <div class="who">MapleStory Idle · <b>He108OAfILEkavUA1JhVW</b> · Minnow · KR · 8th session · 15:00 · CP <b>48,531 → 151,769</b></div>
-  <div class="kpis">
-    <div class="kpi"><b id="kAll">–</b><span>moments</span></div>
-    <div class="kpi grn"><b id="kGot">–</b><span>prod logged</span></div>
-    <div class="kpi pur"><b id="kMiss">–</b><span>no record</span></div>
-    <div class="kpi red"><b id="kBad">–</b><span>mismatch</span></div>
-  </div>
+  <div class="brand"><span class="mark">🎬</span>MapleStory&nbsp;Idle</div>
+  <span class="vidchip"><span class="lbl">Video ID</span><span class="val">He108OAfILEkavUA1JhVW</span></span>
 </div></div>
 
 <div class="main">
 
   <!-- ================= LEFT ================= -->
   <div class="leftcol">
-    <div class="videocard">
+    <div class="card videocard">
       <video id="vid" controls preload="metadata" src="https://bluestacks-videos-production.s3.us-east-005.backblazeb2.com/bluestacks/2026-06-03/He108OAfILEkavUA1JhVW/video.mp4"></video>
       <div class="vmeta">
-        <span>Streams from prod storage · recorded <b>2026-06-03</b></span>
-        <span>Prod: <b>71 events · 25 attributes</b></span>
-        <span>Transcript: <b>1 fps Pass-1</b></span>
+        <span>Minnow · KR · 8th session · <b>14:23</b> · CP <span class="num">48,531 → 151,769</span></span>
+        <span>Prod: <b>71 events · 25 attributes</b> · recorded <b>2026-06-03</b></span>
       </div>
     </div>
 
-    <details class="attrs" open>
-      <summary>Attributes detected from the transcript <span class="hintt">chip = prod's version of the same fact</span><span class="chev">▶</span></summary>
+    <div class="card">
+      <div class="chead">Attributes — prod value vs the video <span class="hint">blank = prod has no such field</span></div>
+      <table class="atbl">
+        <thead><tr><th style="width:146px">Attribute</th><th style="width:112px">Prod value</th><th>What the video shows</th></tr></thead>
+        <tbody>
+          <tr class="w"><td class="an">player_class</td><td class="ap">Arch Mage</td><td class="av"><b>Viper</b> — Arch Mage is his companion</td></tr>
+          <tr><td class="an">player_level</td><td class="ap">21–50</td><td class="av"><span class="n">30 → 32</span></td></tr>
+          <tr><td class="an">player_cp</td><td class="ap">1K–1000K</td><td class="av"><span class="n">48,531 → 151,769</span></td></tr>
+          <tr><td class="an">chapter_number</td><td class="ap">1–10</td><td class="av">Ch.3 → Ch.4</td></tr>
+          <tr><td class="an">ad_removal_package</td><td class="ap">true</td><td class="av">KRW 6,000 pack owned &amp; fulfilled (0:08)</td></tr>
+          <tr class="w"><td class="an">purchase_success</td><td class="ap">false</td><td class="av">a bought product is fulfilled on camera</td></tr>
+          <tr class="w"><td class="an">ad_played</td><td class="ap">false</td><td class="av">conflicts with prod's own ad_playing event</td></tr>
+          <tr><td class="an">shop_opened</td><td class="ap">true</td><td class="av">3 shops (Membership · Festival · Special)</td></tr>
+          <tr><td class="an">summoning_engagement</td><td class="ap">Weapon, Companion</td><td class="av">confirmed</td></tr>
+          <tr><td class="an">gear_rarity</td><td class="ap">Unique</td><td class="av">matches (highest observed)</td></tr>
+          <tr><td class="an">upgrade_activity</td><td class="ap">Skill · Weapon · Equipment · Companion</td><td class="av">all four confirmed</td></tr>
+          <tr><td class="an">equipment_management</td><td class="ap">Equip · Awaken · Level Up · Bulk Promote</td><td class="av">confirmed</td></tr>
+          <tr><td class="an">user_interactions</td><td class="ap">Guide Quest · Event · Idle Farm · Pass · Hero Power</td><td class="av">confirmed (unordered)</td></tr>
+          <tr><td class="an">growth_dungeon</td><td class="ap">EXP Dungeon</td><td class="av">yes (13:34)</td></tr>
+          <tr><td class="an">event_screens_visited</td><td class="ap">Half Anniversary Festival</td><td class="av">yes</td></tr>
+          <tr><td class="an">auto_battle</td><td class="ap">true</td><td class="av">yes, throughout</td></tr>
+          <tr><td class="an">repeated_stuck</td><td class="ap">false</td><td class="av">every boss first-try</td></tr>
+          <tr><td class="an">active_guide_quest_id</td><td class="ap">87</td><td class="av">105 → 106 later on camera</td></tr>
+          <tr class="x"><td class="an">wallet_balances</td><td class="ap"><span class="em">—</span></td><td class="av">gold <span class="n">132,194 → 8.3M</span> · red <span class="n">3,130 → 11,002</span> · blue <span class="n">10,875 → 8,997</span></td></tr>
+          <tr class="x"><td class="an">gacha_pull_size</td><td class="ap"><span class="em">—</span></td><td class="av">×168 · ×442 · ×113 · ×100 · ×245 (~1,068)</td></tr>
+          <tr class="x"><td class="an">offers_declined</td><td class="ap"><span class="em">—</span></td><td class="av">3,000-diamond · KRW 1,500 · Membership 30d · Mannequin 15,000</td></tr>
+          <tr class="x"><td class="an">time_skip_spends</td><td class="ap"><span class="em">—</span></td><td class="av">10+ ticket time-skips</td></tr>
+          <tr class="x"><td class="an">churn_signal</td><td class="ap"><span class="em">—</span></td><td class="av">"Quit the game?" dialog → cancelled (9:54)</td></tr>
+          <tr class="x"><td class="an">clear_rewards</td><td class="ap"><span class="em">—</span></td><td class="av">exact per-stage bundles (Ch.3-10 → +1,000 red…)</td></tr>
+          <tr class="x"><td class="an">true_playtime</td><td class="ap"><span class="em">—</span></td><td class="av"><span class="n">01:09:19</span> (video is only 14:23)</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-      <div class="agroup"><h4>Identity &amp; progression</h4>
-        <div class="arow"><span class="k">Class</span><div class="vwrap"><div class="v"><b>Viper</b> — 2nd job earned on camera</div><div class="chips"><span class="pv bad">prod: Arch Mage — his pet's class</span></div></div><button class="t" data-t="208">3:32</button></div>
-        <div class="arow"><span class="k">Level</span><div class="vwrap"><div class="v">30 → 32 during the video</div><div class="chips"><span class="pv ok">prod: level_up events ✓</span><span class="pv no">bucket 21–50</span></div></div><button class="t" data-t="838">13:58</button></div>
-        <div class="arow"><span class="k">Combat power</span><div class="vwrap"><div class="v"><span class="n">48,531 → 151,769</span> — ×3.1 in 14 min</div><div class="chips"><span class="pv no">prod: bucket "1K–1000K"</span></div></div><button class="t" data-t="841">14:02</button></div>
-        <div class="arow"><span class="k">Chapter</span><div class="vwrap"><div class="v">Ch.3 → Ch.4 crossing on camera</div><div class="chips"><span class="pv no">prod: bucket "1–10"</span></div></div><button class="t" data-t="572">9:33</button></div>
-        <div class="arow"><span class="k">Boss ledger</span><div class="vwrap"><div class="v">Kzeye ×2 · Faust · Earth Stump · Dark Stump — all first-try</div><div class="chips"><span class="pv ok">prod: 5 boss events, 2 named</span></div></div><button class="t" data-t="55">0:55</button></div>
-      </div>
-
-      <div class="agroup"><h4>Monetization profile</h4>
-        <div class="arow"><span class="k">Paying user</span><div class="vwrap"><div class="v">Owns <b>Remove-Ads 365d (KRW 6,000)</b> — fulfillment on camera · First-Payment benefit claimed</div><div class="chips"><span class="pv ok">ad_removal_package = true</span><span class="pv bad">purchase_success = false</span></div></div><button class="t" data-t="7">0:07</button></div>
-        <div class="arow"><span class="k">Offers declined</span><div class="vwrap"><div class="v">3,000-diamond pack (0:14) · KRW 1,500 hot deal (1:14) · Membership 30d viewed (7:28) · <b>Mannequin 15,000 vs wallet 10,150</b> (10:07)</div><div class="chips"><span class="pv no">prod: none</span><span class="pv bad">2 logged as "payment attempts"</span></div></div><button class="t" data-t="606">10:07</button></div>
-        <div class="arow"><span class="k">Ad behavior</span><div class="vwrap"><div class="v">Every rewarded-ad slot auto-skips (package) · the one real ad try is <b>DENIED — "once per 5 min"</b> → pays 10 tickets</div><div class="chips"><span class="pv bad">ad_played=false vs ad_playing event — self-conflict</span></div></div><button class="t" data-t="848">14:09</button></div>
-        <div class="arow"><span class="k">Wallet stream</span><div class="vwrap"><div class="v">gold <span class="n">132,194 → 8.3M</span> (AFK spike) · red <span class="n">3,130 → 11,002</span> · blue <span class="n">10,875 → 8,997</span></div><div class="chips"><span class="pv no">prod: no numbers exist anywhere</span></div></div><button class="t" data-t="24">0:25</button></div>
-      </div>
-
-      <div class="agroup"><h4>Behavior &amp; automation</h4>
-        <div class="arow"><span class="k">Gacha volume</span><div class="vwrap"><div class="v"><b>~1,068 weapon summons</b> (×168 · ×442 · ×113 · ×100 · ×245) + 10 companions</div><div class="chips"><span class="pv bad">prod: "x10 summon" ×2</span></div></div><button class="t" data-t="79">1:19</button></div>
-        <div class="arow"><span class="k">Automation</span><div class="vwrap"><div class="v">auto-battle · auto-disassemble (toast 0:04) · continuous elite-summon · auto-summon toggles (toast 0:09)</div><div class="chips"><span class="pv ok">prod: auto_battle=true</span><span class="pv no">the rest: nothing</span></div></div><button class="t" data-t="4">0:04</button></div>
-        <div class="arow"><span class="k">Spend pattern</span><div class="vwrap"><div class="v">Ticket time-skips ×10+ on every upgrade timer — impatience loop</div><div class="chips"><span class="pv no">prod: invisible</span></div></div><button class="t" data-t="103">1:43</button></div>
-        <div class="arow"><span class="k">Churn signal</span><div class="vwrap"><div class="v"><b>"Quit the game?" dialog opened mid-session → cancelled</b></div><div class="chips"><span class="pv no">prod: nothing</span></div></div><button class="t" data-t="594">9:54</button></div>
-        <div class="arow"><span class="k">True playtime</span><div class="vwrap"><div class="v">Auto-Hunt panel on screen: <span class="n">PLAYTIME 01:09:19</span></div><div class="chips"><span class="pv no">prod: no field</span></div></div><button class="t" data-t="856">14:16</button></div>
-      </div>
-    </details>
-
-    <div class="legend">
-      <span><i style="background:var(--gold)"></i>milestone</span>
-      <span><i style="background:var(--green)"></i>money</span>
-      <span><i style="background:var(--violet)"></i>gacha</span>
-      <span><i style="background:var(--blue)"></i>combat</span>
-      <span><i style="background:var(--teal)"></i>upgrade</span>
-      <span><i style="background:var(--slate)"></i>system / UX</span>
-      <span style="color:var(--miss)">▍purple edge = no prod record</span>
-      <span style="color:var(--red)">▍red edge = prod contradicts the screen</span>
+    <div class="card legend">
+      <span><i style="background:var(--c-milestone)"></i>milestone</span>
+      <span><i style="background:var(--c-money)"></i>money</span>
+      <span><i style="background:var(--c-gacha)"></i>gacha</span>
+      <span><i style="background:var(--c-combat)"></i>combat</span>
+      <span><i style="background:var(--c-upgrade)"></i>upgrade</span>
+      <span><i style="background:var(--c-system)"></i>system / UX</span>
+      <span class="edge pur">▍purple = not captured</span>
+      <span class="edge red">▍red = captured wrong</span>
     </div>
   </div>
 
   <!-- ================= RIGHT ================= -->
   <div class="tlwrap">
     <div class="filters" id="filters"></div>
-    <div class="tlhead"><span>Time</span><span>On screen — from our transcript</span><span>Prod recorded here</span></div>
     <div class="tl" id="tl"></div>
   </div>
 </div>
 
+<div class="footnote">
+  Beats reconstructed from the Pass-1 transcript (verbatim, translated) — battles and upgrade loops kept step-by-step, trivial repeats merged. Each row is tagged <b>captured / not captured / miscaptured</b> against the studio-API record for the same video.
+</div>
+
 <script>
-/* E(t, cat, title, detail, prod{s,chip,desc}, note?, noteCls?) */
+/* E(t, cat, title, detail, prod{s,chip,desc}, note?, noteCls?)
+   prod.s:  got = captured correctly · warn = captured but imprecise/wrong-desc · bad = miscaptured · none = NOT captured */
 const E=(t,cat,title,detail,prod,note,noteCls)=>({t,cat,title,detail,prod,note,noteCls});
 const TL=[
+/* ── 0:00 open in the shop ── */
 E(0,"money","Session opens inside the Shop — Membership tab","\"Remove Ads Package (365 days)\" — <b>KRW 6,000</b>, grants 1,500 red diamonds.",{s:"got",chip:"shop_opened",desc:"Shop opened to view available packages."}),
 E(1,"system","Toast: \"An elite monster has been summoned\"","Auto-play continues in the background while the player shops.",{s:"none"}),
-E(4,"system","Toast: \"Equipment auto-disassembled per set conditions\"","Auto-dismantle rule is configured.",{s:"none"},"An automation preference no attribute or event captures.","pur"),
-E(7,"system","UX nudge: \"Product delivered to your mailbox. Go now?\" → Confirm","The redirect prompt that routes the buyer to fulfillment.",{s:"none"},"The purchase-delivery flow itself is invisible to prod.","pur"),
-E(8,"money","Mailbox: claims the Remove-Ads package — 1,500 red diamonds + ad-removal ticket","",{s:"warn",chip:"reward_claim",desc:"\"Collected rewards from the mailbox.\""},"A real-money product fulfillment, stored indistinguishably from any daily freebie claim.","amb"),
+E(4,"system","Toast: \"Equipment auto-disassembled per set conditions\"","An auto-dismantle rule is configured and firing.",{s:"none"},"An automation preference no attribute or event captures.","pur"),
+E(7,"system","UX nudge: \"Product delivered to your mailbox. Go now?\" → Confirm","The redirect that routes the buyer to fulfillment.",{s:"none"},"The purchase-delivery flow itself is invisible to prod.","pur"),
+E(8,"money","Mailbox: claims the Remove-Ads package","1,500 red diamonds + 1 ad-removal ticket collected.",{s:"warn",chip:"reward_claim",desc:"\"Collected rewards from the mailbox.\""},"A real-money product fulfillment, stored indistinguishably from any daily freebie.","amb"),
 E(9,"system","Toast: \"Auto-summon stopped — summon level upgrade available\"","The game pauses an automation to upsell an upgrade.",{s:"none"}),
-E(12,"money","Festival shop opens","\"Festival Coin 500 — Watch Ad\" offer front and center. Balances: coins 1,000 · blue 1,500.",{s:"got",chip:"shop_opened",desc:"Accessed the special Festival Shop."}),
-E(14,"money","Opens the 5,000-coin pack — price 3,000 blue diamonds → CLOSES it","",{s:"bad",chip:"ingame_purchase",desc:"\"Purchased coins in the Festival Shop…\""},"Nothing was bought at this second — the considered-and-declined premium pack IS the signal, and it's stored as a purchase.","red"),
+/* ── 0:12 festival shop ── */
+E(12,"money","Festival Special Shop opens","\"Festival Coin 500 — Watch Ad\" front and center. Balances: coins 1,000 · blue 1,500.",{s:"got",chip:"shop_opened",desc:"Accessed the special Festival Shop."}),
+E(14,"money","Opens the 5,000-coin pack — price 3,000 blue diamonds → CLOSES it","Considered the premium pack, declined it.",{s:"bad",chip:"ingame_purchase",desc:"\"Purchased coins in the Festival Shop…\""},"Nothing was bought here — the considered-and-declined pack is stored as a completed purchase.","red"),
 E(16,"money","Takes the FREE 500-coin (ad) item — ad auto-skips","Ad-removal package converts rewarded ads into instant claims. Coins 1,000 → 2,000.",{s:"got",chip:"reward_claim",desc:"Received additional rewards from the Festival Shop."}),
 E(22,"progress","Festival hub viewed — 6 sub-events","Point Rewards · 1+1 Burning · Special Missions · Flag Race · Stamp Missions · Shop.",{s:"got",chip:"event_viewed",desc:"Opened the Mega Festival event page."}),
 E(24,"system","Back on the field — full wallet visible","CP <span class='n'>48,531</span> · gold <span class='n'>132,194</span> · red <span class='n'>3,130</span> · blue <span class='n'>10,875</span>.",{s:"none"},"The economy state that explains every later decision. No prod field holds a number.","pur"),
 E(26,"progress","Quest \"Elder Stan's Request: defeat 1,000\" — 1000/1000 → claim","+30 blue diamonds.",{s:"got",chip:"guide_quest",desc:"Completed a guide quest and claimed the reward."}),
-E(29,"combat","Challenge → Stage 3-8 boss arena","Clear rewards shown up front: 150 red · 23,000 gold · 140 blue · 2.227% EXP.",{s:"got",chip:"combat_start",desc:"Commenced combat for stage 3-8."}),
-E(55,"combat","Boss KZEYE appears — HP 100%","",{s:"got",chip:"boss_challenge",desc:"\"Challenged the stage 3-8 boss, Kzeye.\" — named. Prod at its best."}),
-E(64,"combat","Kzeye melts: 100% → 0% in 9 seconds","100→89→78→67→46→35→22→8→0.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-8."},"Zero threat — a pacing data point. Events can't carry the margin.","amb"),
+/* ── STAGE 3-8 boss (kept in 4 beats) ── */
+E(29,"combat","CHALLENGE → Stage 3-8 boss arena","Clear rewards shown up front: 150 red · 23,000 gold · 140 blue · 2.227% EXP. READY → START.",{s:"got",chip:"combat_start",desc:"Commenced combat for stage 3-8."}),
+E(55,"combat","Boss KZEYE appears — HP 100%","Large one-eyed \"Evil Eye\", HP bar top-center.",{s:"got",chip:"boss_challenge",desc:"\"Challenged the stage 3-8 boss, Kzeye.\" — named. Prod at its best."}),
+E(64,"combat","Kzeye melts: 100% → 0% in ~9 seconds","HP drain <span class='n'>100→89→78→67→46→35→22→8→0</span>.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-8."},"Zero threat — a pacing data point. Events can't carry the drain curve.","amb"),
+E(67,"combat","CLEAR screen — Stage 3-8 rewards","+150 red · 23,000 gold · 140 blue · <b>20 upgrade stones</b> · 4,200 EXP · 2.227%. Auto-advance in 3s.",{s:"none"},"The exact clear-reward bundle has no field — only the fact of a victory survives.","pur"),
+/* ── 1:13 hot deal ── */
 E(73,"money","AUTO-POPUP: \"Beginner Equipment Hot Deal — KRW 1,500\"","Boots + pants + 1,500 blue diamonds. Closed in ~2s, buy never touched.",{s:"bad",chip:"payment_attempt_initiated",desc:"\"Viewed a limited-time equipment package.\""},"An offer VIEW stored as a payment ATTEMPT — every funnel metric on this event is inflated by auto-popups.","red"),
+/* ── gacha burst ── */
 E(79,"gacha","Bulk weapon summon ×168","Summon level 3 → 4.",{s:"bad",chip:"gacha_summon",desc:"\"Performed a x10 weapon summon.\""},"Off by ×17.","red"),
 E(86,"gacha","Bulk weapon summon ×442","Results skipped fast — farming, not savoring.",{s:"bad",chip:"gacha_summon",desc:"\"Performed another weapon summon.\""}),
-E(93,"gacha","Free daily summon → +70 green tickets","The daily-habit touchpoint.",{s:"none"}),
+E(93,"gacha","Free daily summon (ad) → +70 green tickets","The daily-habit touchpoint; ad auto-skips.",{s:"none"}),
 E(97,"system","Elite prompts: \"Level-up available — summon elite anyway?\" → Confirm → Ribbon Pig","Then \"Ending continuous elite summon\" → Confirm.",{s:"got",chip:"summon_elite",desc:"Summoned an elite monster to the field."}),
 E(103,"upgrade","Summon Level-Up: points 72 → 75 — 6-min timer → \"Reduce time\"","First of 10+ time-skip spends (ad/ticket picker).",{s:"got",chip:"stat_enhancement",desc:"Upgraded the summoning stat level."}),
 E(110,"milestone","LEVEL 30 — golden wings","Followed by a \"grow faster!\" nudge popup.",{s:"got",chip:"level_up",desc:"Character reached level 30."}),
 E(112,"progress","Booster menu: activates 20% EXP booster + daily ad booster","",{s:"warn",chip:"buff_selection",desc:"\"Selected a movement and attack speed buff.\""},"It was an EXP booster — wrong item in the description.","amb"),
 E(118,"progress","Quick Hunt: ticket claim — gold, EXP, diamonds","",{s:"got",chip:"battle_rewards",desc:"Obtained rewards from a Quick Hunt session."}),
-E(123,"upgrade","Upgrade cycle #1 — stats · equipment · weapon · skill","Max HP 10/10 → tier 7 · equips Rare/Epic/Unique pieces · Black Grip bulk-awaken · skill 55→60 (max).",{s:"got",chip:"4 events",desc:"stat_enhancement · equipment_management · weapon_upgrades · skill_advancement"},"Markers land as unordered dots — the loop structure, item names and ticket costs don't survive.","amb"),
-E(140,"progress","Weapon Mastery claims: +100 blue diamonds, +20 upgrade stones","Rare + Epic tab milestones.",{s:"none"}),
+/* ── UPGRADE CYCLE #1 — de-merged into its real sub-steps ── */
+E(123,"upgrade","Character stats: Max HP → 10/10 (tier 7) · main stat · min-damage ratio","Attack 9,550 · Def 495 · HP 7,076 · MP 583 before the pass.",{s:"got",chip:"stat_enhancement",desc:"Upgraded character stats."}),
+E(129,"upgrade","Equipment swap — 3 pieces","Was Red Royal Misty (Lv28 U) / Brown Double Marine (Lv18 U) → equips <b>Brown Hard Leather Pants (Rare)</b> · <b>Red Barbeigh (Epic)</b> · <b>Brown Leather Armor Glove (Unique)</b>.",{s:"got",chip:"equipment_management",desc:"Managed and equipped gear."},"Item names and rarities the attribute layer flattens to \"Unique ×3\".","amb"),
+E(135,"upgrade","Weapon: Black Grip (Unique Lv1) → bulk awaken → upgrade","",{s:"got",chip:"weapon_upgrades",desc:"Awakened and upgraded the weapon."}),
+E(140,"progress","Weapon Mastery claims — Rare + Epic tabs","+100 blue diamonds · +20 upgrade stones.",{s:"none"},"Mastery-milestone claims have no event type — only nearby markers.","pur"),
+E(146,"upgrade","Skill: 1st-job skill Lv55 → 60 (max)","",{s:"got",chip:"skill_advancement",desc:"Enhanced the active skill."}),
+E(149,"upgrade","Skill Mastery: Quick Motion – Speed (Lv24) → reduce-time","Ticket time-skip on the mastery timer.",{s:"warn",chip:"skill_advancement",desc:"nearby marker — no mastery-node semantics"}),
+/* ── job advancement ── */
 E(153,"milestone","JOB ADVANCEMENT screen: \"2nd Job — VIPER\"","Requirements shown: Lv 30 / CP 1,000 → \"Go\".",{s:"none"},"No event type exists for the job-advancement milestone.","pur"),
-E(159,"milestone","Job test: collect 30 Black Marbles","NPC Kyrin banter; counter ticks 1→30 over 46s.",{s:"warn",chip:"combat_start",desc:"\"Started the job advancement trial combat.\""}),
-E(208,"milestone","\"2nd JOB ADVANCEMENT SUCCESS — VIPER\" + new skills","",{s:"none"},"The biggest milestone of the session: absent from events, absent from the summary — and the class attribute says Arch Mage.","pur"),
+E(159,"milestone","Job test: collect 30 Black Marbles","NPC Kyrin banter; counter ticks 1 → 30 over ~46s vs octopus mobs.",{s:"warn",chip:"combat_start",desc:"\"Started the job advancement trial combat.\""}),
+E(207,"milestone","Job test CLEAR — 30/30","Kyrin: \"I knew you'd pass easily.\"",{s:"none"},"The trial completion has no dedicated event.","pur"),
+E(212,"milestone","\"2nd JOB ADVANCEMENT SUCCESS — VIPER\" + new skills","",{s:"none"},"The biggest milestone of the session: absent from events, absent from the summary — and the class attribute says Arch Mage.","pur"),
 E(214,"upgrade","New Viper skills opened · mastery + time-accel (tickets ×3)","",{s:"got",chip:"skill_advancement",desc:"Advanced newly acquired skills."}),
-E(248,"combat","Stage 3-9: challenge → boss Kzeye again → 100%→0% → CLEAR at 4:40","",{s:"bad",chip:"combat_start @5:23 · boss @5:44 · victory @5:52",desc:"Prod logs this fight ~70s late; its ad_playing (4:19) and 2nd \"payment attempt\" (4:43) land on combat/loading screens."},"The whole mid-video cluster is time-shifted — only footage exposes it.","red"),
-E(285,"upgrade","Stage 10 begins — equips Shock Wave + Somersault Kick","CP now <span class='n'>98,921</span> — doubled since 0:25.",{s:"warn",chip:"stat_enhancement",desc:"nearest marker — no skill-slot semantics"}),
+/* ── STAGE 3-9 boss — the time-drift zone ── */
+E(248,"combat","CHALLENGE → Stage 3-9 boss","Clear rewards preview: 150 red · 24,000 gold · 142 blue · 0.927% EXP.",{s:"bad",chip:"combat_start (~70s late)",desc:"Prod logs this fight ~70s late; its ad_playing (4:19) and 2nd \"payment attempt\" (4:43) land on combat/loading screens."},"The whole mid-video cluster is time-shifted — only footage exposes it.","red"),
+E(273,"combat","Boss KZEYE returns → HP 100% → 0%","HP drain <span class='n'>100→85→67→49→16→0</span>. First try again.",{s:"warn",chip:"boss_challenge · victory (drifted)",desc:"markers land ~70s after the on-screen fight"}),
+E(280,"combat","CLEAR — Stage 3-9 rewards","+150 red · 24,000 gold · 142 blue · 20 upgrade stones · 4,200 EXP.",{s:"none"},"Reward magnitudes, again, with no field to hold them.","pur"),
+/* ── stage 3-10 build-up ── */
+E(285,"upgrade","Stage 3-10 begins — equips Shock Wave + Somersault Kick","New Viper skills slotted. CP now <span class='n'>98,921</span> — doubled since 0:25.",{s:"warn",chip:"stat_enhancement",desc:"nearest marker — no skill-slot semantics"}),
 E(295,"progress","Quick Hunt ×2 — ticket claim + FREE-AD claim","Ad auto-skips again.",{s:"none"}),
+E(305,"upgrade","Summon Level-Up: ticket time-skips ×3","Opens the timer, burns tickets, closes, re-opens.",{s:"none"},"The impatience loop — pure spend, entirely invisible.","pur"),
 E(315,"gacha","Bulk summon ×113 + summon-level accel (tickets)","",{s:"none"}),
-E(326,"upgrade","Upgrade cycle #2 — stats · auto-equip · weapon · skill + 2 masteries","Ticket time-skips ×2 inside the cycle.",{s:"warn",chip:"drifted markers here",desc:"prod's stage-3-9 boss/victory land inside these menus"}),
+/* ── UPGRADE CYCLE #2 — de-merged ── */
+E(326,"upgrade","Character stats: Max HP · Defense","",{s:"warn",chip:"drifted markers here",desc:"prod's stage-3-9 boss/victory land inside these menus"}),
+E(333,"upgrade","Equipment auto-equip","Pulls best available pieces.",{s:"got",chip:"equipment_management",desc:"Auto-equipped gear."}),
+E(338,"upgrade","Weapon upgrade + Weapon Mastery claims","",{s:"got",chip:"weapon_upgrades",desc:"Upgraded weapon and claimed mastery."}),
+E(345,"upgrade","Skill Mastery: Somersault Kick – Damage · Basic Attack Damage","Ticket time-skips ×2 inside the cycle.",{s:"warn",chip:"skill_advancement",desc:"nearby marker — no node detail"}),
 E(359,"gacha","Bulk summon ×100","",{s:"warn",chip:"skill_advancement",desc:"nearest marker — different action"}),
-E(370,"upgrade","Upgrade cycle #3 — stats · auto-equip · mastery claims · skills","",{s:"got",chip:"3 events",desc:"battle_rewards · stat_enhancement · equipment_management"}),
+/* ── UPGRADE CYCLE #3 — de-merged ── */
+E(370,"upgrade","Character stats: Max HP · Defense","",{s:"got",chip:"stat_enhancement",desc:"Upgraded character stats."}),
+E(377,"upgrade","Equipment auto-equip · Weapon Mastery claims","",{s:"got",chip:"equipment_management",desc:"Managed gear."}),
+E(385,"upgrade","Skill Mastery: Somersault Kick – Damage · Basic Attack (ticket skips)","",{s:"got",chip:"battle_rewards",desc:"Obtained rewards / stat enhancement."}),
 E(404,"gacha","Bulk summon ×100 (again)","",{s:"got",chip:"gacha_summon",desc:"Summoned weapons via gacha."}),
 E(425,"upgrade","Black Grip: \"Unique highest-grade\" → promote → bulk awaken → Lv 71 → 100","",{s:"warn",chip:"weapon_upgrades · level_up",desc:"\"Character reached level 31\" logged while the WEAPON levels 71→100 on screen."},"Weapon level-up likely misread as a character level-up.","amb"),
-E(436,"progress","Weapon mastery claims: +30, +10 scrolls","",{s:"got",chip:"stat_enhancement",desc:"nearby marker"}),
+E(436,"progress","Weapon mastery claims: +30, +10 scrolls","Rare + Epic tab milestones.",{s:"got",chip:"stat_enhancement",desc:"nearby marker"}),
+/* ── 7:28 subscription + first-payment ── */
 E(446,"money","Shop: \"Maple Special Membership (30 days)\" viewed — not bought","",{s:"none"},"A subscription consideration with zero record.","pur"),
-E(450,"money","Event: \"First Payment Benefit\" claimed → +100 scrolls","Confirms prior real-money spend on this account.",{s:"warn",chip:"reward_claim @7:46",desc:"\"Claimed rewards from the first purchase event.\" — logged 15s late"}),
+E(450,"money","Event: \"First Payment Benefit\" claimed → +100 scrolls","Confirms prior real-money spend on this account.",{s:"warn",chip:"reward_claim (~15s late)",desc:"\"Claimed rewards from the first purchase event.\""}),
 E(452,"progress","Event sweep: growth event +500 mushrooms · attendance · 14-day missions","+10 scrolls ×3.",{s:"got",chip:"event_viewed · reward_claim",desc:"Viewed active growth events."}),
 E(462,"system","Elite prompt → confirm, then ~75 seconds of pure AUTO-BATTLE","Player just watches until 8:57.",{s:"warn",chip:"summon_elite @8:12",desc:"one marker inside 75 idle seconds"},"Watching-vs-engaged is the churn question — and it's invisible to events.","amb"),
-E(538,"combat","Chapter-3 finale: boss FAUST — HP 100%","",{s:"got",chip:"combat_start · boss_challenge",desc:"\"Challenged the stage 3-10 boss, Paust.\""}),
-E(572,"milestone","\"CHAPTER 3 STAGE 10 CLEAR\" — +1,000 red diamonds","500 gold · 75 blue · 30 scrolls · Chapter 4 (Perion) begins 9:40.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-10."}),
+/* ── STAGE 3-10 Faust ── */
+E(538,"combat","Boss FAUST → HP 100% → 0%","\"3. Ellinia - Boss\". Steady drain, first try.",{s:"got",chip:"combat_start · boss_challenge",desc:"\"Challenged the stage 3-10 boss, Paust.\""}),
+E(572,"milestone","\"CHAPTER 3 STAGE 10 CLEAR\" — +1,000 red diamonds","500 gold · 75 blue · 30 scrolls. Chapter 4 (Perion) begins 9:40.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-10."}),
 E(584,"milestone","COMPANION feature unlocks → bulk companion summon ×10","1-star companions join.",{s:"got",chip:"game_feature_unlocked · gacha_summon",desc:"Unlocked the Companion game feature."}),
 E(594,"system","POPUP: \"Do you want to quit the game?\" → closed, keeps playing","",{s:"none"},"A churn-flirt mid-session. Zero record anywhere in prod.","pur"),
 E(601,"upgrade","Companion menu: levels the Arch Mage companion 1 → 2","The pet whose class prod assigned to the player.",{s:"got",chip:"companion_enhancement",desc:"Enhanced companion levels."}),
-E(606,"money","\"Buy the Mannequin — 15,000 red diamonds\" — wallet shows 10,150","Stares 3 seconds → closes.",{s:"none"},"Want-but-can't-afford: the session's best gem-pack sales lead — unrecorded.","pur"),
+E(606,"money","\"Buy the Mannequin — 15,000 red diamonds\" — wallet shows 10,150","Stares ~3 seconds → closes.",{s:"none"},"Want-but-can't-afford: the session's best gem-pack sales lead — unrecorded.","pur"),
 E(617,"system","Elite prompt → elite spawns","",{s:"got",chip:"summon_elite",desc:"Summoned an elite monster."}),
 E(625,"upgrade","Equipment browse · summon level 6 → 7 · skill mastery viewed","",{s:"got",chip:"stat_enhancement · skill_advancement",desc:"nearby markers"}),
 E(640,"system","Auto-battle stretch (~30s) on the Perion field","",{s:"none"}),
-E(670,"combat","Boss EARTH STUMP — 100% → 0% first try","\"CHAPTER4 STAGE 02 CLEAR\": +200 red · 26,000 gold · 146 scrolls.",{s:"got",chip:"boss_challenge · combat_victory",desc:"Engaged the boss for stage 4-2."}),
+/* ── STAGE 4-2 Earth Stump ── */
+E(670,"combat","Boss EARTH STUMP → HP 100% → 0% first try","\"4. Perion - Boss\".",{s:"got",chip:"boss_challenge · combat_victory",desc:"Engaged the boss for stage 4-2."}),
+E(687,"milestone","\"CHAPTER 4 STAGE 02 CLEAR\"","+200 red · 26,000 gold · 146 blue · 20 scrolls.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 4-2."}),
 E(701,"gacha","Bulk weapon summon ×245","+100 scrolls claimed after.",{s:"bad",chip:"gacha_summon",desc:"\"Performed a x10 weapon summon.\""},"Third fictional magnitude — real total this session: ~1,068 summons.","red"),
 E(721,"upgrade","Potions upgraded: HP 2→3→4 · MP 3→4","Small permanent power spends.",{s:"none"},"No event type covers potions.","pur"),
 E(733,"upgrade","Weapon bulk-awaken → Black Grip 74 → 100 · summon level 7 → 8","",{s:"got",chip:"weapon_upgrades",desc:"Promoted and upgraded weapons."}),
-E(760,"combat","Boss DARK STUMP — 100% → 0%","\"CHAPTER4 STAGE 03 CLEAR\": +200 red · 27,000 gold · 148 scrolls.",{s:"got",chip:"combat_start · boss · victory",desc:"Fought the stage 4-3 boss."}),
+/* ── STAGE 4-3 Dark Stump ── */
+E(765,"combat","Boss DARK STUMP → HP 100% → 0%","\"4. Perion - Boss\". Steady drain.",{s:"got",chip:"combat_start · boss · victory",desc:"Fought the stage 4-3 boss."}),
+E(796,"milestone","\"CHAPTER 4 STAGE 03 CLEAR\"","+200 red · 27,000 gold · 148 blue · 20 scrolls.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 4-3."}),
 E(809,"combat","Growth Dungeon → EXP Dungeon stage 3 → CLEAR","+1 weapon · +1.814% EXP.",{s:"got",chip:"game_mode · combat_start · victory",desc:"Entered the Growth Dungeon mode."}),
-E(835,"progress","Guide Quest 105 completes → rewards on screen","+50 red diamonds · +100 elite points · <b>+551,247 EXP</b> · Quest 106 begins.",{s:"warn",chip:"summon_elite",desc:"the quest completion itself has no event"}),
+/* ── 13:55 reload — AFK gold spike ── */
+E(835,"system","Reload: gold jumps 132,194 → 8,343,414","Offline / AFK earnings materialize on the field.",{s:"none"},"An 8.2M-gold swing — the single biggest economy event of the video, with no field to record it.","pur"),
+E(836,"progress","Guide Quest 105 completes → rewards on screen","+50 red diamonds · +100 elite points · <b>+551,247 EXP</b> · Quest 106 begins.",{s:"warn",chip:"summon_elite",desc:"the quest completion itself has no event"}),
 E(838,"milestone","LEVEL 32 — golden flash","\"1+1 Burning Event active\" banner visible.",{s:"got",chip:"level_up",desc:"Character reached level 32."}),
-E(841,"upgrade","Stats maxed on camera: CP 137,892 → 145,752 → 151,769","",{s:"got",chip:"stat_enhancement · skill_advancement",desc:"Enhanced character stats."},"The exact numbers prod's buckets can never carry.","amb"),
+E(841,"upgrade","Stats maxed on camera: CP 137,892 → 145,752 → 151,769","Skill Lv6 · Shock Wave – Damage mastery.",{s:"got",chip:"stat_enhancement · skill_advancement",desc:"Enhanced character stats."},"The exact numbers prod's buckets can never carry.","amb"),
 E(848,"money","Time-accel: tries WATCH-AD → DENIED — \"Ads once every 5 minutes\"","Falls back to spending 10 tickets.",{s:"none"},"An ad-frequency cap forcing currency spend — monetization friction with zero record.","pur"),
-E(856,"system","Auto-Hunt Results panel: PLAYTIME 01:09:19","True session length on screen. Video ends mid-combat at 14:23.",{s:"none"})
+E(856,"system","Auto-Hunt Results panel: PLAYTIME 01:09:19","True session length on screen. Video ends mid-combat at 14:23.",{s:"none"},"Real engaged time — no field. Prod knows the video is 15:00, not the 69 minutes behind it.","pur")
 ];
 
-const CATC={milestone:"var(--gold)",money:"var(--green)",gacha:"var(--violet)",combat:"var(--blue)",upgrade:"var(--teal)",progress:"var(--teal)",system:"var(--slate)"};
+/* raw transcript sub-steps — {t, txt}. Every entry expands to show the steps in its window.
+   Generated from the Pass-1 transcript; PLACEHOLDER filled by build_sub.js */
+const SUB=[
+{t:0,txt:"Menu screen: Shop. Left tab “Membership” is selected. Center shows “Remove Ads Package (365 days)” with a price of KRW 6,000. Right side shows “Immediate payment upon purchase” with 1,500 Red Diamonds. — \"KRW 6,000\""},
+{t:1,txt:"A system message toast appears in the center: “An elite monster has been summoned.”."},
+{t:4,txt:"The toast message changes to: “Equipment meeting the set conditions has been automatically disassembled.”."},
+{t:7,txt:"A popup window titled “Notification” appears: “The product has been delivered to the mailbox. Would you like to go to the mailbox?”. Buttons: “Confirm”.."},
+{t:8,txt:"Mailbox screen (“Mail”) opens. Left tab “Product” -> “General” is selected. List shows “Remove Ads Package (365 days)” - Reward: 1,500 Red Diamonds, 1 Ad Removal ticket. Button: “Claim”."},
+{t:9,txt:"A toast message appears: “Auto-summon has been stopped. - Summon level upgrade available”."},
+{t:10,txt:"taps “Claim” on the first item. The button changes to “Claimed”."},
+{t:12,txt:"→ “Half-Anniversary Maple Growth Festival” event shop popup titled “Purchase Guide”. Shows “Festival Coin 500” with a button “Watch Ad”."},
+{t:13,txt:"Main event shop screen “Festival Special Shop” is visible. · gold <span class='n'>1,000</span> · blue <span class='n'>1,500</span>"},
+{t:14,txt:"taps on item. A “Purchase Guide” popup appears showing. Price: 3,000 Blue Diamonds. Player closes it."},
+{t:15,txt:"Back to."},
+{t:16,txt:"taps on (AD). Popup appears with “Watch Ad” button."},
+{t:17,txt:"taps (or “Free Reward” button)."},
+{t:18,txt:"Screen darkens slightly, processing the ad skip."},
+{t:19,txt:"“Item Obtained” popup appears showing \"500\" Festival Coins."},
+{t:21,txt:"Back to. Top bar shows: Festival Coin = 2,000, Blue Diamond = 1,500."},
+{t:24,txt:"→ the main gameplay screen (Stage 8 of Chapter 3)."},
+{t:25,txt:"Main gameplay screen (Stage 8). · CP <span class='n'>48,531</span> · red <span class='n'>3,130</span> · gold <span class='n'>132,194</span> · blue <span class='n'>10,875</span>"},
+{t:26,txt:"A popup titled “Elder Stan's Request” appears. It's a quest: “Defeat 1000 monsters!”. Progress: 1000/1000. Button: “Claim Reward”."},
+{t:27,txt:"taps. popup shows 30 Blue Diamonds."},
+{t:29,txt:"taps the “Challenge” button at the top-center to start the boss fight of Stage 8."},
+{t:34,txt:"→ the boss battle arena: “3. Ellinia - 8”. Left side shows “Clear Rewards”: 150 Red Diamonds, 23,000 Gold, 140 Blue Diamonds, EXP 2.227%. Center text: \"READY\", then \"START\"."},
+{t:35,txt:"sustained combat, Stage 8 Boss: Player character (humanoid, red cap, brown hair, orange outfit) fights waves of green snake-like monsters and blue mushrooms. Combat power is high, dealing rapid yellow/red damage numbers. HP/MP bars are stable. · HP <span class='n'>7076/7076</span> · MP <span class='n'>583/583</span>"},
+{t:55,txt:"The boss monster “Evil Eye” (large green one-eyed creature with wings/limbs) appears. Its HP bar is at 100% at the top-center."},
+{t:56,txt:"sustained boss combat: Player character attacks the boss. Boss HP bar steadily decreases: 100% -> 89% -> 78% -> 67% -> 46% -> 35% -> 22% -> 8%."},
+{t:64,txt:"Boss HP reaches 0%. Boss is defeated."},
+{t:67,txt:"\"CLEAR\" screen appears. Shows rewards: 150 Red Diamonds, 23,000 Gold, 140 Blue Diamonds, 20 Upgrade Stones, 4,200 EXP, 2.227% EXP. Buttons: “Exit”, “Next Stage”. Countdown: “Automatically moving to the next stage in 3 seconds”."},
+{t:73,txt:"→ a popup: “Beginner Equipment Hot Deal”. Shows a male knight character. Price: KRW 1500. Rewards: Boots, Pants, 1,500 Blue Diamonds."},
+{t:76,txt:"Back to main gameplay screen, now on Stage 9. · CP <span class='n'>48,531</span> · red <span class='n'>3,134</span> · gold <span class='n'>155,194</span> · blue <span class='n'>11,015</span>"},
+{t:77,txt:"taps on the “Summon” button (bottom menu, second icon from right)."},
+{t:78,txt:"Summon screen opens. Left tab “Weapon Summon” is selected. Shows character “Viper”. Summon Level: Lv.3 (Progress: 330/500)."},
+{t:79,txt:"taps “Bulk Summon”. A slider popup appears: “Bulk Summon”. Slider is set to 168."},
+{t:80,txt:"taps “Summon”."},
+{t:81,txt:"Summon animation plays (a glowing maple leaf)."},
+{t:82,txt:"Summon results screen shows multiple weapons obtained. Summon Level increases to Lv.4."},
+{t:86,txt:"taps again. Slider is set to 442."},
+{t:87,txt:"taps."},
+{t:88,txt:"Summon animation plays."},
+{t:89,txt:"Summon results screen shows weapons."},
+{t:93,txt:"taps “1 Free Summon” (AD)."},
+{t:94,txt:"popup shows 70 Green Tickets obtained."},
+{t:96,txt:"exits the Summon screen back to the main gameplay screen (Stage 9). · CP <span class='n'>52,621</span> · red <span class='n'>3,134</span> · gold <span class='n'>155,194</span> · blue <span class='n'>11,077</span>"},
+{t:98,txt:"taps. An elite monster (a pink pig “Ribbon Pig”) is summoned."},
+{t:99,txt:"fights the elite monster."},
+{t:100,txt:"Another popup appears: “Ending continuous elite summon.”. Buttons:,."},
+{t:101,txt:"taps."},
+{t:102,txt:"taps on the “Summon Level Up” button. A popup titled “Summon Level Up” appears. Shows “Summon Consumption Points”: 72 -> 75."},
+{t:103,txt:"taps “Enhance”. A timer starts: “6 minutes remaining”. Button: “Reduce Time” (AD)."},
+{t:104,txt:"taps."},
+{t:105,txt:"A popup titled “Time Acceleration” appears. Shows options to use tickets or watch ads."},
+{t:106,txt:"interacts with the popup (taps “Accelerate” or closes it)."},
+{t:111,txt:"A popup appears: “If you want to grow faster, press here!”. Shows a female character pointing to a button “Add”."},
+{t:112,txt:"taps. “Booster” menu opens. Tab “Owned Items” is selected."},
+{t:113,txt:"taps on. A confirmation popup “Use Booster” appears."},
+{t:114,txt:"taps."},
+{t:115,txt:"taps on."},
+{t:116,txt:"Toast message: “Booster used.”."},
+{t:117,txt:"The booster is active. Player exits the booster menu."},
+{t:118,txt:"taps on “Quick Hunt” button (feather icon on the left)."},
+{t:119,txt:"popup appears. Shows rewards: Gold, EXP, Red Diamonds, Blue Diamonds, etc."},
+{t:120,txt:"taps “Claim Reward” (using a ticket)."},
+{t:123,txt:"taps on the “Character” menu (bottom-left)."},
+{t:124,txt:"“Character” screen opens. Shows character stats: Attack = 9,550, Defense = 495, Max HP = 7,076, Max MP = 583."},
+{t:125,txt:"upgrades to 10/10 (Max Level). The stage upgrades to “Stage 7”."},
+{t:126,txt:"upgrades on Stage 7 (now 0/10)."},
+{t:127,txt:"upgrades “Minimum Damage Ratio” (Special Ability at the bottom)."},
+{t:129,txt:"taps on the “Equipment” menu (bottom menu, third icon from left)."},
+{t:130,txt:"“Equipment Management” screen opens. Shows equipped gear: Weapon: “Red Royal Misty” (Lv.28, Unique), Armor: “Brown Double Marine” (Lv.18, Unique)."},
+{t:131,txt:"auto-equips or manually equips better gear. Equips “Brown Hard Leather Pants” (Rare)."},
+{t:132,txt:"equips “Red Barbeigh” (Epic)."},
+{t:133,txt:"equips “Brown Leather Armor Glove” (Unique)."},
+{t:135,txt:"taps on the menu again, then selects the “Weapon” tab."},
+{t:136,txt:"“Weapon” screen opens. Equipped weapon: “Black Grip” (Unique, Lv.1)."},
+{t:137,txt:"taps “Bulk Awaken” or “Awaken”. A confirmation popup appears."},
+{t:138,txt:"confirms. Weapon level/stats increase."},
+{t:139,txt:"upgrades the weapon further."},
+{t:140,txt:"taps “Weapon Mastery” (bottom-left button)."},
+{t:141,txt:"“Weapon Mastery” screen opens. Left tabs: “Rare”, “Epic”, “Unique”, etc. Player claims rewards for completing mastery levels (100 Blue Diamonds, 20 Upgrade Stones)."},
+{t:142,txt:"switches to “Epic” tab and claims rewards."},
+{t:144,txt:"taps on the “Skill” menu (bottom menu, fourth icon from left)."},
+{t:145,txt:"“Skill” screen opens. Tabs: “Skill List”, “Skill Enhance”, “Mastery”. Active Skill: “1st Job Advancement Skill” (Lv.55/100)."},
+{t:146,txt:"upgrades the skill to Lv.60."},
+{t:147,txt:"upgrades the skill to Lv.60 (Max)."},
+{t:148,txt:"selects “Mastery” tab."},
+{t:149,txt:"selects “Quick Motion - Speed” (Lv.24)."},
+{t:150,txt:"taps “Reduce Time” on the mastery upgrade."},
+{t:153,txt:"selects “Job Advancement” button (top-center, below stage info)."},
+{t:154,txt:"“Job Advancement” screen opens. Shows “2nd Job Advancement: Viper”. Requirements: Level 30, Combat Power 1,000. Button: “Go to Job Advancement”."},
+{t:155,txt:"taps. Loading screen appears with a male knight character illustration."},
+{t:159,txt:"→ the Job Advancement arena: “Job Advancement Test”. Quest: “Black Marbles” - Progress: 0/30. NPC “Kyrin” dialogue appears: “I can't believe you've grown this much already?”."},
+{t:160,txt:"sustained combat, Job Advancement Test: Player character fights red octopus-like monsters to collect Black Marbles. Progress bar at the top-center increases: 1/30 -> 6/30 -> 7/30 -> 8/30 -> 9/30 -> 10/30 -> 11/30 -> 13/30 -> 14/30 -> 15/30 -> 16/30 -> 17/30 -> 18/30 -> 19/30 -> 20/30 -> 21/30 -> 22/30 -> 24/30 -> 25/30 -> 26/30 -> 27/30 -> 28/30 -> 29/30 -> 30/30. · HP <span class='n'>12000/12000</span> · MP <span class='n'>583/583</span>"},
+{t:207,txt:"Progress reaches 30/30. Dialogue from Kyrin appears: “I knew you would pass easily!”."},
+{t:208,txt:"Victory screen \"CLEAR\" appears. Shows “Job Advancement Test” cleared. Button: “Exit”."},
+{t:209,txt:"taps. Loading screen appears with a female archer character illustration."},
+{t:212,txt:"→ a popup: “2nd Job Advancement Success”. Shows “Viper” and new skills unlocked. Button: “View Skills”."},
+{t:214,txt:"opens the “Skill” menu."},
+{t:215,txt:"screen opens. Player selects “Skill Enhance” tab."},
+{t:216,txt:"selects “Mastery” tab."},
+{t:217,txt:"selects “Quick Motion - Speed”."},
+{t:218,txt:"taps “Reduce Time”."},
+{t:219,txt:"Time Acceleration popup appears. Player uses a ticket to complete the upgrade."},
+{t:240,txt:"Time Acceleration popup appears."},
+{t:242,txt:"interacts with the Time Acceleration popup (taps multiple times)."},
+{t:248,txt:"taps the “Challenge” button at the top-center to start the boss fight of Stage 9."},
+{t:253,txt:"→ the boss battle arena:. Left side shows: 150 Red Diamonds, 24,000 Gold, 142 Blue Diamonds, EXP 0.927%. Center text: \"READY\", then \"START\"."},
+{t:254,txt:"sustained combat, Stage 9 Boss: Player character fights waves of green snake-like monsters and blue mushrooms. · HP <span class='n'>12956/12956</span> · MP <span class='n'>583/583</span>"},
+{t:273,txt:"The boss monster “Evil Eye” appears. Its HP bar is at 100% at the top-center."},
+{t:274,txt:"sustained boss combat: Player character attacks the boss. Boss HP bar decreases: 100% -> 85% -> 67% -> 49% -> 16% -> 0%."},
+{t:278,txt:"Boss is defeated."},
+{t:280,txt:"\"CLEAR\" screen appears. Shows rewards: 150 Red Diamonds, 24,000 Gold, 142 Blue Diamonds, 20 Upgrade Stones, 4,200 EXP, 0.927% EXP. Countdown: “Automatically moving to the next stage in 4 seconds”."},
+{t:285,txt:"→ the main gameplay screen, now on Stage 10. · CP <span class='n'>98,921</span> · red <span class='n'>3,074</span> · gold <span class='n'>135,880</span> · blue <span class='n'>11,228</span>"},
+{t:287,txt:"opens the “Skill” menu."},
+{t:288,txt:"screen opens. Player selects “Skill List” tab."},
+{t:289,txt:"selects “Shock Wave” skill."},
+{t:290,txt:"equips to a skill slot."},
+{t:291,txt:"selects “Somersault Kick” skill."},
+{t:292,txt:"equips to a skill slot."},
+{t:295,txt:"taps on “Quick Hunt” button."},
+{t:296,txt:"popup appears."},
+{t:297,txt:"taps (using a ticket)."},
+{t:298,txt:"popup shows rewards obtained."},
+{t:300,txt:"taps (AD) on."},
+{t:302,txt:"popup shows rewards obtained from the ad."},
+{t:305,txt:"taps on the “Summon Level Up” button."},
+{t:306,txt:"popup appears."},
+{t:307,txt:"taps."},
+{t:308,txt:"Time Acceleration popup appears. Player uses multiple tickets to reduce the time."},
+{t:309,txt:"continues to use tickets to accelerate the summon level up."},
+{t:313,txt:"opens the popup again."},
+{t:315,txt:"opens the “Summon” menu."},
+{t:316,txt:"screen opens."},
+{t:317,txt:"taps “Bulk Summon”. Slider is set to 113."},
+{t:318,txt:"taps."},
+{t:319,txt:"Summon animation plays."},
+{t:320,txt:"Summon results screen shows weapons."},
+{t:326,txt:"opens the “Character” menu."},
+{t:327,txt:"screen opens."},
+{t:328,txt:"upgrades stat."},
+{t:329,txt:"upgrades stat."},
+{t:332,txt:"opens the “Equipment” menu."},
+{t:333,txt:"screen opens."},
+{t:334,txt:"auto-equips better gear."},
+{t:336,txt:"opens the menu again, selects “Weapon” tab."},
+{t:337,txt:"screen opens."},
+{t:338,txt:"upgrades the equipped weapon."},
+{t:339,txt:"taps “Weapon Mastery”."},
+{t:340,txt:"screen opens. Player claims rewards."},
+{t:342,txt:"opens the “Skill” menu."},
+{t:343,txt:"screen opens. Player selects “Skill Enhance” tab."},
+{t:344,txt:"upgrades the active skill."},
+{t:345,txt:"selects “Mastery” tab."},
+{t:346,txt:"selects mastery."},
+{t:347,txt:"taps."},
+{t:348,txt:"Time Acceleration popup appears. Player uses tickets to complete the upgrade."},
+{t:349,txt:"selects mastery."},
+{t:350,txt:"taps."},
+{t:351,txt:"Time Acceleration popup appears. Player uses tickets to complete the upgrade."},
+{t:355,txt:"opens the “Summon Level Up” popup."},
+{t:356,txt:"taps."},
+{t:357,txt:"Time Acceleration popup appears. Player uses tickets to reduce the time."},
+{t:359,txt:"opens the “Summon” menu."},
+{t:360,txt:"screen opens."},
+{t:362,txt:"taps “Bulk Summon”. Slider is set to 100."},
+{t:363,txt:"taps."},
+{t:364,txt:"Summon animation plays."},
+{t:365,txt:"Summon results screen shows weapons."},
+{t:371,txt:"opens the “Character” menu."},
+{t:372,txt:"screen opens."},
+{t:373,txt:"upgrades stat."},
+{t:374,txt:"upgrades stat."},
+{t:376,txt:"opens the “Equipment” menu."},
+{t:377,txt:"screen opens."},
+{t:378,txt:"auto-equips better gear."},
+{t:380,txt:"opens the menu again, selects “Weapon” tab."},
+{t:381,txt:"screen opens."},
+{t:382,txt:"upgrades the equipped weapon."},
+{t:383,txt:"taps “Weapon Mastery”."},
+{t:384,txt:"screen opens. Player claims rewards."},
+{t:386,txt:"opens the “Skill” menu."},
+{t:387,txt:"screen opens. Player selects “Skill Enhance” tab."},
+{t:388,txt:"upgrades the active skill."},
+{t:389,txt:"selects “Mastery” tab."},
+{t:390,txt:"selects mastery."},
+{t:392,txt:"taps."},
+{t:393,txt:"Time Acceleration popup appears. Player uses tickets to complete the upgrade."},
+{t:394,txt:"selects mastery."},
+{t:395,txt:"taps."},
+{t:396,txt:"Time Acceleration popup appears. Player uses tickets to complete the upgrade."},
+{t:400,txt:"opens the “Summon Level Up” popup."},
+{t:401,txt:"taps."},
+{t:402,txt:"Time Acceleration popup appears. Player uses tickets to reduce the time."},
+{t:404,txt:"opens the “Summon” menu."},
+{t:405,txt:"screen opens."},
+{t:406,txt:"taps “Bulk Summon”. Slider is set to 100."},
+{t:407,txt:"taps."},
+{t:408,txt:"Summon animation plays."},
+{t:409,txt:"Summon results screen shows weapons."},
+{t:415,txt:"opens the “Character” menu."},
+{t:416,txt:"screen opens."},
+{t:417,txt:"upgrades stat."},
+{t:418,txt:"upgrades stat."},
+{t:420,txt:"opens the “Equipment” menu."},
+{t:422,txt:"screen opens."},
+{t:423,txt:"auto-equips better gear."},
+{t:0,txt:"Shop, Mailbox, and Event Shop navigation. | flagged: none"},
+{t:30,txt:"Stage 8 Boss fight and victory. | flagged: none"},
+{t:68,txt:"Weapon Summoning (Gacha) and Summon Level Up. | flagged: none"},
+{t:96,txt:"Elite Monster Summon, Booster activation, and Quick Hunt rewards. | flagged: none"},
+{t:121,txt:"Character stat upgrades, Equipment management, and Skill upgrades. | flagged: none"},
+{t:155,txt:"Job Advancement Test combat and victory. | flagged: none"},
+{t:211,txt:"Skill Mastery upgrades and Stage 9 Boss fight preparation. | flagged: none"},
+{t:248,txt:"Stage 9 Boss fight and victory. | flagged: none"},
+{t:285,txt:"Stage 10 combat, Skill equipping, Quick Hunt, and Weapon Summoning. | flagged: none"},
+{t:331,txt:"Equipment management, Weapon Mastery, and Skill Mastery upgrades. | flagged: none"},
+{t:361,txt:"Weapon Summoning, Character upgrades, and Equipment management. | flagged: none"},
+{t:425,txt:"Screen is Summon menu.,,,,. · blue <span class='n'>0,</span>"},
+{t:426,txt:"→ combat.,. · gold <span class='n'>98,921,</span>"},
+{t:427,txt:"Weapon menu is open on the right. Selected weapon:, Grade:, Level 71/100. · gold <span class='n'>98,921,</span>"},
+{t:428,txt:"Popup appears over the weapon menu:."},
+{t:429,txt:"Another popup: Buttons:,."},
+{t:430,txt:"Popup is closed."},
+{t:432,txt:"Weapon menu is open again. Leveling up."},
+{t:433,txt:"Leveling up animation. Level goes from 71 to 100."},
+{t:434,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:436,txt:"Weapon menu open again."},
+{t:437,txt:"menu open."},
+{t:438,txt:"Popup: - 30 blue tickets/scrolls."},
+{t:439,txt:"Weapon menu."},
+{t:440,txt:"Popup: \"Weapon\" guide/info."},
+{t:441,txt:"Popup: - 10 blue tickets/scrolls."},
+{t:442,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:446,txt:"Summon screen open. Viper weapon summon."},
+{t:448,txt:"Shop open.."},
+{t:450,txt:"Event menu open.."},
+{t:451,txt:"Claiming reward: 100 blue tickets/scrolls."},
+{t:452,txt:"Event menu:."},
+{t:453,txt:"Claiming reward: 500 orange mushrooms."},
+{t:454,txt:"Event menu:."},
+{t:455,txt:"Event menu:."},
+{t:456,txt:"Event menu:."},
+{t:457,txt:"Claiming reward: 10 blue tickets/scrolls."},
+{t:458,txt:"Claiming another reward: 10 blue tickets/scrolls."},
+{t:459,txt:"Claiming another reward: 10 blue tickets/scrolls."},
+{t:460,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:462,txt:"Popup: - Buttons:,."},
+{t:463,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:481,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:492,txt:"Popup: - Buttons:,."},
+{t:493,txt:"Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:538,txt:"→ loading screen. \"Tip\",."},
+{t:542,txt:"Loading ends. Boss fight screen.,. Boss HP bar: 100%."},
+{t:543,txt:"Sustained boss fight action, tableau unchanged: character fighting boss; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:572,txt:"Boss is defeated. Screen clears."},
+{t:573,txt:"Victory screen: \"CHAPTER3 STAGE 10 CLEAR\". Rewards: 1,000 red diamonds, 500 gold, 75 blue tickets, 30 scrolls."},
+{t:574,txt:"→ loading screen. \"Tip\""},
+{t:580,txt:"Loading ends. New stage:,. · gold <span class='n'>100,823,</span>"},
+{t:581,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:586,txt:"Summon menu open. Viper weapon summon."},
+{t:587,txt:"selects."},
+{t:588,txt:"clicks."},
+{t:589,txt:"Popup: - 10 summons."},
+{t:590,txt:"Summon animation."},
+{t:592,txt:"Summon results screen. Companions summoned: various 1-star companions."},
+{t:594,txt:"Popup: ."},
+{t:596,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:601,txt:"Companion menu open."},
+{t:602,txt:"selects."},
+{t:603,txt:"clicks. Level goes from 1 to 2."},
+{t:604,txt:"Companion menu continues."},
+{t:606,txt:"clicks or."},
+{t:607,txt:"Popup: . Cost: 15,000 red diamonds."},
+{t:611,txt:"Companion menu continues."},
+{t:616,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:618,txt:"Popup: - Buttons:,."},
+{t:619,txt:"Elite monster summoned."},
+{t:620,txt:"Equipment menu open."},
+{t:621,txt:"Equipment menu continues."},
+{t:629,txt:"Summon level up popup:. Level goes from 6 to 7."},
+{t:633,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:636,txt:"Skill menu open."},
+{t:637,txt:"views."},
+{t:638,txt:"Skill menu continues."},
+{t:640,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:661,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:666,txt:"→ loading screen. \"Tip\""},
+{t:670,txt:"Loading ends. Boss fight screen.,. Boss HP bar: 100%."},
+{t:671,txt:"Sustained boss fight action, tableau unchanged: character fighting boss; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:687,txt:"Boss is defeated. Screen clears."},
+{t:688,txt:"Victory screen: \"CHAPTER4 STAGE 02 CLEAR\". Rewards: 200 red diamonds, 26,000 gold, 146 blue tickets, 20 scrolls."},
+{t:691,txt:"→ loading screen. \"Tip\""},
+{t:697,txt:"Loading ends. New stage:,. · gold <span class='n'>135,550,</span>"},
+{t:698,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:701,txt:"Summon menu open. Viper weapon summon."},
+{t:702,txt:"clicks - 245 summons."},
+{t:703,txt:"Summon animation."},
+{t:705,txt:"Summon results screen. Weapons summoned: various grades."},
+{t:710,txt:"Summon menu open again."},
+{t:711,txt:"Popup: - 100 blue tickets/scrolls."},
+{t:712,txt:"selects."},
+{t:714,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:721,txt:"Potion menu open."},
+{t:722,txt:"upgrades HP potion. Level goes from 2 to 3."},
+{t:723,txt:"upgrades HP potion again. Level goes from 3 to 4."},
+{t:724,txt:"Potion menu continues."},
+{t:727,txt:"upgrades MP potion. Level goes from 3 to 4."},
+{t:728,txt:"Potion menu continues."},
+{t:731,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:733,txt:"Weapon menu open."},
+{t:734,txt:"clicks."},
+{t:735,txt:"Popup:"},
+{t:736,txt:"Weapon menu continues."},
+{t:740,txt:"levels up. Level goes from 74 to 100."},
+{t:742,txt:"Summon level up popup:. Level goes from 7 to 8."},
+{t:746,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:760,txt:"→ loading screen. \"Tip\""},
+{t:765,txt:"Loading ends. Boss fight screen.,. Boss HP bar: 100%."},
+{t:766,txt:"Sustained boss fight action, tableau unchanged: character fighting boss; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:781,txt:"Sustained boss fight action, tableau unchanged: character fighting boss; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:795,txt:"Boss is defeated. Screen clears."},
+{t:796,txt:"Victory screen: \"CHAPTER4 STAGE 03 CLEAR\". Rewards: 200 red diamonds, 27,000 gold, 148 blue tickets, 20 scrolls."},
+{t:799,txt:"→ loading screen. \"Tip\""},
+{t:805,txt:"Loading ends. New stage:,. · gold <span class='n'>136,018,</span>"},
+{t:806,txt:"Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:809,txt:"Dungeon menu open."},
+{t:810,txt:"Loading screen. \"Tip\""},
+{t:814,txt:"Loading ends. Experience dungeon."},
+{t:815,txt:"Dungeon combat starts."},
+{t:816,txt:"Sustained dungeon combat action, tableau unchanged: character fighting monsters in experience dungeon; no discrete events resolvable at 1fps (UNRESOLVED)."},
+{t:828,txt:"Dungeon cleared. Victory screen:. Rewards: 1 weapon, 1.814% EXP."},
+{t:829,txt:"→ loading screen. \"Tip\""},
+{t:425,txt:"Gacha, weapon upgrades, and combat."},
+{t:450,txt:"Claiming event rewards and combat."},
+{t:480,txt:"Continuous combat in Stage 9-10."},
+{t:510,txt:"Continuous combat and transition to loading screen."},
+{t:540,txt:"Boss fight against Faust."},
+{t:570,txt:"Victory screen, stage transition, and companion summon."},
+{t:600,txt:"Companion management, mannequin purchase popup, and equipment management."},
+{t:630,txt:"Skill menu and continuous combat."},
+{t:660,txt:"Boss fight against Earth Stump and victory screen."},
+{t:690,txt:"Weapon summon and continuous combat."},
+{t:720,txt:"Potion upgrades, weapon upgrades, and combat."},
+{t:750,txt:"Boss fight against Dark Stump."},
+{t:780,txt:"Victory screen, stage transition, and entering experience dungeon."},
+{t:810,txt:"Experience dungeon combat, victory screen, and loading screen."},
+{t:835,txt:"Screen loads into active gameplay. Player character (humanoid, red bandana, white/red outfit) and a companion (small wizard with blue hat) are on a multi-tiered dirt platform stage. — “4 Lerion” — \"Stage 3/10\" — “Guide Quest 105” — “Summon Elite Monster: 0/1” · CP <span class='n'>136,018</span> · gold <span class='n'>8,343,414</span> · red <span class='n'>10,952</span>"},
+{t:836,txt:"character attacks a purple-glowing portal structure. Damage numbers pop up. A quest completion notification appears."},
+{t:837,txt:"A mushroom-like enemy with a blue hat appears. Quest rewards popup is shown on the right. — “Red Diamond x50” — “Elite Monster Summon Point x100” — “EXP x551247”"},
+{t:838,txt:"levels up to 32 with a large golden flash effect. — “Level 32” — “1+1 Burning Event in progress”"},
+{t:839,txt:"Combat continues against mushroom and tree stump enemies. Guide quest updates. — “Guide Quest 106” — “Defeat enemies: 4/100”"},
+{t:841,txt:"opens the Character menu overlay. Left side shows character stats; right side shows (Stats) tab with upgradeable attributes."},
+{t:842,txt:"upgrades the Main Stat to maximum. Power level increases. · CP <span class='n'>137,892</span>"},
+{t:843,txt:"upgrades another stat, significantly increasing power and attack stats. · CP <span class='n'>145,752</span>"},
+{t:844,txt:"Character menu is closed, returning to active combat. Guide quest progress updates. — “Defeat enemies: 20/100”"},
+{t:845,txt:"opens the Skill menu overlay. Currently viewing the (Skill List) tab showing (2nd Job Advancement Skill)."},
+{t:846,txt:"upgrades the skill to Level 6. Power level increases. · CP <span class='n'>146,754</span>"},
+{t:847,txt:"switches to the (Mastery) tab and selects the (Shock Wave - Damage) node. · CP <span class='n'>151,769</span>"},
+{t:848,txt:"A confirmation popup appears to learn the skill mastery."},
+{t:849,txt:"A (Time Acceleration) popup appears, offering to reduce research time using tickets. — “Consume 40 tickets to accelerate time by 00:40:00.”"},
+{t:850,txt:"attempts to watch an ad for acceleration, but a red warning text appears. — “Ads can be watched once every 5 minutes.”"},
+{t:851,txt:"adjusts the ticket slider to consume 10 tickets instead. — “Consume 10 tickets to accelerate time by 00:10:00.”"},
+{t:852,txt:"confirms the ticket usage, unlocking the mastery node. The skill menu is closed, returning to combat."},
+{t:853,txt:"Combat continues. Guide quest progress updates. — “Defeat enemies: 29/100”"},
+{t:854,txt:"Combat continues. Guide quest progress updates. — “Defeat enemies: 34/100”"},
+{t:855,txt:"Combat continues. Guide quest progress updates. — “Defeat enemies: 35/100”"},
+{t:856,txt:"opens the (Auto Hunt Results) popup. — \"PLAYTIME: 01:09:19\""},
+{t:857,txt:"Auto Hunt Results popup remains open as the monster hunt count ticks up. — \"PLAYTIME: 01:09:21\""},
+{t:859,txt:"opens the (Half-Anniversary Megi Festival) event menu overlay."},
+{t:861,txt:"Combat continues. Guide quest progress updates. — “Defeat enemies: 57/100”"},
+{t:862,txt:"Combat continues. Guide quest progress updates. — “Defeat enemies: 60/100”"},
+{t:863,txt:"Combat continues. Guide quest progress remains at 60/100. Video ends. — “Defeat enemies: 60/100”"},
+{t:834,txt:"completes guide quests, levels up to 32, upgrades character stats and skills, unlocks a mastery node, and views auto-hunt results and event menus."}
+];
+
+const CATC={milestone:"var(--c-milestone)",money:"var(--c-money)",gacha:"var(--c-gacha)",combat:"var(--c-combat)",upgrade:"var(--c-upgrade)",progress:"var(--c-upgrade)",system:"var(--c-system)"};
+const STATUS={
+  got:{cls:"cap",label:"✓ Captured"},
+  warn:{cls:"part",label:"◑ Captured · imprecise"},
+  bad:{cls:"wrong",label:"✕ Miscaptured"},
+  none:{cls:"miss",label:"✕ Not captured"}
+};
 const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
 const vid=document.getElementById('vid');
 const tl=document.getElementById('tl');
 
 let filter="all";
-const FILTERS=[["all","All"],["missed","No prod record"],["mismatch","Prod wrong"],["money","Money"],["milestone","Milestones"],["gacha","Gacha"],["combat","Combat"]];
+const FILTERS=[["all","All"],["missed","Not captured"],["mismatch","Captured wrong"],["money","Money"],["milestone","Milestones"],["gacha","Gacha"],["combat","Combat"],["upgrade","Upgrades"]];
 function match(e){
   if(filter==="all")return true;
   if(filter==="missed")return e.prod.s==="none";
   if(filter==="mismatch")return e.prod.s==="bad"||e.prod.s==="warn";
   return e.cat===filter;
 }
+function subsFor(idx){
+  const start=TL[idx].t, end=(idx+1<TL.length)?TL[idx+1].t:1e9;
+  return SUB.filter(s=>s.t>=start && s.t<end);
+}
 function render(){
   tl.innerHTML="";let lastMin=-1;
-  TL.forEach(e=>{
+  TL.forEach((e,idx)=>{
     if(!match(e))return;
     const min=Math.floor(e.t/60);
     if(min!==lastMin){lastMin=min;const m=document.createElement('div');m.className='minute';m.textContent=min+":00";tl.appendChild(m);}
@@ -277,17 +763,21 @@ function render(){
     d.className='entry'+(e.prod.s==="none"?" missed":"")+(e.prod.s==="bad"?" mismatch":"");
     d.style.setProperty('--dotc',CATC[e.cat]||"#94a3b8");
     d.dataset.t=e.t;
-    let prodHtml;
-    if(e.prod.s==="none"){prodHtml=`<span class="pchip none">— no record —</span>`;}
-    else{
-      const cls=e.prod.s==="got"?"got":(e.prod.s==="warn"?"warn":"bad");
-      prodHtml=`<span class="pchip ${cls}">${e.prod.chip}</span>`+(e.prod.desc?`<span class="pdesc">${e.prod.desc}</span>`:"");
-    }
+    const st=STATUS[e.prod.s]||STATUS.none;
+    let prodInner;
+    if(e.prod.s==="none"){prodInner=`<span class="pnone">No matching event — prod stored nothing here.</span>`;}
+    else{prodInner=`<span class="pchip"><code>${e.prod.chip}</code></span>`+(e.prod.desc?`<span class="pdesc">${e.prod.desc}</span>`:"");}
     const noteHtml=e.note?`<div class="note ${e.noteCls||'pur'}">${e.note}</div>`:"";
-    d.innerHTML=`<span class="tt">${fmt(e.t)}</span>`+
-      `<div class="mid"><div class="ti">${e.title}</div>`+(e.detail?`<div class="detail">${e.detail}</div>`:"")+noteHtml+`</div>`+
-      `<div class="pcol">${prodHtml}</div>`;
+    const subs=subsFor(idx);
+    const subHtml=subs.length?`<div class="substeps">`+subs.map(s=>`<div class="substep" data-t="${s.t}"><span class="sst">${fmt(s.t)}</span><span>${s.txt}</span></div>`).join("")+`</div>`:"";
+    d.innerHTML=
+      `<div class="ehead"><span class="tt">${fmt(e.t)}</span><span class="ti">${e.title}</span><span class="status ${st.cls}">${st.label}</span></div>`+
+      `<div class="ebody">`+
+        `<div class="sec onscreen"><div class="seclbl">On screen — our transcript</div>`+(e.detail?`<div class="detail">${e.detail}</div>`:"")+noteHtml+subHtml+`</div>`+
+        `<div class="sec prod"><div class="seclbl">Prod record</div>${prodInner}</div>`+
+      `</div>`;
     d.addEventListener('click',()=>{vid.currentTime=e.t;vid.play()});
+    d.querySelectorAll('.substep').forEach(ss=>ss.addEventListener('click',ev=>{ev.stopPropagation();vid.currentTime=+ss.dataset.t;vid.play();}));
     tl.appendChild(d);
   });
 }
@@ -296,15 +786,14 @@ FILTERS.forEach(([k,label])=>{
   const c = k==="all"?TL.length : k==="missed"?TL.filter(e=>e.prod.s==="none").length : k==="mismatch"?TL.filter(e=>e.prod.s==="bad"||e.prod.s==="warn").length : TL.filter(e=>e.cat===k).length;
   const b=document.createElement('button');b.className='fbtn'+(k==="all"?" on":"");
   b.innerHTML=label+`<span class="c">${c}</span>`;
-  b.onclick=()=>{filter=k;document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();};
+  b.onclick=()=>{filter=k;document.querySelectorAll('.fbtn:not(.xall)').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();};
   fbar.appendChild(b);
 });
+const xall=document.createElement('button');
+xall.className='fbtn xall';xall.innerHTML='⊖ Collapse steps';
+xall.onclick=()=>{const hidden=tl.classList.toggle('hidesub');xall.innerHTML=hidden?'⊕ Expand steps':'⊖ Collapse steps';};
+fbar.appendChild(xall);
 render();
-
-document.getElementById('kAll').textContent=TL.length;
-document.getElementById('kGot').textContent=TL.filter(e=>e.prod.s==="got").length;
-document.getElementById('kMiss').textContent=TL.filter(e=>e.prod.s==="none").length;
-document.getElementById('kBad').textContent=TL.filter(e=>e.prod.s==="bad").length+"+"+TL.filter(e=>e.prod.s==="warn").length;
 
 document.querySelectorAll('.arow .t').forEach(el=>el.addEventListener('click',ev=>{ev.stopPropagation();vid.currentTime=+el.dataset.t;vid.play()}));
 
