@@ -10,6 +10,8 @@ What the current production capture (attributes + events) records for a gameplay
 | [`nexon-capture-vs-transcript.html`](nexon-capture-vs-transcript.html) | **Audit page** — same video, strict one-row-per-timestamp table: TIME · prod's event (verbatim) · what's actually on screen. Blank purple cells = prod recorded nothing. Full raw transcript embedded at the bottom. |
 | [`blueplanet-capture-vs-transcript.html`](blueplanet-capture-vs-transcript.html) | Blue Planet video `0BNqZE8g0jMLvi6alq14y` — prod's best-case record (37 described events) vs transcript: phantom boss, voluntary ad filed as "interruption", −60s timestamp drift on the whole tail, the Weekly-Card paywall Cancel with zero record. |
 
+| [`case-studies.html`](case-studies.html) | **Show doc** — top 6 case studies + 4 linked-chain examples (upgrade→can't-afford→decline etc.) proving what transcript data makes possible. |
+
 ## Data provenance
 
 - `data/compare_maple2_prod_full.json` — the original production record (studio API, verbatim: all 71 events with descriptions + every attribute group).
