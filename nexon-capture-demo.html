@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MapleStory Idle — Session Timeline: Transcript vs Prod</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<style>
+  :root{
+    --bg:#0e1116; --panel:#151b23; --panel2:#1b2430; --line:#222c39; --line2:#2e3947;
+    --text:#e9eef5; --dim:#95a2b3; --faint:#5f6d7e;
+    --violet:#a78bfa; --green:#34d399; --blue:#60a5fa; --teal:#2dd4bf; --gold:#fbbf24; --slate:#8fa0b5; --red:#f87171;
+    --miss:#b388ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,"Segoe UI",Inter,Roboto,Arial,sans-serif}
+  ::selection{background:#2b3a55}
+
+  .top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,17,22,.97),rgba(14,17,22,.92));backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  .top .in{max-width:1720px;margin:0 auto;padding:13px 26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{font-size:16.5px;font-weight:750;letter-spacing:-.2px;background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+  .top .who{color:var(--dim);font-size:12.5px}
+  .top .who b{color:var(--text)}
+  .kpis{margin-left:auto;display:flex;gap:24px}
+  .kpi{text-align:right}
+  .kpi b{display:block;font-size:16px;font-weight:700}
+  .kpi span{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint)}
+  .kpi.pur b{color:var(--miss)} .kpi.red b{color:var(--red)} .kpi.grn b{color:var(--green)}
+
+  .main{max-width:1720px;margin:0 auto;padding:20px 26px;display:grid;grid-template-columns:40% 1fr;gap:24px;align-items:start}
+  @media(max-width:1100px){.main{grid-template-columns:1fr}.leftcol{position:static!important}}
+
+  /* ============ LEFT ============ */
+  .leftcol{position:sticky;top:72px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 94px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+  .videocard{background:#000;border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.45);flex:none}
+  video{width:100%;display:block;background:#000}
+  .vmeta{display:flex;flex-wrap:wrap;gap:4px 18px;padding:10px 16px;background:var(--panel);border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+  .vmeta b{color:var(--text);font-weight:600}
+
+  details.attrs{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:none}
+  details.attrs summary{list-style:none;cursor:pointer;padding:13px 18px;display:flex;align-items:center;gap:10px;font-weight:650;font-size:13.5px;background:linear-gradient(180deg,#171e28,#151b23)}
+  details.attrs summary::-webkit-details-marker{display:none}
+  details.attrs summary .chev{margin-left:auto;color:var(--faint);transition:transform .2s;font-size:11px}
+  details.attrs[open] summary .chev{transform:rotate(90deg)}
+  details.attrs summary .hintt{color:var(--faint);font-weight:400;font-size:11.5px}
+
+  .agroup{border-top:1px solid var(--line)}
+  .agroup h4{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);padding:12px 18px 6px}
+  .agroup h4::after{content:"";flex:1;height:1px;background:var(--line)}
+  .arow{display:grid;grid-template-columns:106px 1fr 46px;gap:12px;padding:9px 18px;align-items:start;transition:background .12s}
+  .arow:hover{background:#181f2b}
+  .arow + .arow{border-top:1px solid #1a2230}
+  .arow .k{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);font-weight:700;padding-top:3px}
+  .arow .vwrap{min-width:0}
+  .arow .v{font-size:13px;color:var(--text);line-height:1.5}
+  .arow .v .n{font-family:Consolas,monospace;color:var(--green);font-size:12.5px}
+  .arow .v b{font-weight:650}
+  .arow .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+  .pv{font-size:10.5px;border-radius:9px;padding:2px 8px;font-weight:700;white-space:nowrap;letter-spacing:.2px}
+  .pv.ok{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.22)}
+  .pv.no{background:rgba(179,136,255,.1);color:var(--miss);border:1px dashed rgba(179,136,255,.4)}
+  .pv.bad{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+  .arow .t{font:600 11px Consolas,monospace;color:var(--blue);cursor:pointer;background:#1a2432;border:1px solid #263349;border-radius:8px;padding:3px 0;text-align:center;transition:.15s;margin-top:2px}
+  .arow .t:hover{border-color:var(--blue);color:#9ccaff}
+
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 16px;display:flex;flex-wrap:wrap;gap:7px 14px;font-size:11.5px;color:var(--dim);flex:none}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+
+  /* ============ RIGHT: timeline ============ */
+  .tlwrap{min-width:0}
+  .filters{position:sticky;top:64px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:10px 2px 10px;background:linear-gradient(180deg,var(--bg) 80%,transparent)}
+  .fbtn{border:1px solid var(--line2);background:var(--panel);color:var(--dim);font:600 12px inherit;padding:6px 13px;border-radius:20px;cursor:pointer;transition:.15s}
+  .fbtn:hover{color:var(--text);border-color:#3b4a5e}
+  .fbtn.on{background:#233046;color:#cfe3ff;border-color:#3d5a80}
+  .fbtn .c{font-weight:700;opacity:.7;margin-left:4px}
+
+  .tlhead{display:grid;grid-template-columns:64px 1fr 290px;gap:14px;padding:6px 15px 8px 31px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);font-weight:700}
+  @media(max-width:1400px){.tlhead{grid-template-columns:60px 1fr 230px}}
+  .tl{position:relative;padding-left:26px}
+  .tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,#233046,#1b2430)}
+
+  .entry{position:relative;display:grid;grid-template-columns:64px 1fr 290px;gap:14px;align-items:start;margin:0 0 9px;background:linear-gradient(180deg,#161d27,#141a23);border:1px solid var(--line);border-radius:12px;padding:11px 15px;cursor:pointer;transition:border-color .15s, transform .12s, box-shadow .15s}
+  @media(max-width:1400px){.entry{grid-template-columns:60px 1fr 230px}}
+  .entry:hover{border-color:#3b4d63;transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.32)}
+  .entry.playing{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue), 0 10px 28px rgba(0,0,0,.4)}
+  .entry::before{content:"";position:absolute;left:-22px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--dotc,#94a3b8);box-shadow:0 0 0 3px var(--bg)}
+  .entry.missed{border-left:3px solid var(--miss)}
+  .entry.mismatch{border-left:3px solid var(--red)}
+
+  .entry .tt{font:700 11.5px Consolas,monospace;color:#9ccaff;background:#1a2432;border:1px solid #263349;border-radius:8px;padding:3px 0;text-align:center;margin-top:1px}
+  .entry .mid{min-width:0}
+  .entry .mid .ti{font-weight:650;font-size:13.5px;letter-spacing:.1px}
+  .entry .mid .detail{color:var(--dim);font-size:12.5px;margin-top:3px;line-height:1.5}
+  .entry .mid .detail b{color:var(--text);font-weight:600}
+  .entry .mid .detail .n{font-family:Consolas,monospace;color:var(--green);font-size:12px}
+  .note{margin-top:7px;font-size:12px;line-height:1.45;padding:6px 10px;border-radius:8px;display:flex;gap:7px;align-items:flex-start}
+  .note::before{content:"⚑";font-size:11px;opacity:.85;padding-top:1px}
+  .note.pur{background:rgba(179,136,255,.08);color:#cdb6ff;border:1px solid rgba(179,136,255,.16)}
+  .note.red{background:rgba(248,113,113,.08);color:#fda4a4;border:1px solid rgba(248,113,113,.16)}
+  .note.amb{background:rgba(251,191,36,.07);color:#fcd34d;border:1px solid rgba(251,191,36,.15)}
+
+  .entry .pcol{border-left:1px solid var(--line);padding-left:14px;align-self:stretch}
+  .pchip{display:inline-block;font:600 11px Consolas,monospace;border-radius:8px;padding:2px 8px;white-space:nowrap;margin-bottom:5px}
+  .pchip.got{background:rgba(52,211,153,.1);color:#7ee2b8;border:1px solid rgba(52,211,153,.25)}
+  .pchip.warn{background:rgba(251,191,36,.1);color:#fcd34d;border:1px solid rgba(251,191,36,.25)}
+  .pchip.bad{background:rgba(248,113,113,.12);color:#fca5a5;border:1px solid rgba(248,113,113,.3)}
+  .pchip.none{background:transparent;color:var(--miss);border:1px dashed rgba(179,136,255,.45)}
+  .pdesc{display:block;font-size:11px;color:var(--faint);font-style:italic;line-height:1.45}
+  .minute{position:relative;display:flex;align-items:center;gap:10px;margin:18px 0 9px;color:var(--faint);font:700 10.5px Consolas,monospace;letter-spacing:1px}
+  .minute::after{content:"";flex:1;height:1px;background:var(--line)}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="in">
+  <div class="brand">Session Timeline — what the video holds vs what prod kept</div>
+  <div class="who">MapleStory Idle · <b>He108OAfILEkavUA1JhVW</b> · Minnow · KR · 8th session · 15:00 · CP <b>48,531 → 151,769</b></div>
+  <div class="kpis">
+    <div class="kpi"><b id="kAll">–</b><span>moments</span></div>
+    <div class="kpi grn"><b id="kGot">–</b><span>prod logged</span></div>
+    <div class="kpi pur"><b id="kMiss">–</b><span>no record</span></div>
+    <div class="kpi red"><b id="kBad">–</b><span>mismatch</span></div>
+  </div>
+</div></div>
+
+<div class="main">
+
+  <!-- ================= LEFT ================= -->
+  <div class="leftcol">
+    <div class="videocard">
+      <video id="vid" controls preload="metadata" src="https://bluestacks-videos-production.s3.us-east-005.backblazeb2.com/bluestacks/2026-06-03/He108OAfILEkavUA1JhVW/video.mp4"></video>
+      <div class="vmeta">
+        <span>Streams from prod storage · recorded <b>2026-06-03</b></span>
+        <span>Prod: <b>71 events · 25 attributes</b></span>
+        <span>Transcript: <b>1 fps Pass-1</b></span>
+      </div>
+    </div>
+
+    <details class="attrs" open>
+      <summary>Attributes detected from the transcript <span class="hintt">chip = prod's version of the same fact</span><span class="chev">▶</span></summary>
+
+      <div class="agroup"><h4>Identity &amp; progression</h4>
+        <div class="arow"><span class="k">Class</span><div class="vwrap"><div class="v"><b>Viper</b> — 2nd job earned on camera</div><div class="chips"><span class="pv bad">prod: Arch Mage — his pet's class</span></div></div><button class="t" data-t="208">3:32</button></div>
+        <div class="arow"><span class="k">Level</span><div class="vwrap"><div class="v">30 → 32 during the video</div><div class="chips"><span class="pv ok">prod: level_up events ✓</span><span class="pv no">bucket 21–50</span></div></div><button class="t" data-t="838">13:58</button></div>
+        <div class="arow"><span class="k">Combat power</span><div class="vwrap"><div class="v"><span class="n">48,531 → 151,769</span> — ×3.1 in 14 min</div><div class="chips"><span class="pv no">prod: bucket "1K–1000K"</span></div></div><button class="t" data-t="841">14:02</button></div>
+        <div class="arow"><span class="k">Chapter</span><div class="vwrap"><div class="v">Ch.3 → Ch.4 crossing on camera</div><div class="chips"><span class="pv no">prod: bucket "1–10"</span></div></div><button class="t" data-t="572">9:33</button></div>
+        <div class="arow"><span class="k">Boss ledger</span><div class="vwrap"><div class="v">Kzeye ×2 · Faust · Earth Stump · Dark Stump — all first-try</div><div class="chips"><span class="pv ok">prod: 5 boss events, 2 named</span></div></div><button class="t" data-t="55">0:55</button></div>
+      </div>
+
+      <div class="agroup"><h4>Monetization profile</h4>
+        <div class="arow"><span class="k">Paying user</span><div class="vwrap"><div class="v">Owns <b>Remove-Ads 365d (KRW 6,000)</b> — fulfillment on camera · First-Payment benefit claimed</div><div class="chips"><span class="pv ok">ad_removal_package = true</span><span class="pv bad">purchase_success = false</span></div></div><button class="t" data-t="7">0:07</button></div>
+        <div class="arow"><span class="k">Offers declined</span><div class="vwrap"><div class="v">3,000-diamond pack (0:14) · KRW 1,500 hot deal (1:14) · Membership 30d viewed (7:28) · <b>Mannequin 15,000 vs wallet 10,150</b> (10:07)</div><div class="chips"><span class="pv no">prod: none</span><span class="pv bad">2 logged as "payment attempts"</span></div></div><button class="t" data-t="606">10:07</button></div>
+        <div class="arow"><span class="k">Ad behavior</span><div class="vwrap"><div class="v">Every rewarded-ad slot auto-skips (package) · the one real ad try is <b>DENIED — "once per 5 min"</b> → pays 10 tickets</div><div class="chips"><span class="pv bad">ad_played=false vs ad_playing event — self-conflict</span></div></div><button class="t" data-t="848">14:09</button></div>
+        <div class="arow"><span class="k">Wallet stream</span><div class="vwrap"><div class="v">gold <span class="n">132,194 → 8.3M</span> (AFK spike) · red <span class="n">3,130 → 11,002</span> · blue <span class="n">10,875 → 8,997</span></div><div class="chips"><span class="pv no">prod: no numbers exist anywhere</span></div></div><button class="t" data-t="24">0:25</button></div>
+      </div>
+
+      <div class="agroup"><h4>Behavior &amp; automation</h4>
+        <div class="arow"><span class="k">Gacha volume</span><div class="vwrap"><div class="v"><b>~1,068 weapon summons</b> (×168 · ×442 · ×113 · ×100 · ×245) + 10 companions</div><div class="chips"><span class="pv bad">prod: "x10 summon" ×2</span></div></div><button class="t" data-t="79">1:19</button></div>
+        <div class="arow"><span class="k">Automation</span><div class="vwrap"><div class="v">auto-battle · auto-disassemble (toast 0:04) · continuous elite-summon · auto-summon toggles (toast 0:09)</div><div class="chips"><span class="pv ok">prod: auto_battle=true</span><span class="pv no">the rest: nothing</span></div></div><button class="t" data-t="4">0:04</button></div>
+        <div class="arow"><span class="k">Spend pattern</span><div class="vwrap"><div class="v">Ticket time-skips ×10+ on every upgrade timer — impatience loop</div><div class="chips"><span class="pv no">prod: invisible</span></div></div><button class="t" data-t="103">1:43</button></div>
+        <div class="arow"><span class="k">Churn signal</span><div class="vwrap"><div class="v"><b>"Quit the game?" dialog opened mid-session → cancelled</b></div><div class="chips"><span class="pv no">prod: nothing</span></div></div><button class="t" data-t="594">9:54</button></div>
+        <div class="arow"><span class="k">True playtime</span><div class="vwrap"><div class="v">Auto-Hunt panel on screen: <span class="n">PLAYTIME 01:09:19</span></div><div class="chips"><span class="pv no">prod: no field</span></div></div><button class="t" data-t="856">14:16</button></div>
+      </div>
+    </details>
+
+    <div class="legend">
+      <span><i style="background:var(--gold)"></i>milestone</span>
+      <span><i style="background:var(--green)"></i>money</span>
+      <span><i style="background:var(--violet)"></i>gacha</span>
+      <span><i style="background:var(--blue)"></i>combat</span>
+      <span><i style="background:var(--teal)"></i>upgrade</span>
+      <span><i style="background:var(--slate)"></i>system / UX</span>
+      <span style="color:var(--miss)">▍purple edge = no prod record</span>
+      <span style="color:var(--red)">▍red edge = prod contradicts the screen</span>
+    </div>
+  </div>
+
+  <!-- ================= RIGHT ================= -->
+  <div class="tlwrap">
+    <div class="filters" id="filters"></div>
+    <div class="tlhead"><span>Time</span><span>On screen — from our transcript</span><span>Prod recorded here</span></div>
+    <div class="tl" id="tl"></div>
+  </div>
+</div>
+
+<script>
+/* E(t, cat, title, detail, prod{s,chip,desc}, note?, noteCls?) */
+const E=(t,cat,title,detail,prod,note,noteCls)=>({t,cat,title,detail,prod,note,noteCls});
+const TL=[
+E(0,"money","Session opens inside the Shop — Membership tab","\"Remove Ads Package (365 days)\" — <b>KRW 6,000</b>, grants 1,500 red diamonds.",{s:"got",chip:"shop_opened",desc:"Shop opened to view available packages."}),
+E(1,"system","Toast: \"An elite monster has been summoned\"","Auto-play continues in the background while the player shops.",{s:"none"}),
+E(4,"system","Toast: \"Equipment auto-disassembled per set conditions\"","Auto-dismantle rule is configured.",{s:"none"},"An automation preference no attribute or event captures.","pur"),
+E(7,"system","UX nudge: \"Product delivered to your mailbox. Go now?\" → Confirm","The redirect prompt that routes the buyer to fulfillment.",{s:"none"},"The purchase-delivery flow itself is invisible to prod.","pur"),
+E(8,"money","Mailbox: claims the Remove-Ads package — 1,500 red diamonds + ad-removal ticket","",{s:"warn",chip:"reward_claim",desc:"\"Collected rewards from the mailbox.\""},"A real-money product fulfillment, stored indistinguishably from any daily freebie claim.","amb"),
+E(9,"system","Toast: \"Auto-summon stopped — summon level upgrade available\"","The game pauses an automation to upsell an upgrade.",{s:"none"}),
+E(12,"money","Festival shop opens","\"Festival Coin 500 — Watch Ad\" offer front and center. Balances: coins 1,000 · blue 1,500.",{s:"got",chip:"shop_opened",desc:"Accessed the special Festival Shop."}),
+E(14,"money","Opens the 5,000-coin pack — price 3,000 blue diamonds → CLOSES it","",{s:"bad",chip:"ingame_purchase",desc:"\"Purchased coins in the Festival Shop…\""},"Nothing was bought at this second — the considered-and-declined premium pack IS the signal, and it's stored as a purchase.","red"),
+E(16,"money","Takes the FREE 500-coin (ad) item — ad auto-skips","Ad-removal package converts rewarded ads into instant claims. Coins 1,000 → 2,000.",{s:"got",chip:"reward_claim",desc:"Received additional rewards from the Festival Shop."}),
+E(22,"progress","Festival hub viewed — 6 sub-events","Point Rewards · 1+1 Burning · Special Missions · Flag Race · Stamp Missions · Shop.",{s:"got",chip:"event_viewed",desc:"Opened the Mega Festival event page."}),
+E(24,"system","Back on the field — full wallet visible","CP <span class='n'>48,531</span> · gold <span class='n'>132,194</span> · red <span class='n'>3,130</span> · blue <span class='n'>10,875</span>.",{s:"none"},"The economy state that explains every later decision. No prod field holds a number.","pur"),
+E(26,"progress","Quest \"Elder Stan's Request: defeat 1,000\" — 1000/1000 → claim","+30 blue diamonds.",{s:"got",chip:"guide_quest",desc:"Completed a guide quest and claimed the reward."}),
+E(29,"combat","Challenge → Stage 3-8 boss arena","Clear rewards shown up front: 150 red · 23,000 gold · 140 blue · 2.227% EXP.",{s:"got",chip:"combat_start",desc:"Commenced combat for stage 3-8."}),
+E(55,"combat","Boss KZEYE appears — HP 100%","",{s:"got",chip:"boss_challenge",desc:"\"Challenged the stage 3-8 boss, Kzeye.\" — named. Prod at its best."}),
+E(64,"combat","Kzeye melts: 100% → 0% in 9 seconds","100→89→78→67→46→35→22→8→0.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-8."},"Zero threat — a pacing data point. Events can't carry the margin.","amb"),
+E(73,"money","AUTO-POPUP: \"Beginner Equipment Hot Deal — KRW 1,500\"","Boots + pants + 1,500 blue diamonds. Closed in ~2s, buy never touched.",{s:"bad",chip:"payment_attempt_initiated",desc:"\"Viewed a limited-time equipment package.\""},"An offer VIEW stored as a payment ATTEMPT — every funnel metric on this event is inflated by auto-popups.","red"),
+E(79,"gacha","Bulk weapon summon ×168","Summon level 3 → 4.",{s:"bad",chip:"gacha_summon",desc:"\"Performed a x10 weapon summon.\""},"Off by ×17.","red"),
+E(86,"gacha","Bulk weapon summon ×442","Results skipped fast — farming, not savoring.",{s:"bad",chip:"gacha_summon",desc:"\"Performed another weapon summon.\""}),
+E(93,"gacha","Free daily summon → +70 green tickets","The daily-habit touchpoint.",{s:"none"}),
+E(97,"system","Elite prompts: \"Level-up available — summon elite anyway?\" → Confirm → Ribbon Pig","Then \"Ending continuous elite summon\" → Confirm.",{s:"got",chip:"summon_elite",desc:"Summoned an elite monster to the field."}),
+E(103,"upgrade","Summon Level-Up: points 72 → 75 — 6-min timer → \"Reduce time\"","First of 10+ time-skip spends (ad/ticket picker).",{s:"got",chip:"stat_enhancement",desc:"Upgraded the summoning stat level."}),
+E(110,"milestone","LEVEL 30 — golden wings","Followed by a \"grow faster!\" nudge popup.",{s:"got",chip:"level_up",desc:"Character reached level 30."}),
+E(112,"progress","Booster menu: activates 20% EXP booster + daily ad booster","",{s:"warn",chip:"buff_selection",desc:"\"Selected a movement and attack speed buff.\""},"It was an EXP booster — wrong item in the description.","amb"),
+E(118,"progress","Quick Hunt: ticket claim — gold, EXP, diamonds","",{s:"got",chip:"battle_rewards",desc:"Obtained rewards from a Quick Hunt session."}),
+E(123,"upgrade","Upgrade cycle #1 — stats · equipment · weapon · skill","Max HP 10/10 → tier 7 · equips Rare/Epic/Unique pieces · Black Grip bulk-awaken · skill 55→60 (max).",{s:"got",chip:"4 events",desc:"stat_enhancement · equipment_management · weapon_upgrades · skill_advancement"},"Markers land as unordered dots — the loop structure, item names and ticket costs don't survive.","amb"),
+E(140,"progress","Weapon Mastery claims: +100 blue diamonds, +20 upgrade stones","Rare + Epic tab milestones.",{s:"none"}),
+E(153,"milestone","JOB ADVANCEMENT screen: \"2nd Job — VIPER\"","Requirements shown: Lv 30 / CP 1,000 → \"Go\".",{s:"none"},"No event type exists for the job-advancement milestone.","pur"),
+E(159,"milestone","Job test: collect 30 Black Marbles","NPC Kyrin banter; counter ticks 1→30 over 46s.",{s:"warn",chip:"combat_start",desc:"\"Started the job advancement trial combat.\""}),
+E(208,"milestone","\"2nd JOB ADVANCEMENT SUCCESS — VIPER\" + new skills","",{s:"none"},"The biggest milestone of the session: absent from events, absent from the summary — and the class attribute says Arch Mage.","pur"),
+E(214,"upgrade","New Viper skills opened · mastery + time-accel (tickets ×3)","",{s:"got",chip:"skill_advancement",desc:"Advanced newly acquired skills."}),
+E(248,"combat","Stage 3-9: challenge → boss Kzeye again → 100%→0% → CLEAR at 4:40","",{s:"bad",chip:"combat_start @5:23 · boss @5:44 · victory @5:52",desc:"Prod logs this fight ~70s late; its ad_playing (4:19) and 2nd \"payment attempt\" (4:43) land on combat/loading screens."},"The whole mid-video cluster is time-shifted — only footage exposes it.","red"),
+E(285,"upgrade","Stage 10 begins — equips Shock Wave + Somersault Kick","CP now <span class='n'>98,921</span> — doubled since 0:25.",{s:"warn",chip:"stat_enhancement",desc:"nearest marker — no skill-slot semantics"}),
+E(295,"progress","Quick Hunt ×2 — ticket claim + FREE-AD claim","Ad auto-skips again.",{s:"none"}),
+E(315,"gacha","Bulk summon ×113 + summon-level accel (tickets)","",{s:"none"}),
+E(326,"upgrade","Upgrade cycle #2 — stats · auto-equip · weapon · skill + 2 masteries","Ticket time-skips ×2 inside the cycle.",{s:"warn",chip:"drifted markers here",desc:"prod's stage-3-9 boss/victory land inside these menus"}),
+E(359,"gacha","Bulk summon ×100","",{s:"warn",chip:"skill_advancement",desc:"nearest marker — different action"}),
+E(370,"upgrade","Upgrade cycle #3 — stats · auto-equip · mastery claims · skills","",{s:"got",chip:"3 events",desc:"battle_rewards · stat_enhancement · equipment_management"}),
+E(404,"gacha","Bulk summon ×100 (again)","",{s:"got",chip:"gacha_summon",desc:"Summoned weapons via gacha."}),
+E(425,"upgrade","Black Grip: \"Unique highest-grade\" → promote → bulk awaken → Lv 71 → 100","",{s:"warn",chip:"weapon_upgrades · level_up",desc:"\"Character reached level 31\" logged while the WEAPON levels 71→100 on screen."},"Weapon level-up likely misread as a character level-up.","amb"),
+E(436,"progress","Weapon mastery claims: +30, +10 scrolls","",{s:"got",chip:"stat_enhancement",desc:"nearby marker"}),
+E(446,"money","Shop: \"Maple Special Membership (30 days)\" viewed — not bought","",{s:"none"},"A subscription consideration with zero record.","pur"),
+E(450,"money","Event: \"First Payment Benefit\" claimed → +100 scrolls","Confirms prior real-money spend on this account.",{s:"warn",chip:"reward_claim @7:46",desc:"\"Claimed rewards from the first purchase event.\" — logged 15s late"}),
+E(452,"progress","Event sweep: growth event +500 mushrooms · attendance · 14-day missions","+10 scrolls ×3.",{s:"got",chip:"event_viewed · reward_claim",desc:"Viewed active growth events."}),
+E(462,"system","Elite prompt → confirm, then ~75 seconds of pure AUTO-BATTLE","Player just watches until 8:57.",{s:"warn",chip:"summon_elite @8:12",desc:"one marker inside 75 idle seconds"},"Watching-vs-engaged is the churn question — and it's invisible to events.","amb"),
+E(538,"combat","Chapter-3 finale: boss FAUST — HP 100%","",{s:"got",chip:"combat_start · boss_challenge",desc:"\"Challenged the stage 3-10 boss, Paust.\""}),
+E(572,"milestone","\"CHAPTER 3 STAGE 10 CLEAR\" — +1,000 red diamonds","500 gold · 75 blue · 30 scrolls · Chapter 4 (Perion) begins 9:40.",{s:"got",chip:"combat_victory",desc:"Successfully cleared stage 3-10."}),
+E(584,"milestone","COMPANION feature unlocks → bulk companion summon ×10","1-star companions join.",{s:"got",chip:"game_feature_unlocked · gacha_summon",desc:"Unlocked the Companion game feature."}),
+E(594,"system","POPUP: \"Do you want to quit the game?\" → closed, keeps playing","",{s:"none"},"A churn-flirt mid-session. Zero record anywhere in prod.","pur"),
+E(601,"upgrade","Companion menu: levels the Arch Mage companion 1 → 2","The pet whose class prod assigned to the player.",{s:"got",chip:"companion_enhancement",desc:"Enhanced companion levels."}),
+E(606,"money","\"Buy the Mannequin — 15,000 red diamonds\" — wallet shows 10,150","Stares 3 seconds → closes.",{s:"none"},"Want-but-can't-afford: the session's best gem-pack sales lead — unrecorded.","pur"),
+E(617,"system","Elite prompt → elite spawns","",{s:"got",chip:"summon_elite",desc:"Summoned an elite monster."}),
+E(625,"upgrade","Equipment browse · summon level 6 → 7 · skill mastery viewed","",{s:"got",chip:"stat_enhancement · skill_advancement",desc:"nearby markers"}),
+E(640,"system","Auto-battle stretch (~30s) on the Perion field","",{s:"none"}),
+E(670,"combat","Boss EARTH STUMP — 100% → 0% first try","\"CHAPTER4 STAGE 02 CLEAR\": +200 red · 26,000 gold · 146 scrolls.",{s:"got",chip:"boss_challenge · combat_victory",desc:"Engaged the boss for stage 4-2."}),
+E(701,"gacha","Bulk weapon summon ×245","+100 scrolls claimed after.",{s:"bad",chip:"gacha_summon",desc:"\"Performed a x10 weapon summon.\""},"Third fictional magnitude — real total this session: ~1,068 summons.","red"),
+E(721,"upgrade","Potions upgraded: HP 2→3→4 · MP 3→4","Small permanent power spends.",{s:"none"},"No event type covers potions.","pur"),
+E(733,"upgrade","Weapon bulk-awaken → Black Grip 74 → 100 · summon level 7 → 8","",{s:"got",chip:"weapon_upgrades",desc:"Promoted and upgraded weapons."}),
+E(760,"combat","Boss DARK STUMP — 100% → 0%","\"CHAPTER4 STAGE 03 CLEAR\": +200 red · 27,000 gold · 148 scrolls.",{s:"got",chip:"combat_start · boss · victory",desc:"Fought the stage 4-3 boss."}),
+E(809,"combat","Growth Dungeon → EXP Dungeon stage 3 → CLEAR","+1 weapon · +1.814% EXP.",{s:"got",chip:"game_mode · combat_start · victory",desc:"Entered the Growth Dungeon mode."}),
+E(835,"progress","Guide Quest 105 completes → rewards on screen","+50 red diamonds · +100 elite points · <b>+551,247 EXP</b> · Quest 106 begins.",{s:"warn",chip:"summon_elite",desc:"the quest completion itself has no event"}),
+E(838,"milestone","LEVEL 32 — golden flash","\"1+1 Burning Event active\" banner visible.",{s:"got",chip:"level_up",desc:"Character reached level 32."}),
+E(841,"upgrade","Stats maxed on camera: CP 137,892 → 145,752 → 151,769","",{s:"got",chip:"stat_enhancement · skill_advancement",desc:"Enhanced character stats."},"The exact numbers prod's buckets can never carry.","amb"),
+E(848,"money","Time-accel: tries WATCH-AD → DENIED — \"Ads once every 5 minutes\"","Falls back to spending 10 tickets.",{s:"none"},"An ad-frequency cap forcing currency spend — monetization friction with zero record.","pur"),
+E(856,"system","Auto-Hunt Results panel: PLAYTIME 01:09:19","True session length on screen. Video ends mid-combat at 14:23.",{s:"none"})
+];
+
+const CATC={milestone:"var(--gold)",money:"var(--green)",gacha:"var(--violet)",combat:"var(--blue)",upgrade:"var(--teal)",progress:"var(--teal)",system:"var(--slate)"};
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+const vid=document.getElementById('vid');
+const tl=document.getElementById('tl');
+
+let filter="all";
+const FILTERS=[["all","All"],["missed","No prod record"],["mismatch","Prod wrong"],["money","Money"],["milestone","Milestones"],["gacha","Gacha"],["combat","Combat"]];
+function match(e){
+  if(filter==="all")return true;
+  if(filter==="missed")return e.prod.s==="none";
+  if(filter==="mismatch")return e.prod.s==="bad"||e.prod.s==="warn";
+  return e.cat===filter;
+}
+function render(){
+  tl.innerHTML="";let lastMin=-1;
+  TL.forEach(e=>{
+    if(!match(e))return;
+    const min=Math.floor(e.t/60);
+    if(min!==lastMin){lastMin=min;const m=document.createElement('div');m.className='minute';m.textContent=min+":00";tl.appendChild(m);}
+    const d=document.createElement('div');
+    d.className='entry'+(e.prod.s==="none"?" missed":"")+(e.prod.s==="bad"?" mismatch":"");
+    d.style.setProperty('--dotc',CATC[e.cat]||"#94a3b8");
+    d.dataset.t=e.t;
+    let prodHtml;
+    if(e.prod.s==="none"){prodHtml=`<span class="pchip none">— no record —</span>`;}
+    else{
+      const cls=e.prod.s==="got"?"got":(e.prod.s==="warn"?"warn":"bad");
+      prodHtml=`<span class="pchip ${cls}">${e.prod.chip}</span>`+(e.prod.desc?`<span class="pdesc">${e.prod.desc}</span>`:"");
+    }
+    const noteHtml=e.note?`<div class="note ${e.noteCls||'pur'}">${e.note}</div>`:"";
+    d.innerHTML=`<span class="tt">${fmt(e.t)}</span>`+
+      `<div class="mid"><div class="ti">${e.title}</div>`+(e.detail?`<div class="detail">${e.detail}</div>`:"")+noteHtml+`</div>`+
+      `<div class="pcol">${prodHtml}</div>`;
+    d.addEventListener('click',()=>{vid.currentTime=e.t;vid.play()});
+    tl.appendChild(d);
+  });
+}
+const fbar=document.getElementById('filters');
+FILTERS.forEach(([k,label])=>{
+  const c = k==="all"?TL.length : k==="missed"?TL.filter(e=>e.prod.s==="none").length : k==="mismatch"?TL.filter(e=>e.prod.s==="bad"||e.prod.s==="warn").length : TL.filter(e=>e.cat===k).length;
+  const b=document.createElement('button');b.className='fbtn'+(k==="all"?" on":"");
+  b.innerHTML=label+`<span class="c">${c}</span>`;
+  b.onclick=()=>{filter=k;document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();};
+  fbar.appendChild(b);
+});
+render();
+
+document.getElementById('kAll').textContent=TL.length;
+document.getElementById('kGot').textContent=TL.filter(e=>e.prod.s==="got").length;
+document.getElementById('kMiss').textContent=TL.filter(e=>e.prod.s==="none").length;
+document.getElementById('kBad').textContent=TL.filter(e=>e.prod.s==="bad").length+"+"+TL.filter(e=>e.prod.s==="warn").length;
+
+document.querySelectorAll('.arow .t').forEach(el=>el.addEventListener('click',ev=>{ev.stopPropagation();vid.currentTime=+el.dataset.t;vid.play()}));
+
+vid.addEventListener('timeupdate',()=>{
+  const t=vid.currentTime;let cur=null;
+  document.querySelectorAll('.entry').forEach(el=>{if(+el.dataset.t<=t)cur=el;});
+  document.querySelectorAll('.entry.playing').forEach(el=>el.classList.remove('playing'));
+  if(cur)cur.classList.add('playing');
+});
+</script>
+</body>
+</html>

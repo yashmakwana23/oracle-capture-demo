@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MapleStory Idle — Prod Capture vs Transcript (one video)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<style>
+  :root{
+    --ink:#1a2330; --dim:#5c6b7f; --line:#dde4ec; --bg:#f6f8fa; --card:#ffffff;
+    --ok:#1a7f37; --ok-bg:#e6f4ea;
+    --part:#9a6700; --part-bg:#fff4d6;
+    --miss:#6f42c1; --miss-bg:#f6f0ff;
+    --wrong:#cf222e; --wrong-bg:#fff5f5;
+    --blue:#0969da;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; padding:20px 0 90px}
+  .wrap{max-width:1560px;margin:0 auto;padding:0 20px}
+  h1{font-size:22px;margin-bottom:4px}
+  .sub{color:var(--dim);font-size:13.5px;margin-bottom:14px}
+  .sub b{color:var(--ink)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:12px;white-space:nowrap}
+  .t-ok{background:var(--ok-bg);color:var(--ok)}
+  .t-part{background:var(--part-bg);color:var(--part)}
+  .t-miss{background:#ede4ff;color:var(--miss)}
+  .t-wrong{background:#ffe9ea;color:var(--wrong)}
+
+  .split{display:grid;grid-template-columns:530px 1fr;gap:20px;align-items:start}
+  @media(max-width:1150px){.split{grid-template-columns:1fr}.left{position:static;max-height:none}}
+  .left{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto;scrollbar-width:thin}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+  .card h2{font-size:13.5px;padding:10px 14px;border-bottom:1px solid var(--line);background:#fbfcfe}
+  .card h2 small{color:var(--dim);font-weight:400;font-size:12px;margin-left:6px}
+
+  video{width:100%;display:block;background:#000}
+  .meta{display:flex;flex-wrap:wrap;gap:4px 16px;padding:9px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+  .meta b{color:var(--ink)}
+  .num{font-family:Consolas,monospace;color:var(--ok);font-weight:600;font-size:12px}
+
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);text-align:left;padding:8px 12px;border-bottom:2px solid var(--line);background:#fbfcfe;position:sticky;top:0}
+  td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:12.5px}
+  tr:last-child td{border-bottom:none}
+  td.attr{font:600 12px Consolas,monospace}
+  td.note{color:var(--dim);font-size:12px}
+
+  /* ===== the 3-column timeline ===== */
+  #tl tr[data-t]{cursor:pointer}
+  #tl tr[data-t]:hover td{background:#eef5ff}
+  #tl td{font-size:13px;padding:8px 12px}
+  #tl td.time{font:600 12.5px Consolas,monospace;color:var(--blue);white-space:nowrap;width:64px}
+  #tl td.prod{width:37%}
+  #tl td.prod code{font:600 11.5px Consolas,monospace;background:#f0f3f7;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  #tl td.prod .d{display:block;color:var(--dim);font-size:12px;font-style:italic;margin-top:2px}
+  #tl tr.r-zero td.prod{background:var(--miss-bg)}
+  #tl tr.r-zero td.time{color:var(--miss)}
+  #tl tr.r-wrong td{background:var(--wrong-bg)}
+  #tl td.scan{color:var(--ink)}
+  #tl td.scan b{color:var(--ink)}
+  #tl tr.r-zero td.scan{color:#4b2d86;font-weight:500}
+  #tl tr.r-wrong td.scan .why{color:var(--wrong)}
+
+  .statbar{display:flex;flex-wrap:wrap;gap:22px;padding:12px 16px;border-top:1px solid var(--line);background:#fbfcfe}
+  .statbar .s{font-size:12px;color:var(--dim)}
+  .statbar .s b{display:block;font-size:18px;color:var(--ink)}
+  .statbar .s.red b{color:var(--wrong)} .statbar .s.pur b{color:var(--miss)} .statbar .s.grn b{color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>MapleStory Idle (Nexon) — same video, two records, second by second</h1>
+<p class="sub">Left: the video (streams from prod storage) + the <b>attribute filters</b> checked against footage. Right: <b>one row per timestamp</b> — column 2 is exactly what prod recorded there (its own words), column 3 is what the transcript shows at that second. <b>When prod has nothing, column 2 is blank (purple).</b> Click any row to jump the video.</p>
+
+<div class="split">
+
+  <!-- ============ LEFT: video + attributes (sticky) ============ -->
+  <div class="left">
+    <div class="card">
+      <video id="vid" controls preload="metadata" src="https://bluestacks-videos-production.s3.us-east-005.backblazeb2.com/bluestacks/2026-06-03/He108OAfILEkavUA1JhVW/video.mp4"></video>
+      <div class="meta">
+        <span>Video <b>He108OAfILEkavUA1JhVW</b> · <b>15:00</b> (transcript coverage to 14:23)</span>
+        <span>User <b>Minnow · KR · 8th session · day 7</b></span>
+        <span>Prod title <b>"Maple Story Idle Progression"</b></span>
+        <span>CP on camera <b class="num">48,531 → 151,769 (×3.1)</b></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Attributes = the FILTER layer <small>would a filter on this value find the truth?</small></h2>
+      <table>
+        <tr><th style="width:148px">Attribute</th><th style="width:92px">Prod value</th><th style="width:70px">Verdict</th><th>Reality on screen</th></tr>
+        <tr><td class="attr">player_class</td><td>Arch Mage</td><td><span class="tag t-wrong">WRONG</span></td><td class="note">Player is a <b>Viper</b> (2nd job earned on camera at 3:32). The Arch Mage is his <b>companion</b> (10:02). Class filters put this user in the wrong cohort.</td></tr>
+        <tr><td class="attr">player_level</td><td>21–50</td><td><span class="tag t-ok">FOUND</span></td><td class="note">True — bucket hides 30 → 32 within the video.</td></tr>
+        <tr><td class="attr">player_cp</td><td>1K–1000K</td><td><span class="tag t-ok">FOUND</span></td><td class="note">True — bucket hides a ×3.1 spike (48,531 → 151,769).</td></tr>
+        <tr><td class="attr">chapter_number</td><td>1–10</td><td><span class="tag t-ok">FOUND</span></td><td class="note">True — the Ch.3 → Ch.4 crossing (9:40) is invisible in the bucket.</td></tr>
+        <tr><td class="attr">ad_played</td><td>false</td><td><span class="tag t-wrong">CONFLICT</span></td><td class="note">Contradicts prod's own ad_playing event at 4:19. One of the two is wrong.</td></tr>
+        <tr><td class="attr">ad_removal_package</td><td>true</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Correct — the KRW 6,000 / 365-day package is delivered &amp; claimed at 0:08.</td></tr>
+        <tr><td class="attr">purchase_success</td><td>false</td><td><span class="tag t-part">PARTIAL</span></td><td class="note">No payment sheet on screen — but a just-bought product is fulfilled at 0:08.</td></tr>
+        <tr><td class="attr">shop_opened</td><td>true</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Yes — 3 different shops.</td></tr>
+        <tr><td class="attr">summoning_engagement</td><td>Weapon, Companion</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Correct.</td></tr>
+        <tr><td class="attr">weapon / comp / equip rarity</td><td>Unique ×3</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Correct as highest-observed.</td></tr>
+        <tr><td class="attr">upgrade_activity</td><td>Skill, Weapon, Equipment, Companion</td><td><span class="tag t-ok">FOUND</span></td><td class="note">All four confirmed; frequency/cost don't exist.</td></tr>
+        <tr><td class="attr">equipment_management</td><td>Equipping, Awakening, Level Up, Inspection, Bulk Promotion</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Confirmed.</td></tr>
+        <tr><td class="attr">user_interactions</td><td>Guide Quest, Event Menu, Idle Farming, Pass Menu, Hero Power</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Mostly confirmed. Unordered — no when, no how long.</td></tr>
+        <tr><td class="attr">growth_dungeon</td><td>EXP Dungeon</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Confirmed (13:34).</td></tr>
+        <tr><td class="attr">event_screens_visited</td><td>Half Anniversary Festival</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Confirmed.</td></tr>
+        <tr><td class="attr">auto_battle</td><td>true</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Correct.</td></tr>
+        <tr><td class="attr">repeated_stuck</td><td>false</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Correct — every boss died first try.</td></tr>
+        <tr><td class="attr">active_guide_quest_id</td><td>87</td><td><span class="tag t-part">PARTIAL</span></td><td class="note">First-instance-only — quests 105 → 106 progress on camera later.</td></tr>
+        <tr><td class="attr">technical / social</td><td>Stable / None</td><td><span class="tag t-ok">FOUND</span></td><td class="note">Nothing contradicting.</td></tr>
+      </table>
+      <div class="statbar">
+        <div class="s grn"><b>15</b>filters correct</div>
+        <div class="s red"><b>2</b>wrong (class · ad self-conflict)</div>
+        <div class="s"><b>2</b>partial</div>
+        <div class="s pur"><b>0</b>numbers survive the buckets</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RIGHT: strict per-timestamp 3-column timeline ============ -->
+  <div class="right">
+    <div class="card">
+      <h2>Events = the WHEN-WHAT layer <small>one row per timestamp · purple blank = prod recorded nothing · red = prod's entry doesn't match the screen · click to watch</small></h2>
+      <table id="tl">
+        <thead><tr><th style="width:64px">Time</th><th style="width:37%">Prod recorded (verbatim)</th><th>On screen per transcript (translated, facts only)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="statbar">
+        <div class="s"><b>71</b>prod events</div>
+        <div class="s pur"><b>12</b>purple rows — moments with a BLANK prod column</div>
+        <div class="s red"><b>~12</b>red rows — wrong type, wrong magnitude, or ~60–80s time drift mid-video</div>
+        <div class="s grn"><b>rest</b>correct markers (bosses even named) — minus every number</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="sub" style="margin-top:10px">Prod column: studio-API record verbatim (compare_maple2_prod_full.json). Transcript column: facts extracted from the existing Pass-1 transcript (July 13 run, no re-analysis), Korean translated. Presentation companion: nexon-capture-demo.html (live dual-lane timeline).</p>
+
+<details class="card" style="margin-top:6px">
+  <summary style="padding:11px 16px;cursor:pointer;font-weight:600;font-size:13.5px;color:var(--dim)">Full raw transcript of this video (Pass-1 output, verbatim — the source of column 3)</summary>
+  <pre style="padding:14px 18px;font:12px/1.6 Consolas,monospace;white-space:pre-wrap;color:var(--dim);border-top:1px solid var(--line);max-height:560px;overflow-y:auto" id="rawTranscript"># 12_20260603_132142_He108OAfILEkavUA1JhVW.mp4 — Pass-1 (v4) — model=gemini-3.5-flash
+# pass0 summary: The player engages in a mobile game session, focusing on character progression, combat, and managing resources. They navigate through various menus, including the shop, event screens, and equipment management, while participating in multiple combat stages. The session concludes with the player summoning new companions and upgrading their character&#x27;s skills.
+
+[00:00] Menu screen: Shop (상점). Left tab &quot;멤버십&quot; [Membership] is selected. Center shows &quot;광고 제거 패키지 (365일)&quot; [Remove Ads Package (365 days)] with a price of KRW 6,000. Right side shows &quot;구매 시 즉시 지급&quot; [Immediate payment upon purchase] with 1,500 Red Diamonds.
+TEXT: &quot;상점&quot;, &quot;광고 제거 패키지 (365일)&quot;, &quot;KRW 6,000&quot;
+
+[00:01] A system message toast appears in the center: TEXT: &quot;엘리트 몬스터가 소환되었습니다.&quot; [An elite monster has been summoned.].
+
+[00:02–00:03] The toast message remains.
+
+[00:04] The toast message changes to: TEXT: &quot;설정된 조건의 장비가 자동 분해 되었습니다.&quot; [Equipment meeting the set conditions has been automatically disassembled.].
+
+[00:05–00:06] The toast message remains.
+
+[00:07] A popup window titled &quot;알림&quot; [Notification] appears: TEXT: &quot;상품은 우편함으로 지급되었습니다. 우편함으로 이동 하시겠습니까?&quot; [The product has been delivered to the mailbox. Would you like to go to the mailbox?]. Buttons: &quot;확인&quot; [Confirm]. (INFERRED: Player taps &quot;확인&quot;).
+
+[00:08] Mailbox screen (&quot;우편&quot; [Mail]) opens. Left tab &quot;상품&quot; [Product] -&gt; &quot;일반&quot; [General] is selected. List shows &quot;광고 제거 패키지 (365일)&quot; [Remove Ads Package (365 days)] - Reward: 1,500 Red Diamonds, 1 Ad Removal ticket. Button: &quot;수령&quot; [Claim].
+
+[00:09] A toast message appears: TEXT: &quot;자동 소환이 중지되었습니다. - 소환 레벨 업그레이드 가능&quot; [Auto-summon has been stopped. - Summon level upgrade available].
+
+[00:10] Player taps &quot;수령&quot; [Claim] on the first item. The button changes to &quot;수령 완료&quot; [Claimed].
+
+[00:11] Player exits the mailbox.
+
+[00:12] Screen transitions to &quot;반주년 메이플 키우기 페스티벌&quot; [Half-Anniversary Maple Growth Festival] event shop popup titled &quot;구매 안내&quot; [Purchase Guide]. Shows &quot;페스티벌 코인 500개&quot; [Festival Coin 500] with a button &quot;광고 보기&quot; [Watch Ad].
+
+[00:13] Main event shop screen &quot;페스티벌 특별 상점&quot; [Festival Special Shop] is visible.
+NUM: (top-right,coin-icon)=1,000 NUM: (top-right,blue-gem-icon)=1,500
+
+[00:14] Player taps on &quot;페스티벌 코인 5000개&quot; item. A &quot;구매 안내&quot; [Purchase Guide] popup appears showing &quot;페스티벌 코인 5000개&quot;. Price: 3,000 Blue Diamonds. Player closes it.
+
+[00:15] Back to &quot;페스티벌 특별 상점&quot;.
+
+[00:16] Player taps on &quot;페스티벌 코인 500개&quot; (AD). Popup &quot;구매 안내&quot; appears with &quot;광고 보기&quot; [Watch Ad] button.
+
+[00:17] Player taps &quot;광고 보기&quot; (or &quot;무료 보상&quot; [Free Reward] button).
+
+[00:18] Screen darkens slightly, processing the ad skip.
+
+[00:19] &quot;아이템 획득&quot; [Item Obtained] popup appears showing &quot;500&quot; Festival Coins.
+
+[00:20] Player taps to close the popup.
+
+[00:21] Back to &quot;페스티벌 특별 상점&quot;. Top bar shows: Festival Coin = 2,000, Blue Diamond = 1,500.
+
+[00:22] Player exits the shop to the &quot;반주년 메기 페스티벌&quot; [Half-Anniversary Megi Festival] main event menu. Six circular buttons: &quot;포인트 보상&quot;, &quot;1+1 버닝 이벤트&quot;, &quot;특별 미션&quot;, &quot;플래그 레이스&quot;, &quot;스탬프 미션&quot;, &quot;상점&quot;.
+
+[00:23] Player exits the event menu.
+
+[00:24] Screen transitions to the main gameplay screen (Stage 8 of Chapter 3).
+
+[00:25] Main gameplay screen (Stage 8).
+NUM: Combat Power(sword,top-left)=48,531 NUM: red-diamond(red-gem,top-left)=3,130 NUM: gold(coin,top-left)=132,194 NUM: blue-diamond(blue-gem,top-left)=10,875
+
+[00:26] A popup titled &quot;장로스탄의 부탁&quot; [Elder Stan&#x27;s Request] appears. It&#x27;s a quest: &quot;몬스터를 1000마리 처치하세요!&quot; [Defeat 1000 monsters!]. Progress: 1000/1000. Button: &quot;보상 받기&quot; [Claim Reward].
+
+[00:27] Player taps &quot;보상 받기&quot;. &quot;아이템 획득&quot; popup shows 30 Blue Diamonds.
+
+[00:28] Player closes the popup.
+
+[00:29] Player taps the &quot;도전&quot; [Challenge] button at the top-center to start the boss fight of Stage 8.
+
+[00:30] Loading screen appears with a tip and a character illustration (white-haired female rogue/assassin).
+
+[00:31] STATE: screen=loading | mode=loading | auto=n-a | guidance=free | player=(NOT VISIBLE) | resources=(NOT VISIBLE) | progress=Stage 8 | ongoing=Loading screen with character illustration.
+
+[00:32–00:33] Loading screen continues.
+
+[00:34] Screen transitions to the boss battle arena: &quot;3. 엘리니아 - 8&quot; [3. Ellinia - 8]. Left side shows &quot;클리어 보상&quot; [Clear Rewards]: 150 Red Diamonds, 23,000 Gold, 140 Blue Diamonds, EXP 2.227%. Center text: &quot;READY&quot;, then &quot;START&quot;.
+
+[00:35–00:54] sustained combat, Stage 8 Boss: Player character (humanoid, red cap, brown hair, orange outfit) fights waves of green snake-like monsters and blue mushrooms. Combat power is high, dealing rapid yellow/red damage numbers. HP/MP bars are stable.
+NUM: HP(bottom-center)=7076/7076 NUM: MP(bottom-center)=583/583
+
+[00:55] The boss monster &quot;카즈아이&quot; [Evil Eye] (large green one-eyed creature with wings/limbs) appears. Its HP bar is at 100% at the top-center.
+
+[00:56–01:03] sustained boss combat: Player character attacks the boss &quot;카즈아이&quot;. Boss HP bar steadily decreases: 100% -&gt; 89% -&gt; 78% -&gt; 67% -&gt; 46% -&gt; 35% -&gt; 22% -&gt; 8%.
+
+[01:04] Boss HP reaches 0%. Boss is defeated.
+
+[01:05–01:06] Victory transition.
+
+[01:07] &quot;CLEAR&quot; screen appears. Shows rewards: 150 Red Diamonds, 23,000 Gold, 140 Blue Diamonds, 20 Upgrade Stones, 4,200 EXP, 2.227% EXP. Buttons: &quot;나가기&quot; [Exit], &quot;다음 단계&quot; [Next Stage]. Countdown: &quot;3초 뒤 다음 단계 자동 이동&quot; [Automatically moving to the next stage in 3 seconds].
+
+[01:08] STATE: screen=victory | mode=menu | auto=n-a | guidance=free | player=faring=victorious | resources=(NOT VISIBLE) | progress=Stage 8 cleared | ongoing=Clear rewards popup is displayed.
+
+[01:09] Loading screen appears with a blue-haired female mage character illustration.
+
+[01:10–01:12] Loading screen continues.
+
+[01:13] Screen transitions to a popup: &quot;초보자 장비 핫딜&quot; [Beginner Equipment Hot Deal]. Shows a male knight character. Price: KRW 1500. Rewards: Boots, Pants, 1,500 Blue Diamonds.
+
+[01:14–01:15] Player closes the hot deal popup.
+
+[01:16] Back to main gameplay screen, now on Stage 9 (&quot;3. 엘리니아 - Stage 9&quot;).
+NUM: Combat Power(sword,top-left)=48,531 NUM: red-diamond(red-gem,top-left)=3,134 NUM: gold(coin,top-left)=155,194 NUM: blue-diamond(blue-gem,top-left)=11,015
+
+[01:17] Player taps on the &quot;소환&quot; [Summon] button (bottom menu, second icon from right).
+
+[01:18] Summon screen (&quot;소환&quot;) opens. Left tab &quot;무기 소환&quot; [Weapon Summon] is selected. Shows character &quot;바이퍼&quot; [Viper]. Summon Level: Lv.3 (Progress: 330/500).
+
+[01:19] Player taps &quot;일괄 소환&quot; [Bulk Summon]. A slider popup appears: &quot;일괄 소환&quot; [Bulk Summon]. Slider is set to 168.
+
+[01:20] Player taps &quot;소환&quot; [Summon].
+
+[01:21] Summon animation plays (a glowing maple leaf).
+
+[01:22] Summon results screen shows multiple weapons obtained. Summon Level increases to Lv.4.
+
+[01:23–01:24] Player taps to skip/confirm.
+
+[01:25] Back to the Summon screen. Summon Level is now Lv.4 (Progress: 70/1000). Blue Diamond balance is 11,076.
+
+[01:26] Player taps &quot;일괄 소환&quot; again. Slider is set to 442.
+
+[01:27] Player taps &quot;소환&quot;.
+
+[01:28] Summon animation plays.
+
+[01:29] Summon results screen shows weapons.
+
+[01:30] Player taps to skip/confirm.
+
+[01:31] STATE: screen=gacha-results | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=blue-diamond(top-right)=11,077, green-ticket(top-right)=0 | progress=Stage 9 | ongoing=Gacha results screen showing multiple weapons.
+
+[01:32] Back to Summon screen. Green Ticket = 70, Blue Diamond = 11,077.
+
+[01:33] Player taps &quot;1회 무료 보상&quot; [1 Free Summon] (AD).
+
+[01:34] &quot;아이템 획득&quot; popup shows 70 Green Tickets obtained.
+
+[01:35] Player closes the popup.
+
+[01:36] Player exits the Summon screen back to the main gameplay screen (Stage 9).
+NUM: Combat Power(sword,top-left)=52,621 NUM: red-diamond(red-gem,top-left)=3,134 NUM: gold(coin,top-left)=155,194 NUM: blue-diamond(blue-gem,top-left)=11,077
+
+[01:37] Player is in Stage 9. A popup appears: &quot;현재 레벨업이 가능한 상태지만 엘리트 몬스터를 소환하시겠습니까?&quot; [You can level up now, but would you like to summon an elite monster?]. Buttons: &quot;취소&quot; [Cancel], &quot;확인&quot; [Confirm].
+
+[01:38] Player taps &quot;확인&quot;. An elite monster (a pink pig &quot;리본돼지&quot; [Ribbon Pig]) is summoned.
+
+[01:39] Player fights the elite monster.
+
+[01:40] Another popup appears: &quot;엘리트 연속 소환을 종료합니다.&quot; [Ending continuous elite summon.]. Buttons: &quot;취소&quot;, &quot;확인&quot;.
+
+[01:41] Player taps &quot;확인&quot;.
+
+[01:42] Player taps on the &quot;소환 레벨업&quot; [Summon Level Up] button. A popup titled &quot;소환 레벨업&quot; [Summon Level Up] appears. Shows &quot;소환 소모 포인트&quot; [Summon Consumption Points]: 72 -&gt; 75.
+
+[01:43] Player taps &quot;강화&quot; [Enhance]. A timer starts: &quot;6분 남은 시간&quot; [6 minutes remaining]. Button: &quot;시간 단축하기&quot; [Reduce Time] (AD).
+
+[01:44] Player taps &quot;시간 단축하기&quot;.
+
+[01:45] A popup titled &quot;시간 가속&quot; [Time Acceleration] appears. Shows options to use tickets or watch ads.
+
+[01:46–01:49] Player interacts with the popup (taps &quot;가속&quot; [Accelerate] or closes it).
+
+[01:50] Player is back on the main gameplay screen. Character levels up to Lv.30! Golden wings animation and text: &quot;레벨 30 레벨이 올랐습니다!&quot; [Level 30 Level Up!].
+
+[01:51] A popup appears: &quot;성장을 더 빠르게 하고 싶다면 여기를 눌러라!&quot; [If you want to grow faster, press here!]. Shows a female character pointing to a button &quot;추가&quot; [Add].
+
+[01:52] Player taps &quot;추가&quot;. &quot;부스터&quot; [Booster] menu opens. Tab &quot;보유중인 아이템&quot; [Owned Items] is selected.
+
+[01:53] Player taps &quot;사용&quot; on &quot;경험치 부스터 (20%)&quot;. A confirmation popup &quot;부스터 사용&quot; [Use Booster] appears.
+
+[01:54] Player taps &quot;사용&quot;.
+
+[01:55] Player taps &quot;무료 보상&quot; on &quot;매일 광고 부스터&quot;.
+
+[01:56] Toast message: &quot;부스터를 사용했습니다.&quot; [Booster used.].
+
+[01:57] The booster is active. Player exits the booster menu.
+
+[01:58] Player taps on &quot;빠른 사냥&quot; [Quick Hunt] button (feather icon on the left).
+
+[01:59] &quot;빠른 사냥&quot; popup appears. Shows rewards: Gold, EXP, Red Diamonds, Blue Diamonds, etc.
+
+[02:00] Player taps &quot;보상 받기&quot; [Claim Reward] (using a ticket).
+
+[02:01] STATE: screen=popup | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=52,621, blue-diamond(top-left)=11,178 | progress=Stage 9 | ongoing=Quick Hunt reward popup is open.
+
+[02:02] Player closes the Quick Hunt popup.
+
+[02:03] Player taps on the &quot;캐릭터&quot; [Character] menu (bottom-left).
+
+[02:04] &quot;캐릭터&quot; [Character] screen opens. Shows character stats: Attack (공격력) = 9,550, Defense (방어력) = 495, Max HP = 7,076, Max MP = 583.
+
+[02:05] Player upgrades &quot;최대 HP&quot; to 10/10 (Max Level). The stage upgrades to &quot;7단계&quot; [Stage 7].
+
+[02:06] Player upgrades &quot;주스탯&quot; on Stage 7 (now 0/10).
+
+[02:07] Player upgrades &quot;최소 데미지 비율&quot; [Minimum Damage Ratio] (Special Ability at the bottom).
+
+[02:08] Player exits the Character screen.
+
+[02:09] Player taps on the &quot;장비&quot; [Equipment] menu (bottom menu, third icon from left).
+
+[02:10] &quot;장비 관리&quot; [Equipment Management] screen opens. Shows equipped gear: Weapon: &quot;레드 로얄미스티&quot; [Red Royal Misty] (Lv.28, Unique), Armor: &quot;브라운 더블마린&quot; [Brown Double Marine] (Lv.18, Unique).
+
+[02:11] Player auto-equips or manually equips better gear. Equips &quot;갈색 하드레더 바지&quot; [Brown Hard Leather Pants] (Rare).
+
+[02:12] Player equips &quot;레드 바르베이&quot; [Red Barbeigh] (Epic).
+
+[02:13] Player equips &quot;브라운 레더 아머글러브&quot; [Brown Leather Armor Glove] (Unique).
+
+[02:14] Player exits the Equipment screen.
+
+[02:15] Player taps on the &quot;장비&quot; menu again, then selects the &quot;무기&quot; [Weapon] tab.
+
+[02:16] &quot;무기&quot; [Weapon] screen opens. Equipped weapon: &quot;블랙 그립&quot; [Black Grip] (Unique, Lv.1).
+
+[02:17] Player taps &quot;일괄 각성&quot; [Bulk Awaken] or &quot;각성&quot; [Awaken]. A confirmation popup appears.
+
+[02:18] Player confirms. Weapon level/stats increase.
+
+[02:19] Player upgrades the weapon further.
+
+[02:20] Player taps &quot;무기 마스터리&quot; [Weapon Mastery] (bottom-left button).
+
+[02:21] &quot;무기 마스터리&quot; [Weapon Mastery] screen opens. Left tabs: &quot;레어&quot; [Rare], &quot;에픽&quot; [Epic], &quot;유니크&quot; [Unique], etc. Player claims rewards for completing mastery levels (100 Blue Diamonds, 20 Upgrade Stones).
+
+[02:22] Player switches to &quot;에픽&quot; [Epic] tab and claims rewards.
+
+[02:23] Player exits the Weapon Mastery screen.
+
+[02:24] Player taps on the &quot;스킬&quot; [Skill] menu (bottom menu, fourth icon from left).
+
+[02:25] &quot;스킬&quot; [Skill] screen opens. Tabs: &quot;스킬 목록&quot; [Skill List], &quot;스킬 강화&quot; [Skill Enhance], &quot;마스터리&quot; [Mastery]. Active Skill: &quot;1차 전직 스킬&quot; [1st Job Advancement Skill] (Lv.55/100).
+
+[02:26] Player upgrades the skill to Lv.60.
+
+[02:27] Player upgrades the skill to Lv.60 (Max).
+
+[02:28] Player selects &quot;마스터리&quot; [Mastery] tab.
+
+[02:29] Player selects &quot;퀵 모션 - 속도&quot; [Quick Motion - Speed] (Lv.24).
+
+[02:30] Player taps &quot;시간 단축하기&quot; [Reduce Time] on the mastery upgrade.
+
+[02:31] STATE: screen=popup | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=74,173, blue-diamond(top-left)=11,228 | progress=Stage 9 | ongoing=Time Acceleration popup is open.
+
+[02:32] Player closes the popup.
+
+[02:33] Player selects &quot;전직&quot; [Job Advancement] button (top-center, below stage info).
+
+[02:34] &quot;전직&quot; [Job Advancement] screen opens. Shows &quot;2차 전직: 바이퍼&quot; [2nd Job Advancement: Viper]. Requirements: Level 30, Combat Power 1,000. Button: &quot;전직하러 가기&quot; [Go to Job Advancement].
+
+[02:35] Player taps &quot;전직하러 가기&quot;. Loading screen appears with a male knight character illustration.
+
+[02:36–02:38] Loading screen continues.
+
+[02:39] Screen transitions to the Job Advancement arena: &quot;전직 시험&quot; [Job Advancement Test]. Quest: &quot;검은 구슬&quot; [Black Marbles] - Progress: 0/30. NPC &quot;카이린&quot; [Kyrin] dialogue appears: &quot;벌써 이렇게 성장했다니 믿을 수 없는데?&quot; [I can&#x27;t believe you&#x27;ve grown this much already?].
+
+[02:40–03:26] sustained combat, Job Advancement Test: Player character fights red octopus-like monsters (&quot;옥토퍼스&quot;) to collect Black Marbles. Progress bar at the top-center increases: 1/30 -&gt; 6/30 -&gt; 7/30 -&gt; 8/30 -&gt; 9/30 -&gt; 10/30 -&gt; 11/30 -&gt; 13/30 -&gt; 14/30 -&gt; 15/30 -&gt; 16/30 -&gt; 17/30 -&gt; 18/30 -&gt; 19/30 -&gt; 20/30 -&gt; 21/30 -&gt; 22/30 -&gt; 24/30 -&gt; 25/30 -&gt; 26/30 -&gt; 27/30 -&gt; 28/30 -&gt; 29/30 -&gt; 30/30.
+NUM: HP(bottom-center)=12000/12000 NUM: MP(bottom-center)=583/583
+
+[03:27] Progress reaches 30/30. Dialogue from Kyrin appears: &quot;역시 너라면 간단하게 통과할거라고 생각했어!&quot; [I knew you would pass easily!].
+
+[03:28] Victory screen &quot;CLEAR&quot; appears. Shows &quot;전직 시험&quot; [Job Advancement Test] cleared. Button: &quot;나가기&quot; [Exit].
+
+[03:29] Player taps &quot;나가기&quot;. Loading screen appears with a female archer character illustration.
+
+[03:30] Loading screen continues.
+
+[03:31] STATE: screen=loading | mode=loading | auto=n-a | guidance=free | player=(NOT VISIBLE) | resources=(NOT VISIBLE) | progress=Job Advancement cleared | ongoing=Loading screen.
+
+[03:32] Screen transitions to a popup: &quot;2차 전직 성공&quot; [2nd Job Advancement Success]. Shows &quot;바이퍼&quot; [Viper] and new skills unlocked. Button: &quot;스킬 보기&quot; [View Skills].
+
+[03:33] Player is back on the main gameplay screen (Stage 9).
+
+[03:34] Player opens the &quot;스킬&quot; [Skill] menu.
+
+[03:35] &quot;스킬&quot; screen opens. Player selects &quot;스킬 강화&quot; [Skill Enhance] tab.
+
+[03:36] Player selects &quot;마스터리&quot; [Mastery] tab.
+
+[03:37] Player selects &quot;퀵 모션 - 속도&quot; [Quick Motion - Speed].
+
+[03:38] Player taps &quot;시간 단축하기&quot; [Reduce Time].
+
+[03:39] Time Acceleration popup appears. Player uses a ticket to complete the upgrade.
+
+[04:00] Time Acceleration popup appears.
+
+[04:01] STATE: screen=popup | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=98,921, blue-diamond(top-left)=11,228 | progress=Stage 9 | ongoing=Time Acceleration popup is open.
+
+[04:02–04:05] Player interacts with the Time Acceleration popup (taps &quot;가속&quot; multiple times).
+
+[04:06] Player closes the popup.
+
+[04:07] Player is back on the main gameplay screen (Stage 9).
+
+[04:08] Player taps the &quot;도전&quot; [Challenge] button at the top-center to start the boss fight of Stage 9.
+
+[04:09] Loading screen appears with a male knight character illustration.
+
+[04:10–04:12] Loading screen continues.
+
+[04:13] Screen transitions to the boss battle arena: &quot;3. 엘리니아 - 9&quot;. Left side shows &quot;클리어 보상&quot;: 150 Red Diamonds, 24,000 Gold, 142 Blue Diamonds, EXP 0.927%. Center text: &quot;READY&quot;, then &quot;START&quot;.
+
+[04:14–04:32] sustained combat, Stage 9 Boss: Player character fights waves of green snake-like monsters and blue mushrooms.
+NUM: HP(bottom-center)=12956/12956 NUM: MP(bottom-center)=583/583
+
+[04:33] The boss monster &quot;카즈아이&quot; [Evil Eye] appears. Its HP bar is at 100% at the top-center.
+
+[04:34–04:37] sustained boss combat: Player character attacks the boss &quot;카즈아이&quot;. Boss HP bar decreases: 100% -&gt; 85% -&gt; 67% -&gt; 49% -&gt; 16% -&gt; 0%.
+
+[04:38] Boss is defeated.
+
+[04:39] Victory transition.
+
+[04:40] &quot;CLEAR&quot; screen appears. Shows rewards: 150 Red Diamonds, 24,000 Gold, 142 Blue Diamonds, 20 Upgrade Stones, 4,200 EXP, 0.927% EXP. Countdown: &quot;4초 뒤 다음 단계 자동 이동&quot; [Automatically moving to the next stage in 4 seconds].
+
+[04:41] Loading screen appears with a blue-haired female mage character illustration.
+
+[04:42–04:44] Loading screen continues.
+
+[04:45] Screen transitions to the main gameplay screen, now on Stage 10 (&quot;3. 엘리니아 - Stage 10&quot;).
+NUM: Combat Power(sword,top-left)=98,921 NUM: red-diamond(red-gem,top-left)=3,074 NUM: gold(coin,top-left)=135,880 NUM: blue-diamond(blue-gem,top-left)=11,228
+
+[04:46] Player character fights monsters in Stage 10.
+
+[04:47] Player opens the &quot;스킬&quot; [Skill] menu.
+
+[04:48] &quot;스킬&quot; screen opens. Player selects &quot;스킬 목록&quot; [Skill List] tab.
+
+[04:49] Player selects &quot;소크 웨이브&quot; [Shock Wave] skill.
+
+[04:50] Player equips &quot;소크 웨이브&quot; to a skill slot.
+
+[04:51] Player selects &quot;써머솔트 킥&quot; [Somersault Kick] skill.
+
+[04:52] Player equips &quot;써머솔트 킥&quot; to a skill slot.
+
+[04:53] Player exits the Skill menu.
+
+[04:54] Player is back on the main gameplay screen (Stage 10).
+
+[04:55] Player taps on &quot;빠른 사냥&quot; [Quick Hunt] button.
+
+[04:56] &quot;빠른 사냥&quot; popup appears.
+
+[04:57] Player taps &quot;보상 받기&quot; (using a ticket).
+
+[04:58] &quot;아이템 획득&quot; popup shows rewards obtained.
+
+[04:59] Player closes the popup.
+
+[05:00] Player taps &quot;무료 보상&quot; (AD) on &quot;빠른 사냥&quot;.
+
+[05:01] STATE: screen=popup | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=98,921, blue-diamond(top-left)=11,228 | progress=Stage 10 | ongoing=Quick Hunt ad reward processing.
+
+[05:02] &quot;아이템 획득&quot; popup shows rewards obtained from the ad.
+
+[05:03] Player closes the popup.
+
+[05:04] Player is back on the main gameplay screen (Stage 10).
+
+[05:05] Player taps on the &quot;소환 레벨업&quot; [Summon Level Up] button.
+
+[05:06] &quot;소환 레벨업&quot; popup appears.
+
+[05:07] Player taps &quot;시간 단축하기&quot;.
+
+[05:08] Time Acceleration popup appears. Player uses multiple tickets to reduce the time.
+
+[05:09–05:11] Player continues to use tickets to accelerate the summon level up.
+
+[05:12] Player closes the popup.
+
+[05:13] Player opens the &quot;소환 레벨업&quot; popup again.
+
+[05:14] Player closes the popup.
+
+[05:15] Player opens the &quot;소환&quot; [Summon] menu.
+
+[05:16] &quot;소환&quot; screen opens.
+
+[05:17] Player taps &quot;일괄 소환&quot; [Bulk Summon]. Slider is set to 113.
+
+[05:18] Player taps &quot;소환&quot;.
+
+[05:19] Summon animation plays.
+
+[05:20] Summon results screen shows weapons.
+
+[05:21] Player taps to skip/confirm.
+
+[05:22] Back to Summon screen.
+
+[05:23] Player exits the Summon screen.
+
+[05:24] Player is back on the main gameplay screen (Stage 10).
+
+[05:25] Player character fights monsters in Stage 10.
+
+[05:26] Player opens the &quot;캐릭터&quot; [Character] menu.
+
+[05:27] &quot;캐릭터&quot; screen opens.
+
+[05:28] Player upgrades &quot;최대 HP&quot; stat.
+
+[05:29] Player upgrades &quot;방어력&quot; stat.
+
+[05:30] Player exits the Character screen.
+
+[05:31] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=142,398, blue-diamond(top-left)=8,997 | progress=Stage 10 | ongoing=Player character is fighting monsters in Stage 10.
+
+[05:32] Player opens the &quot;장비&quot; [Equipment] menu.
+
+[05:33] &quot;장비 관리&quot; screen opens.
+
+[05:34] Player auto-equips better gear.
+
+[05:35] Player exits the Equipment screen.
+
+[05:36] Player opens the &quot;장비&quot; menu again, selects &quot;무기&quot; [Weapon] tab.
+
+[05:37] &quot;무기&quot; screen opens.
+
+[05:38] Player upgrades the equipped weapon.
+
+[05:39] Player taps &quot;무기 마스터리&quot; [Weapon Mastery].
+
+[05:40] &quot;무기 마스터리&quot; screen opens. Player claims rewards.
+
+[05:41] Player exits the Weapon Mastery screen.
+
+[05:42] Player opens the &quot;스킬&quot; [Skill] menu.
+
+[05:43] &quot;스킬&quot; screen opens. Player selects &quot;스킬 강화&quot; [Skill Enhance] tab.
+
+[05:44] Player upgrades the active skill.
+
+[05:45] Player selects &quot;마스터리&quot; [Mastery] tab.
+
+[05:46] Player selects &quot;써머솔트 킥 - 피해&quot; mastery.
+
+[05:47] Player taps &quot;시간 단축하기&quot;.
+
+[05:48] Time Acceleration popup appears. Player uses tickets to complete the upgrade.
+
+[05:49] Player selects &quot;기본 공격 데미지 강화&quot; mastery.
+
+[05:50] Player taps &quot;시간 단축하기&quot;.
+
+[05:51] Time Acceleration popup appears. Player uses tickets to complete the upgrade.
+
+[05:52] Player exits the Skill menu.
+
+[05:53] Player is back on the main gameplay screen (Stage 10).
+
+[05:54] Player character fights monsters in Stage 10.
+
+[05:55] Player opens the &quot;소환 레벨업&quot; [Summon Level Up] popup.
+
+[05:56] Player taps &quot;시간 단축하기&quot;.
+
+[05:57] Time Acceleration popup appears. Player uses tickets to reduce the time.
+
+[05:58] Player closes the popup.
+
+[05:59] Player opens the &quot;소환&quot; [Summon] menu.
+
+[06:00] &quot;소환&quot; screen opens.
+
+[06:01] STATE: screen=gacha | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=142,398, blue-diamond(top-left)=8,997 | progress=Stage 10 | ongoing=Summon screen is open.
+
+[06:02] Player taps &quot;일괄 소환&quot; [Bulk Summon]. Slider is set to 100.
+
+[06:03] Player taps &quot;소환&quot;.
+
+[06:04] Summon animation plays.
+
+[06:05] Summon results screen shows weapons.
+
+[06:06] Player taps to skip/confirm.
+
+[06:07] Back to Summon screen.
+
+[06:08] Player exits the Summon screen.
+
+[06:09] Player is back on the main gameplay screen (Stage 10).
+
+[06:10] Player character fights monsters in Stage 10.
+
+[06:11] Player opens the &quot;캐릭터&quot; [Character] menu.
+
+[06:12] &quot;캐릭터&quot; screen opens.
+
+[06:13] Player upgrades &quot;최대 HP&quot; stat.
+
+[06:14] Player upgrades &quot;방어력&quot; stat.
+
+[06:15] Player exits the Character screen.
+
+[06:16] Player opens the &quot;장비&quot; [Equipment] menu.
+
+[06:17] &quot;장비 관리&quot; screen opens.
+
+[06:18] Player auto-equips better gear.
+
+[06:19] Player exits the Equipment screen.
+
+[06:20] Player opens the &quot;장비&quot; menu again, selects &quot;무기&quot; [Weapon] tab.
+
+[06:21] &quot;무기&quot; screen opens.
+
+[06:22] Player upgrades the equipped weapon.
+
+[06:23] Player taps &quot;무기 마스터리&quot; [Weapon Mastery].
+
+[06:24] &quot;무기 마스터리&quot; screen opens. Player claims rewards.
+
+[06:25] Player exits the Weapon Mastery screen.
+
+[06:26] Player opens the &quot;스킬&quot; [Skill] menu.
+
+[06:27] &quot;스킬&quot; screen opens. Player selects &quot;스킬 강화&quot; [Skill Enhance] tab.
+
+[06:28] Player upgrades the active skill.
+
+[06:29] Player selects &quot;마스터리&quot; [Mastery] tab.
+
+[06:30] Player selects &quot;써머솔트 킥 - 피해&quot; mastery.
+
+[06:31] STATE: screen=popup | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=142,398, blue-diamond(top-left)=8,997 | progress=Stage 10 | ongoing=Skill Mastery screen is open.
+
+[06:32] Player taps &quot;시간 단축하기&quot;.
+
+[06:33] Time Acceleration popup appears. Player uses tickets to complete the upgrade.
+
+[06:34] Player selects &quot;기본 공격 데미지 강화&quot; mastery.
+
+[06:35] Player taps &quot;시간 단축하기&quot;.
+
+[06:36] Time Acceleration popup appears. Player uses tickets to complete the upgrade.
+
+[06:37] Player exits the Skill menu.
+
+[06:38] Player is back on the main gameplay screen (Stage 10).
+
+[06:39] Player character fights monsters in Stage 10.
+
+[06:40] Player opens the &quot;소환 레벨업&quot; [Summon Level Up] popup.
+
+[06:41] Player taps &quot;시간 단축하기&quot;.
+
+[06:42] Time Acceleration popup appears. Player uses tickets to reduce the time.
+
+[06:43] Player closes the popup.
+
+[06:44] Player opens the &quot;소환&quot; [Summon] menu.
+
+[06:45] &quot;소환&quot; screen opens.
+
+[06:46] Player taps &quot;일괄 소환&quot; [Bulk Summon]. Slider is set to 100.
+
+[06:47] Player taps &quot;소환&quot;.
+
+[06:48] Summon animation plays.
+
+[06:49] Summon results screen shows weapons.
+
+[06:50] Player taps to skip/confirm.
+
+[06:51] Back to Summon screen.
+
+[06:52] Player exits the Summon screen.
+
+[06:53] Player is back on the main gameplay screen (Stage 10).
+
+[06:54] Player character fights monsters in Stage 10.
+
+[06:55] Player opens the &quot;캐릭터&quot; [Character] menu.
+
+[06:56] &quot;캐릭터&quot; screen opens.
+
+[06:57] Player upgrades &quot;최대 HP&quot; stat.
+
+[06:58] Player upgrades &quot;방어력&quot; stat.
+
+[06:59] Player exits the Character screen.
+
+[07:00] Player opens the &quot;장비&quot; [Equipment] menu.
+
+[07:01] STATE: screen=equipment | mode=menu | auto=n-a | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=142,398, blue-diamond(top-left)=8,997 | progress=Stage 10 | ongoing=Equipment Management screen is open.
+
+[07:02] &quot;장비 관리&quot; screen opens.
+
+[07:03] Player auto-equips better gear.
+
+[07:04] Player exits the Equipment screen.
+
+[07:05] Player is back on the main gameplay screen (Stage 10).
+
+FINAL STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=red-diamond(top-left)=3,074, gold(top-left)=142,398, blue-diamond(top-left)=8,997 | progress=Stage 10 | ongoing=Player character is fighting monsters in Stage 10.
+
+COVERAGE INDEX:
+[00:00–00:30] Shop, Mailbox, and Event Shop navigation. | flagged: none
+[00:30–01:08] Stage 8 Boss fight and victory. | flagged: none
+[01:08–01:36] Weapon Summoning (Gacha) and Summon Level Up. | flagged: none
+[01:36–02:01] Elite Monster Summon, Booster activation, and Quick Hunt rewards. | flagged: none
+[02:01–02:35] Character stat upgrades, Equipment management, and Skill upgrades. | flagged: none
+[02:35–03:31] Job Advancement Test combat and victory. | flagged: none
+[03:31–04:08] Skill Mastery upgrades and Stage 9 Boss fight preparation. | flagged: none
+[04:08–04:45] Stage 9 Boss fight and victory. | flagged: none
+[04:45–05:31] Stage 10 combat, Skill equipping, Quick Hunt, and Weapon Summoning. | flagged: none
+[05:31–06:01] Equipment management, Weapon Mastery, and Skill Mastery upgrades. | flagged: none
+[06:01–07:05] Weapon Summoning, Character upgrades, and Equipment management. | flagged: none
+
+---
+
+[07:05] Recording quality: high-definition screen capture, landscape orientation, small text is highly legible, game audio is present.
+[07:05] Screen is Summon menu (&quot;소환&quot;). TEXT: &quot;소환&quot;, &quot;바이퍼&quot;, &quot;무기 소환&quot;, &quot;동료 소환&quot;, &quot;소환 레벨 Lv.4&quot;. NUM: blue-diamond(top-right)=0, red-diamond(top-right)=8,997.
+[07:06] Screen transitions to combat. TEXT: &quot;3.엘리니아 - Stage 9-10&quot;, &quot;도전&quot;. NUM: gold(coin,top-left)=98,921, red-diamond(diamond,top-left)=2,766. Character &quot;초고고급펀치&quot; (Lv.30) is fighting on a wooden platform in a forest background.
+[07:07] Weapon menu (&quot;무기&quot;) is open on the right. Selected weapon: &quot;블랙 그립&quot;, Grade: &quot;유니크 최상급&quot;, Level 71/100. NUM: gold(coin,top-left)=98,921, red-diamond(diamond,top-left)=2,766.
+[07:08] Popup appears over the weapon menu: &quot;무기를 승급하였습니다.&quot; (INFERRED: player clicked promote).
+[07:09] Another popup: &quot;무기 일괄 각성이 완료되었습니다.&quot; Buttons: &quot;취소&quot;, &quot;일괄 각성&quot;.
+[07:10] Popup &quot;무기 일괄 각성이 완료되었습니다.&quot; is closed.
+[07:11] Back to combat screen. Character continues fighting green plant-like monsters.
+[07:12] Weapon menu is open again. Leveling up &quot;블랙 그립&quot;.
+[07:13] Leveling up animation. Level goes from 71 to 100.
+[07:14–07:15] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[07:16] Weapon menu open again.
+[07:17] &quot;무기 마스터리&quot; menu open.
+[07:18] Popup: &quot;아이템 획득&quot; - 30 blue tickets/scrolls.
+[07:19] Weapon menu.
+[07:20] Popup: &quot;Weapon&quot; guide/info.
+[07:21] Popup: &quot;아이템 획득&quot; - 10 blue tickets/scrolls.
+[07:22–07:25] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[07:26] Summon screen (&quot;소환&quot;) open. Viper weapon summon.
+[07:27] Back to combat.
+[07:28] Shop (&quot;상점&quot;) open. &quot;메이플 스페셜 회원권 (30일)&quot;.
+[07:29] Back to combat.
+[07:30] Event (&quot;이벤트&quot;) menu open. &quot;첫 결제 혜택&quot;.
+[07:31] Claiming reward: 100 blue tickets/scrolls.
+[07:32] Event menu: &quot;신규 캐릭터 성장 이벤트&quot;.
+[07:33] Claiming reward: 500 orange mushrooms.
+[07:34] Event menu: &quot;출석 환급 패키지&quot;.
+[07:35] Event menu: &quot;반주년 메가 페스티벌 다 함께 즐겨요!&quot;.
+[07:36] Event menu: &quot;14일 특별 미션&quot;.
+[07:37] Claiming reward: 10 blue tickets/scrolls.
+[07:38] Claiming another reward: 10 blue tickets/scrolls.
+[07:39] Claiming another reward: 10 blue tickets/scrolls.
+[07:40–07:41] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[07:42] Popup: &quot;알림&quot; - &quot;엘리트 몬스터 소환을 연속으로 진행합니다.&quot; Buttons: &quot;취소&quot;, &quot;확인&quot;.
+[07:43–07:59] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[08:00] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=100,823, red-diamond(diamond,top-left)=2,758 | progress=Stage 9-10 | ongoing=Character &quot;초고고급펀치&quot; (Lv.30) is fighting green plant-like monsters.
+[08:01–08:11] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[08:12] Popup: &quot;알림&quot; - &quot;엘리트 몬스터 소환을 연속으로 진행합니다.&quot; Buttons: &quot;취소&quot;, &quot;확인&quot;.
+[08:13–08:57] Sustained combat action, tableau unchanged: character fighting green plant-like monsters on wooden platforms; no discrete events resolvable at 1fps (UNRESOLVED).
+[08:58–08:59] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;나만의 캐릭터를 만들고 싶다면? 헤어와 성형을 바꾸어 보세요!&quot;.
+[09:00] STATE: screen=loading | mode=loading | auto=n-a | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=(NOT VISIBLE), red-diamond(diamond,top-left)=(NOT VISIBLE) | progress=(NOT SHOWN) | ongoing=Loading screen with tip about character customization.
+[09:01] Loading screen continues.
+[09:02] Loading ends. Boss fight screen. TEXT: &quot;3.엘리니아 - 보스&quot;, &quot;파우스트&quot;. Boss HP bar: 100%.
+[09:03–09:31] Sustained boss fight action, tableau unchanged: character fighting boss &quot;파우스트&quot;; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED).
+[09:32] Boss &quot;파우스트&quot; is defeated. Screen clears.
+[09:33] Victory screen: &quot;CHAPTER3 STAGE 10 CLEAR&quot;. Rewards: 1,000 red diamonds, 500 gold, 75 blue tickets, 30 scrolls.
+[09:34–09:39] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;지역 채팅은 내 주변의 유저에게만 전달됩니다.&quot;
+[09:40] Loading ends. New stage: &quot;4.페리온 - Stage 1/10&quot;, &quot;도전&quot;. NUM: gold(coin,top-left)=100,823, red-diamond(diamond,top-left)=2,764.
+[09:41–09:45] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[09:46] Summon menu (&quot;소환&quot;) open. Viper weapon summon.
+[09:47] Player selects &quot;동료 소환&quot;.
+[09:48] Player clicks &quot;일괄 소환&quot;.
+[09:49] Popup: &quot;일괄 소환&quot; - 10 summons.
+[09:50–09:51] Summon animation.
+[09:52] Summon results screen. Companions summoned: various 1-star companions.
+[09:53] Back to Summon menu.
+[09:54] Popup: &quot;알림&quot; - &quot;게임을 종료하시겠습니까?&quot;.
+[09:55] Popup closed. Back to combat.
+[09:56–09:59] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[10:00] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=109,108, red-diamond(diamond,top-left)=10,150 | progress=Stage 1/10 | ongoing=Character &quot;초고고급펀치&quot; (Lv.30) is fighting on a rocky platform.
+[10:01] Companion menu (&quot;동료&quot;) open.
+[10:02] Player selects &quot;아크메이지(썬,콜)(1차)&quot;.
+[10:03] Player clicks &quot;일괄 레벨업&quot;. Level goes from 1 to 2.
+[10:04–10:05] Companion menu continues.
+[10:06] Player clicks &quot;장착&quot; or &quot;마네킹&quot;.
+[10:07] Popup: &quot;구매 안내&quot; - &quot;마네킹을 구매하면...&quot;. Cost: 15,000 red diamonds.
+[10:08–10:09] Popup remains open.
+[10:10] Popup closed.
+[10:11–10:14] Companion menu continues.
+[10:15] Back to combat.
+[10:16–10:17] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[10:18] Popup: &quot;알림&quot; - &quot;엘리트 몬스터 소환을 연속으로 진행합니다.&quot; Buttons: &quot;취소&quot;, &quot;확인&quot;.
+[10:19] Elite monster summoned.
+[10:20] Equipment menu (&quot;장비 관리&quot;) open.
+[10:21–10:28] Equipment menu continues.
+[10:29] Summon level up popup: &quot;소환 레벨업&quot;. Level goes from 6 to 7.
+[10:30–10:31] Popup remains open.
+[10:32] Popup closed. Back to combat.
+[10:33–10:35] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[10:36] Skill menu (&quot;스킬&quot;) open.
+[10:37] Player views &quot;쇼크 웨이브 - 피페&quot;.
+[10:38] Skill menu continues.
+[10:39] Back to combat.
+[10:40–10:59] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[11:00] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=135,550, red-diamond(diamond,top-left)=2,596 | progress=Stage 1/10 | ongoing=Character &quot;초고고급펀치&quot; (Lv.30) is fighting on a rocky platform.
+[11:01–11:05] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[11:06–11:09] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;동료의 스킬은 메인 동료로 소환되었을 때만 사용할 수 있습니다...&quot;
+[11:10] Loading ends. Boss fight screen. TEXT: &quot;4.페리온 - 보스&quot;, &quot;어스스텀프&quot;. Boss HP bar: 100%.
+[11:11–11:26] Sustained boss fight action, tableau unchanged: character fighting boss &quot;어스스텀프&quot;; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED).
+[11:27] Boss &quot;어스스텀프&quot; is defeated. Screen clears.
+[11:28–11:30] Victory screen: &quot;CHAPTER4 STAGE 02 CLEAR&quot;. Rewards: 200 red diamonds, 26,000 gold, 146 blue tickets, 20 scrolls.
+[11:31–11:36] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;메인 화면에서 [빠른 사냥]을 할 수 있습니다...&quot;
+[11:37] Loading ends. New stage: &quot;4.페리온 - Stage 2/10&quot;, &quot;도전&quot;. NUM: gold(coin,top-left)=135,550, red-diamond(diamond,top-left)=10,552.
+[11:38–11:40] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[11:41] Summon menu (&quot;소환&quot;) open. Viper weapon summon.
+[11:42] Player clicks &quot;일괄 소환&quot; - 245 summons.
+[11:43–11:44] Summon animation.
+[11:45–11:48] Summon results screen. Weapons summoned: various grades.
+[11:49] Back to combat.
+[11:50] Summon menu open again.
+[11:51] Popup: &quot;아이템 획득&quot; - 100 blue tickets/scrolls.
+[11:52] Player selects &quot;동료 소환&quot;.
+[11:53] Back to combat.
+[11:54–11:59] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[12:00] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=135,550, red-diamond(diamond,top-left)=10,552 | progress=Stage 2/10 | ongoing=Character &quot;초고고급펀치&quot; (Lv.30) is fighting on a rocky platform.
+[12:01] Potion menu (&quot;물약&quot;) open.
+[12:02] Player upgrades HP potion. Level goes from 2 to 3.
+[12:03] Player upgrades HP potion again. Level goes from 3 to 4.
+[12:04–12:06] Potion menu continues.
+[12:07] Player upgrades MP potion. Level goes from 3 to 4.
+[12:08–12:09] Potion menu continues.
+[12:10] Back to combat.
+[12:11–12:12] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[12:13] Weapon menu (&quot;무기&quot;) open.
+[12:14] Player clicks &quot;일괄 각성&quot;.
+[12:15] Popup: &quot;무기 일괄 각성이 완료되었습니다.&quot;
+[12:16–12:19] Weapon menu continues.
+[12:20] Player levels up &quot;블랙 그립&quot;. Level goes from 74 to 100.
+[12:21] Back to combat.
+[12:22] Summon level up popup: &quot;소환 레벨업&quot;. Level goes from 7 to 8.
+[12:23–12:24] Popup remains open.
+[12:25] Popup closed. Back to combat.
+[12:26–12:39] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[12:40–12:44] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;궁수의 힘 단계가 올라갈 때마다 어빌리티 슬롯이 개방됩니다.&quot;
+[12:45] Loading ends. Boss fight screen. TEXT: &quot;4.페리온 - 보스&quot;, &quot;다크스텀프&quot;. Boss HP bar: 100%.
+[12:46–12:59] Sustained boss fight action, tableau unchanged: character fighting boss &quot;다크스텀프&quot;; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED).
+[13:00] STATE: screen=boss_fight | mode=boss_fight | auto=on | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=136,018, red-diamond(diamond,top-left)=2,597 | progress=Stage 2/10 | ongoing=Character &quot;초고고급펀치&quot; (Lv.30) is fighting boss &quot;다크스텀프&quot;.
+[13:01–13:14] Sustained boss fight action, tableau unchanged: character fighting boss &quot;다크스텀프&quot;; boss HP bar steadily decreasing; no discrete events resolvable at 1fps (UNRESOLVED).
+[13:15] Boss &quot;다크스텀프&quot; is defeated. Screen clears.
+[13:16–13:18] Victory screen: &quot;CHAPTER4 STAGE 03 CLEAR&quot;. Rewards: 200 red diamonds, 27,000 gold, 148 blue tickets, 20 scrolls.
+[13:19–13:24] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;[용사의 수련장]에서 [용사의 증표]를 모아 용사의 힘을 강화해 보세요...&quot;
+[13:25] Loading ends. New stage: &quot;4.페리온 - Stage 3/10&quot;, &quot;도전&quot;. NUM: gold(coin,top-left)=136,018, red-diamond(diamond,top-left)=2,600.
+[13:26–13:28] Sustained combat action, tableau unchanged: character fighting on a rocky platform; no discrete events resolvable at 1fps (UNRESOLVED).
+[13:29] Dungeon menu (&quot;성장 던전&quot;) open.
+[13:30] Loading screen. TEXT: &quot;Tip&quot;, &quot;[용사의 수련장]에서 [용사의 증표]를 모아 용사의 힘을 강화해 보세요...&quot;
+[13:31–13:33] Loading screen continues.
+[13:34] Loading ends. Experience dungeon (&quot;성장 던전: 경험치 3단계&quot;).
+[13:35] Dungeon combat starts.
+[13:36–13:47] Sustained dungeon combat action, tableau unchanged: character fighting monsters in experience dungeon; no discrete events resolvable at 1fps (UNRESOLVED).
+[13:48] Dungeon cleared. Victory screen: &quot;경험치 던전 03단계 CLEAR&quot;. Rewards: 1 weapon, 1.814% EXP.
+[13:49–13:53] Screen transitions to loading screen. TEXT: &quot;Tip&quot;, &quot;동료 프리셋을 활용하면 더욱 편리하게 전투에 함께할 동료를 교체할 수 있습니다.&quot;
+[13:54] Loading screen continues. Video ends.
+
+FINAL STATE: screen=loading | mode=loading | auto=n-a | guidance=free | player=faring=neutral | resources=gold(coin,top-left)=(NOT VISIBLE), red-diamond(diamond,top-left)=(NOT VISIBLE) | progress=(NOT SHOWN) | ongoing=Loading screen with tip about companion presets.
+FINAL-CHECK: Screen is loading screen at 13:54. Numbers are not visible.
+
+COVERAGE INDEX:
+[07:05–07:30] Gacha, weapon upgrades, and combat.
+[07:30–08:00] Claiming event rewards and combat.
+[08:00–08:30] Continuous combat in Stage 9-10.
+[08:30–09:00] Continuous combat and transition to loading screen.
+[09:00–09:30] Boss fight against Faust.
+[09:30–10:00] Victory screen, stage transition, and companion summon.
+[10:00–10:30] Companion management, mannequin purchase popup, and equipment management.
+[10:30–11:00] Skill menu and continuous combat.
+[11:00–11:30] Boss fight against Earth Stump and victory screen.
+[11:30–12:00] Weapon summon and continuous combat.
+[12:00–12:30] Potion upgrades, weapon upgrades, and combat.
+[12:30–13:00] Boss fight against Dark Stump.
+[13:00–13:30] Victory screen, stage transition, and entering experience dungeon.
+[13:30–13:54] Experience dungeon combat, victory screen, and loading screen.
+
+---
+
+[13:54] Screen-capture, landscape orientation, small-text legible, audio present. Screen is a loading screen showing a chibi female character with light blue hair holding a staff and a glowing book.
+TEXT: &quot;Tip 동료 프리셋을 활용하면 더욱 편리하게 전투에 함께할 동료를 교체할 수 있습니다.&quot; [Tip: Using companion presets makes it more convenient to swap companions to join you in battle.]
+
+[13:55] Screen loads into active gameplay. Player character (humanoid, red bandana, white/red outfit) and a companion (small wizard with blue hat) are on a multi-tiered dirt platform stage.
+NUM: power(sword,top-left)=136,018
+NUM: gold(coin,top-left)=8,343,414
+NUM: red-diamond(diamond,top-left)=10,952
+TEXT: &quot;4 레리온&quot; [4 Lerion]
+TEXT: &quot;Stage 3/10&quot;
+TEXT: &quot;가이드 퀘스트 105&quot; [Guide Quest 105]
+TEXT: &quot;엘리트 몬스터 소환하기: 0/1&quot; [Summon Elite Monster: 0/1]
+
+[13:56] Player character attacks a purple-glowing portal structure. Damage numbers pop up. A quest completion notification appears.
+TEXT: &quot;퀘스트가 완료되었습니다.&quot; [Quest has been completed.]
+
+[13:57] A mushroom-like enemy with a blue hat appears. Quest rewards popup is shown on the right.
+TEXT: &quot;레드 다이아 x50&quot; [Red Diamond x50]
+TEXT: &quot;엘리트 몬스터 소환 포인트 x100&quot; [Elite Monster Summon Point x100]
+TEXT: &quot;경험치 x551247&quot; [EXP x551247]
+
+[13:58] Player levels up to 32 with a large golden flash effect.
+TEXT: &quot;레벨 32&quot; [Level 32]
+TEXT: &quot;설정된 조건의 장비가 자동 분해 되었습니다.&quot; [Equipment meeting set conditions has been automatically disassembled.]
+TEXT: &quot;1+1 버닝 이벤트 적용 중&quot; [1+1 Burning Event in progress]
+
+[13:59] Combat continues against mushroom and tree stump enemies. Guide quest updates.
+TEXT: &quot;가이드 퀘스트 106&quot; [Guide Quest 106]
+TEXT: &quot;적 처치: 4/100&quot; [Defeat enemies: 4/100]
+
+[14:00] STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring well, attacking enemies on dirt platforms | resources=power(sword,top-left)=136,018, gold(coin,top-left)=8,343,414, red-diamond(diamond,top-left)=10,952 | progress=Stage 3/10, Guide Quest 106 (적 처치: 14/100) | ongoing=Combat against tree stumps and mushroom enemies.
+
+[14:01] Player opens the Character menu overlay (INFERRED: tapped &quot;캐릭터&quot; button). Left side shows character stats; right side shows &quot;스탯&quot; (Stats) tab with upgradeable attributes.
+TEXT: &quot;주 스탯&quot; [Main Stat]
+TEXT: &quot;방어력&quot; [DEF]
+TEXT: &quot;최대 HP&quot; [Max HP]
+
+[14:02] Player upgrades the Main Stat to maximum (INFERRED: tapped &quot;최대 레벨&quot; button). Power level increases.
+NUM: power(sword,top-left)=137,892
+
+[14:03] Player upgrades another stat, significantly increasing power and attack stats.
+NUM: power(sword,top-left)=145,752
+
+[14:04] Character menu is closed, returning to active combat. Guide quest progress updates.
+TEXT: &quot;적 처치: 20/100&quot; [Defeat enemies: 20/100]
+
+[14:05] Player opens the Skill menu overlay (INFERRED: tapped &quot;스킬&quot; button). Currently viewing the &quot;스킬 목록&quot; (Skill List) tab showing &quot;2차 전직 스킬&quot; (2nd Job Advancement Skill).
+
+[14:06] Player upgrades the skill to Level 6 (INFERRED: tapped upgrade button). Power level increases.
+NUM: power(sword,top-left)=146,754
+
+[14:07] Player switches to the &quot;마스터리&quot; (Mastery) tab and selects the &quot;쇼크 웨이브 - 피해&quot; (Shock Wave - Damage) node.
+NUM: power(sword,top-left)=151,769
+
+[14:08] A confirmation popup appears to learn the skill mastery.
+TEXT: &quot;알림&quot; [Notification]
+TEXT: &quot;스킬 마스터리를 배웁니다.&quot; [Learn skill mastery.]
+
+[14:09] A &quot;시간 가속&quot; (Time Acceleration) popup appears, offering to reduce research time using tickets.
+TEXT: &quot;시간 가속&quot; [Time Acceleration]
+TEXT: &quot;티켓 40개를 소모하여 00:40:00만큼 시간을 가속합니다.&quot; [Consume 40 tickets to accelerate time by 00:40:00.]
+
+[14:10] Player attempts to watch an ad for acceleration, but a red warning text appears.
+TEXT: &quot;광고는 5분에 한번 시청할 수 있습니다.&quot; [Ads can be watched once every 5 minutes.]
+
+[14:11] Player adjusts the ticket slider to consume 10 tickets instead.
+TEXT: &quot;티켓 10개를 소모하여 00:10:00만큼 시간을 가속합니다.&quot; [Consume 10 tickets to accelerate time by 00:10:00.]
+
+[14:12] Player confirms the ticket usage, unlocking the mastery node. The skill menu is closed, returning to combat.
+
+[14:13] Combat continues. Guide quest progress updates.
+TEXT: &quot;적 처치: 29/100&quot; [Defeat enemies: 29/100]
+
+[14:14] Combat continues. Guide quest progress updates.
+TEXT: &quot;적 처치: 34/100&quot; [Defeat enemies: 34/100]
+
+[14:15] Combat continues. Guide quest progress updates.
+TEXT: &quot;적 처치: 35/100&quot; [Defeat enemies: 35/100]
+
+[14:16] Player opens the &quot;자동 사냥 결과&quot; (Auto Hunt Results) popup.
+TEXT: &quot;자동 사냥 결과&quot; [Auto Hunt Results]
+TEXT: &quot;PLAYTIME: 01:09:19&quot;
+
+[14:17] Auto Hunt Results popup remains open as the monster hunt count ticks up.
+TEXT: &quot;PLAYTIME: 01:09:21&quot;
+
+[14:18] Player closes the Auto Hunt Results popup, returning to combat.
+TEXT: &quot;적 처치: 49/100&quot; [Defeat enemies: 49/100]
+
+[14:19] Player opens the &quot;반주년 메기 페스티벌&quot; (Half-Anniversary Megi Festival) event menu overlay.
+TEXT: &quot;반주년 메기 페스티벌&quot; [Half-Anniversary Megi Festival]
+
+[14:20] Player closes the event menu, returning to combat.
+TEXT: &quot;적 처치: 54/100&quot; [Defeat enemies: 54/100]
+
+[14:21] Combat continues. Guide quest progress updates.
+TEXT: &quot;적 처치: 57/100&quot; [Defeat enemies: 57/100]
+
+[14:22] Combat continues. Guide quest progress updates.
+TEXT: &quot;적 처치: 60/100&quot; [Defeat enemies: 60/100]
+
+[14:23] Combat continues. Guide quest progress remains at 60/100. Video ends.
+TEXT: &quot;적 처치: 60/100&quot; [Defeat enemies: 60/100]
+
+FINAL STATE: screen=combat | mode=combat | auto=on | guidance=free | player=faring well, attacking enemies on dirt platforms | resources=power(sword,top-left)=151,769, gold(coin,top-left)=8,343,414, red-diamond(diamond,top-left)=11,002 | progress=Stage 3/10, Guide Quest 106 (적 처치: 60/100) | ongoing=Combat against tree stumps and mushroom enemies. Video ends at 14:23.
+
+COVERAGE INDEX:
+[13:54–14:23] Player completes guide quests, levels up to 32, upgrades character stats and skills, unlocks a mastery node, and views auto-hunt results and event menus.</pre>
+</details>
+
+</div>
+<script>
+// r = [seconds, "prod_type" ("" = blank), "prod desc", "transcript facts", "cls: ok|part|wrong|zero"]
+const ROWS=[
+[0,"shop_opened","Shop opened to view available packages.","Shop is open on <b>\"Remove Ads Package (365 days)\" — KRW 6,000</b> (membership tab).","ok"],
+[6,"reward_claim","Collected rewards from the mailbox.","Popup \"product delivered to your mailbox\" → mailbox: claims the package contents — <b>1,500 red diamonds + ad-removal ticket</b> (0:08–0:10). A real-money product fulfillment stored as a generic claim.","part"],
+[11,"shop_opened","Accessed the special Festival Shop.","Festival shop opens; \"Festival Coin 500 — Watch Ad\" offer visible.","ok"],
+[14,"ingame_purchase","Purchased coins in the Festival Shop using in-game currency.","Opens the <b>5,000-coin pack — price 3,000 blue diamonds → closes it. Nothing bought at this second.</b> <span class='why'>The decline is the signal; the \"purchase\" was the free item 2s later.</span>","wrong"],
+[16,"reward_claim","Received additional rewards from the Festival Shop.","Takes the <b>free 500-coin (ad) item</b> — ad auto-skipped (owns ad-removal). Coin balance 1,000 → 2,000 on screen.","ok"],
+[21,"event_viewed","Opened the Mega Festival event page.","Festival hub: 6 sub-events (Point Rewards · 1+1 Burning · Special Missions · Flag Race · Stamp Missions · Shop).","ok"],
+[26,"guide_quest","Completed a guide quest and claimed the reward.","\"Elder Stan's Request: defeat 1,000 monsters — 1000/1000\" claimed → <b>+30 blue diamonds</b>. Wallet visible: 132,194 gold · 3,130 red · 10,875 blue.","ok"],
+[34,"combat_start","Commenced combat for stage 3-8.","Challenge tapped → Stage 3-8 boss arena. Clear rewards listed on screen: 150 red · 23,000 gold · 140 blue · 2.227% EXP.","ok"],
+[55,"boss_challenge","Challenged the stage 3-8 boss, Kzeye.","Boss <b>Kzeye</b> (Evil Eye) appears — HP bar 100%. Exact match, boss named — prod at its best.","ok"],
+[67,"combat_victory","Successfully cleared stage 3-8.","Boss HP hit 0% after <b>9 seconds</b> (100→89→78→67→46→35→22→8→0) — zero threat. CLEAR screen + rewards.","ok"],
+[73,"payment_attempt_initiated","Viewed a limited-time equipment package.","<b>AUTO-POPUP</b>: \"Beginner Equipment Hot Deal — <b>KRW 1,500</b>\" (boots + pants + 1,500 blue diamonds). Closed in ~2s, no buy button touched. <span class='why'>An offer view logged as a payment ATTEMPT — the description admits it.</span>","wrong"],
+[80,"gacha_summon","Performed a x10 weapon summon.","Bulk summon slider set to <b>×168</b> → summon. <span class='why'>Prod says x10.</span>","wrong"],
+[91,"gacha_summon","Performed another weapon summon.","Second bulk summon: <b>×442</b>. Summon level 3 → 4. <span class='why'>Magnitude absent again.</span>","wrong"],
+[93,"","","<b>Free daily summon claimed (+70 green tickets)</b> — small, but it's the daily-habit loop.","zero"],
+[102,"summon_elite","Summoned an elite monster to the field.","\"Summon elite monster?\" → Confirm → elite <b>Ribbon Pig</b> spawns.","ok"],
+[108,"stat_enhancement","Upgraded the summoning stat level.","Summon Level-Up: consumption points 72 → 75; a <b>6-minute timer</b> starts → \"Reduce Time\" tapped (ad/ticket options).","ok"],
+[120,"level_up","Character reached level 30.","<b>LEVEL 30</b> — golden wings (on screen at 1:50). \"Grow faster!\" nudge popup follows.","ok"],
+[124,"buff_selection","Selected a movement and attack speed buff.","Booster menu: uses the <b>20% EXP booster</b> + free daily ad booster. <span class='why'>It's an EXP booster, not a speed buff.</span>","wrong"],
+[126,"reward_claim","Claimed rewards for using the booster.","Toast: \"Booster used.\" Booster now active.","ok"],
+[130,"battle_rewards","Obtained rewards from a Quick Hunt session.","Quick Hunt: ticket claim — gold, EXP, red + blue diamonds listed on screen.","ok"],
+[137,"stat_enhancement","Enhanced character stats.","Character screen: <b>Max HP maxed 10/10 → tier 7 unlocked</b>; main stat + min-damage-ratio raised. (ATK 9,550 · DEF 495 visible.)","ok"],
+[146,"equipment_management","Managed and compared equipment pieces.","Equips 3 items with grades visible: Hard Leather Pants (Rare) · Red Barbeigh (Epic) · Leather Armor Glove (Unique).","ok"],
+[157,"weapon_upgrades","Performed weapon promotion and awakening.","Weapon tab: <b>Black Grip (Unique)</b> — bulk awaken confirmed, level raised.","ok"],
+[161,"","","<b>Weapon Mastery claims: +100 blue diamonds, +20 upgrade stones</b> (Rare + Epic tabs).","zero"],
+[184,"skill_advancement","Advanced character skills.","1st-job skill <b>Lv 55 → 60 (max)</b>; mastery tab: Quick Motion (Lv 24) time-skip tapped.","ok"],
+[153,"","","<b>JOB ADVANCEMENT screen: \"2nd Job — Viper\"</b>, requirements Lv 30 / CP 1,000 → \"Go\". No event type exists for this milestone.","zero"],
+[194,"combat_start","Started the job advancement trial combat.","Test arena, NPC Kyrin: <b>collect 30 Black Marbles</b> — counter ticks 1→30 on screen over 46s.","ok"],
+[239,"combat_victory","Successfully completed the job advancement trial.","30/30 → CLEAR. Kyrin: \"I knew you would pass easily!\"","ok"],
+[212,"","","<b>\"2nd JOB ADVANCEMENT SUCCESS — VIPER\"</b> popup + new skills unlocked. Biggest milestone of the video: no event, absent from the summary, class attribute says Arch Mage.","zero"],
+[249,"skill_advancement","Advanced newly acquired skills.","New Viper skills opened; mastery node selected.","ok"],
+[259,"ad_playing","Watched an advertisement to skip skill upgrade time.","Screen at 4:19: <b>Stage 3-9 combat in progress — no ad visible</b>. Time-skips used tickets; the only ad attempt (14:10) gets denied. <span class='why'>Event doesn't match the screen.</span>","wrong"],
+[283,"payment_attempt_initiated","Viewed a hot deal package for the 2nd job advancement.","Screen at 4:43: <b>loading screen → Stage 10 field. No offer anywhere.</b> <span class='why'>Second phantom \"payment attempt\"; the real popup was at 1:13.</span>","wrong"],
+[294,"stat_enhancement","Further enhanced character stats.","Skills equipped around here: <b>Shock Wave + Somersault Kick</b> into slots (4:49–4:52).","part"],
+[300,"","","<b>Quick Hunt again: one ticket claim + one FREE-AD claim</b> (5:00) — ad auto-skipped. Daily-loop monetization touchpoints.","zero"],
+[323,"combat_start","Entered combat for stage 3-9.","Screen at 5:23: <b>Stage 10 field; bulk summon ×113 just fired</b>. <span class='why'>The real 3-9 fight ran 4:08–4:40 (boss down at 4:38). This mid-video cluster is ~70s late.</span>","wrong"],
+[344,"boss_challenge","Engaged the stage boss for stage 3-9.","Screen at 5:44: <b>skill-mastery menu + ticket time-skips</b> — no boss on screen.","wrong"],
+[352,"combat_victory","Cleared stage 3-9.","Screen at 5:52: menus continue. (The actual 3-9 CLEAR banner showed at 4:40.)","wrong"],
+[365,"skill_advancement","Upgraded skills and adjusted skill slots.","Bulk summon <b>×100</b> results being skipped (6:02–6:06).","part"],
+[383,"battle_rewards","Received rewards from a Quick Hunt.","Weapon-mastery claims on screen (6:23–6:25).","part"],
+[398,"stat_enhancement","Enhanced character stats.","Skill upgrades + mastery time-skips (6:27–6:36) — tickets spent again.","part"],
+[409,"equipment_management","Managed character equipment.","Summon level-up popup + acceleration (6:40–6:43).","part"],
+[413,"gacha_summon","Summoned weapons via gacha.","Bulk summon <b>×100</b> fired just before (6:46–6:50); results skipped.","ok"],
+[427,"weapon_upgrades","Upgraded weapons through promotion.","Weapon menu: <b>Black Grip \"Unique highest-grade\" Lv 71</b> — promotion popup confirmed.","ok"],
+[433,"level_up","Character reached level 31.","On screen: <b>WEAPON leveling — Black Grip 71 → 100</b>. A character Lv-31 banner is not visible at this second. <span class='why'>Weapon level-up likely read as character level-up.</span>","wrong"],
+[440,"stat_enhancement","Enhanced character stats.","Weapon guide popup; item claims +30 and +10 scrolls (7:18–7:21).","part"],
+[448,"","","Shop: <b>\"Maple Special Membership (30 days)\" viewed — considered, not bought</b> (7:28). The upsell signal has no event.","zero"],
+[451,"","","Event page \"First Payment Benefit\" → claims <b>+100 scrolls</b> (7:30–7:31): this player has paid before — consistent with his ad-removal package.","zero"],
+[455,"shop_opened","Opened the general shop.","Screen at 7:35: <b>event hub</b> (Half-Anniversary \"let's all enjoy\") — shop was 7 seconds earlier.","part"],
+[459,"event_viewed","Viewed active growth events.","\"14-day Special Missions\": claims 10 scrolls ×3 (7:36–7:39).","ok"],
+[466,"reward_claim","Claimed rewards from the first purchase event.","Screen at 7:46: <b>auto-battle field</b>; the first-payment claim happened at 7:30. Drift again (~15s).","part"],
+[478,"reward_claim","Claimed various event milestone rewards.","Screen: <b>sustained auto-battle</b> — no claim visible at this second.","part"],
+[462,"","","<b>Elite-summon confirm popup (7:42)</b>, then a ~75-second pure auto-battle stretch (7:43–8:57): the player just watches. Engagement level = invisible to events.","zero"],
+[492,"summon_elite","Summoned an elite monster for combat.","Elite-summon confirm popup (8:12) → elite spawns. Exact match.","ok"],
+[538,"combat_start","Started stage 3-10 combat.","Loading → <b>Chapter-3 finale arena: boss FAUST</b>, HP 100%.","ok"],
+[545,"boss_challenge","Challenged the stage 3-10 boss, Paust.","Faust fight underway — HP draining steadily. Boss named by prod — credit.","ok"],
+[574,"combat_victory","Successfully cleared stage 3-10.","Faust dead (9:32) → <b>\"CHAPTER 3 STAGE 10 CLEAR\" — +1,000 red diamonds</b> + 500 gold + 75 scrolls on screen.","ok"],
+[584,"game_feature_unlocked","Unlocked the Companion game feature.","Chapter 4 (Perion) begins → <b>Companion feature unlocks</b>.","ok"],
+[588,"gacha_summon","Summoned new companions.","Companion <b>bulk summon ×10</b> → several 1-star companions.","ok"],
+[594,"","","<b>POPUP: \"Do you want to quit the game?\" → player closes it and keeps playing (9:54).</b> A churn-flirt moment in the middle of a session — zero record anywhere in prod.","zero"],
+[600,"companion_enhancement","Enhanced companion levels.","Companion menu: levels the <b>Arch Mage (Thunder/Cold) companion</b> 1 → 2 — the pet whose class prod assigned to the player.","ok"],
+[607,"","","<b>\"Buy the Mannequin — 15,000 red diamonds\"</b> popup. Wallet on screen: <b>10,150</b>. Stares 3s → closes. Want-but-can't-afford = the session's best gem-pack sales lead. Nothing recorded.","zero"],
+[617,"summon_elite","Summoned an elite monster.","Elite-summon confirm (10:18) → elite spawns.","ok"],
+[630,"stat_enhancement","Enhanced character stats.","<b>Summon level 6 → 7</b> popup (10:29).","part"],
+[636,"skill_advancement","Upgraded skills.","Skill menu browse: Shock Wave mastery viewed (10:36–10:38); no upgrade committed on screen.","part"],
+[656,"combat_start","Commenced combat for stage 4-2.","Auto-battle on the Perion field; boss loading begins 11:06.","ok"],
+[683,"boss_challenge","Engaged the boss for stage 4-2.","Boss <b>EARTH STUMP</b> (named on screen) — HP draining from 100%.","ok"],
+[690,"combat_victory","Victory in stage 4-2.","<b>\"CHAPTER4 STAGE 02 CLEAR\"</b> — +200 red diamonds · 26,000 gold · 146 scrolls.","ok"],
+[702,"gacha_summon","Performed a x10 weapon summon.","Bulk summon <b>×245</b> (11:42). <span class='why'>Prod: \"x10\" — third time the magnitude is fiction.</span>","wrong"],
+[709,"stat_enhancement","Enhanced character stats.","Summon results skipped; +100 scrolls claimed (11:51).","part"],
+[717,"summon_elite","Summoned an elite monster.","Screen: companion tab then auto-battle (11:52–11:59) — no elite popup visible at this second.","part"],
+[721,"","","<b>Potions upgraded: HP 2→3→4, MP 3→4</b> (12:01–12:07) — small permanent power spends, no event type.","zero"],
+[738,"weapon_upgrades","Promoted and upgraded weapons.","Weapon bulk-awaken (12:14) → <b>Black Grip 74 → 100</b> (12:20). Summon level 7 → 8 (12:22).","ok"],
+[764,"combat_start","Started stage 4-3 combat.","Loading → boss arena: <b>DARK STUMP</b>, HP 100%.","ok"],
+[790,"boss_challenge","Fought the stage 4-3 boss.","Dark Stump fight — HP draining (12:46–13:14).","ok"],
+[799,"combat_victory","Cleared stage 4-3.","<b>\"CHAPTER4 STAGE 03 CLEAR\"</b> — +200 red diamonds · 27,000 gold · 148 scrolls.","ok"],
+[810,"game_mode","Entered the Growth Dungeon mode.","Growth Dungeon menu → EXP Dungeon stage 3 loading.","ok"],
+[815,"combat_start","Started a battle in the Exp Dungeon.","EXP Dungeon combat begins.","ok"],
+[828,"combat_victory","Successfully finished the Exp Dungeon.","<b>\"EXP Dungeon 03 CLEAR\"</b> — +1 weapon, +1.814% EXP.","ok"],
+[838,"summon_elite","Summoned an elite monster.","Guide Quest 105 \"Summon Elite 0/1\" completes → rewards on screen: <b>+50 red diamonds · +100 elite points · +551,247 EXP</b>.","ok"],
+[840,"level_up","Character reached level 32.","<b>LEVEL 32</b> golden flash (13:58). \"1+1 Burning Event active\" banner visible.","ok"],
+[844,"stat_enhancement","Enhanced character stats.","Stats maxed: <b>CP 137,892 → 145,752</b> on screen (14:02–14:03) — the numbers prod never carries.","ok"],
+[849,"","","Time-acceleration: tries the <b>WATCH-AD option → red denial: \"Ads can be watched once every 5 minutes\"</b> → falls back to spending 10 tickets (14:09–14:12). Monetization friction, zero record.","zero"],
+[856,"skill_advancement","Upgraded skills and skill mastery.","Skill → Lv 6; mastery node unlocked; <b>CP → 151,769</b>. Auto-Hunt popup shows <b>PLAYTIME 01:09:19</b> (14:16). Video ends mid-combat at 14:23.","ok"]
+];
+
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+ROWS.sort((a,b)=>a[0]-b[0]);
+const tb=document.querySelector('#tl tbody');
+ROWS.forEach(r=>{
+  const [t,type,desc,scan,cls]=r;
+  const tr=document.createElement('tr');
+  tr.dataset.t=t;
+  tr.className = cls==='zero' ? 'r-zero' : (cls==='wrong' ? 'r-wrong' : '');
+  tr.innerHTML =
+    `<td class="time">${fmt(t)}</td>`+
+    `<td class="prod">${type?`<code>${type}</code><span class="d">“${desc}”</span>`:''}</td>`+
+    `<td class="scan">${scan}</td>`;
+  tr.addEventListener('click',()=>{const v=document.getElementById('vid');v.currentTime=t;v.play();});
+  tb.appendChild(tr);
+});
+</script>
+</body>
+</html>
