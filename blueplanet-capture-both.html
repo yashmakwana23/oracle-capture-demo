@@ -70,7 +70,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 document.addEventListener('click',e=>{
   const s=e.target.closest('.seek'); if(!s)return;
-  const t=+s.dataset.t; if(t>=0){vid.currentTime=t;vid.play();window.scrollTo({top:0,behavior:'smooth'});}
+  const t=+s.dataset.t; if(t>=0){vid.currentTime=t;vid.play();}
 });
 </script>
 </body></html>
